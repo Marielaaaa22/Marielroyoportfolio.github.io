@@ -51,7 +51,15 @@ h2{margin-bottom:25px;}
     gap:25px;
     margin-top:30px;
 }
-
+card_achieve{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    text-align:left;
+    border:1px solid rgba(255,255,255,.2);
+    transition:.4s;
+}
+    
 .card{
     background:rgba(255,255,255,.08);
     padding:22px;
@@ -228,9 +236,9 @@ h2{margin-bottom:25px;}
 <h2>Projects</h2>
 <div class="card-grid">
 
-<div class="card" onclick="openProject('sakamart')">
+<div class="card_achieve" onclick="openProject('sakamart')">
 <h3>SakaMart</h3>
-    <p><a class="color_link" href="https://sakamart.great-site.net/index.html"></a>Open System</p>
+    <p><a href="https://sakamart.great-site.net/index.html"></a></p>
 <span>IT × Agriculture Platform</span>
 <ul>
 <li>Team Leader</li>
@@ -239,10 +247,10 @@ h2{margin-bottom:25px;}
 </ul>
 </div>
 
-<div class="card" onclick="openProject('prospectus')">
+<div class="card_achieve" onclick="openProject('prospectus')">
 <h3>Academic Prospectus System</h3>
-<p><a class="color_link" href="https://academicprospectus.great-site.net/capstone/homepage.php"></a>Open System(Student)</p>
-<p><a class="color_link" href="https://academicprospectus.great-site.net/capstone/fac_dash.php"></a>Open System(Faculty)</p>
+<p><a href="https://academicprospectus.great-site.net/capstone/homepage.php"></a></p>
+<p><a href="https://academicprospectus.great-site.net/capstone/fac_dash.php"></a></p>
 <span>Capstone Project</span>
 <ul>
 <li>Project Manager</li>
@@ -251,9 +259,9 @@ h2{margin-bottom:25px;}
 </ul>
 </div>
 
-<div class="card" onclick="openProject('zona')">
+<div class="card_achieve" onclick="openProject('zona')">
 <h3>ZONA AI</h3>
-    <p><a class="color_link" href="https://zonaai.great-site.net/index.php"></a>Open System</p>
+    <p><a href="https://zonaai.great-site.net/index.php"></a>/p>
 <span>Disaster Risk Platform</span>
 <ul>
 <li>Team Leader</li>
@@ -489,6 +497,7 @@ document.getElementById("projectModal").style.display="none";
 
 </body>
 </html> 
+
 
 
 
