@@ -9,14 +9,11 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-
 body{
     font-family:'Lora',serif;
     background:linear-gradient(to bottom right,maroon,black,white);
     color:#fff;
-    min-height:100vh;
 }
-
 html{scroll-behavior:smooth;}
 
 /* NAV */
@@ -26,13 +23,13 @@ nav{
     z-index:1000;
     box-shadow:0 2px 4px rgba(0,0,0,.25);
 }
-nav ul{list-style:none;display:flex;justify-content:center;gap:35px;}
-nav ul li a{color:#333;font-size:18px;text-decoration:none;font-weight:bold;}
+nav ul{list-style:none;display:flex;justify-content:center;gap:30px;}
+nav ul li a{color:#333;font-weight:bold;text-decoration:none;}
 nav ul li a:hover{color:maroon;}
 
 /* SECTIONS */
 section{padding:130px 40px;min-height:100vh;text-align:center;}
-h1,h2{margin-bottom:20px;}
+h2{margin-bottom:25px;}
 
 .fade-in{opacity:0;transform:translateY(30px);animation:fadeIn 1s forwards;}
 @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
@@ -40,85 +37,45 @@ h1,h2{margin-bottom:20px;}
 /* ABOUT */
 .about-container{display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;}
 .about-container img{
-    width:260px;height:260px;border-radius:50%;
-    object-fit:cover;animation:glow 2s infinite alternate;
+    width:240px;height:240px;border-radius:50%;
+    object-fit:cover;box-shadow:0 0 30px maroon;
 }
-@keyframes glow{0%{box-shadow:0 0 20px maroon;}100%{box-shadow:0 0 60px maroon;}}
-
 .about-text{max-width:650px;text-align:left;}
-.social-links a{margin:0 10px;font-size:28px;color:white;}
+.social-links a{margin:0 8px;font-size:26px;color:white;}
 .social-links a:hover{color:gold;}
 
-/* BOX */
-.skills-box{
-    background:rgba(255,255,255,.1);
-    padding:20px;margin:15px auto;
-    border-radius:10px;width:85%;
-    border-left:5px solid gold;
-    text-align:left;
-}
-
-/* CERTIFICATES */
-#certificates{background:white;color:#333;}
-.certificate-gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;margin-top:30px;
-}
-.certificate-card{
-    background:#fff8f0;padding:12px;border-radius:12px;
-    border:2px solid maroon;transition:.3s;
-}
-.certificate-card:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 20px maroon;
-}
-.certificate-card img{width:100%;height:180px;object-fit:cover;border-radius:8px;}
-.certificate-card p{margin-top:10px;color:maroon;font-weight:bold;}
-
-/* PROJECTS */
-#projects{background:#222;}
-#projects ul{list-style:none;margin-top:20px;font-size:18px;}
-#projects li{padding:8px;}
-#projects a{color:gold;text-decoration:none;}
-#projects a:hover{color:maroon;}
-
-/* ACHIEVEMENTS */
-#achievements{background:#111;}
-
-/* WORK EXPERIENCE CARDS */
-#experience{background:#1a1a1a;}
-
-.exp-grid{
+/* UNIVERSAL CARD GRID */
+.card-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:25px;
-    margin-top:40px;
+    margin-top:30px;
 }
 
-.exp-card{
+.card{
     background:rgba(255,255,255,.08);
     padding:22px;
     border-radius:15px;
     text-align:left;
     border:1px solid rgba(255,255,255,.2);
-    transition:.4s ease;
-    position:relative;
-    overflow:hidden;
+    transition:.4s;
 }
-
-.exp-card:hover{
+.card:hover{
     transform:translateY(-10px) scale(1.02);
     box-shadow:0 15px 30px rgba(0,0,0,.5);
     background:rgba(255,255,255,.12);
 }
+.card h3{color:gold;margin-bottom:8px;}
+.card span{font-size:14px;color:#ccc;}
+.card ul{margin-top:10px;padding-left:18px;font-size:15px;}
+.card ul li{margin-bottom:6px;}
 
-.exp-card h3{color:gold;margin-bottom:8px;}
-.exp-card span{font-size:14px;color:#ccc;}
-.exp-card ul{margin-top:10px;padding-left:18px;font-size:15px;}
-.exp-card ul li{margin-bottom:6px;}
-
-/* CONTACT */
+/* SECTION COLORS */
+#skills{background:#1a1a1a;}
+#projects{background:#222;}
+#achievements{background:#111;}
+#leadership{background:#1b1b1b;}
+#experience{background:#151515;}
 #contact{background:#f4f4f4;color:#222;}
 </style>
 </head>
@@ -129,9 +86,9 @@ h1,h2{margin-bottom:20px;}
 <ul>
 <li><a href="#about">About</a></li>
 <li><a href="#skills">Skills</a></li>
-<li><a href="#certificates">Certificates</a></li>
 <li><a href="#projects">Projects</a></li>
 <li><a href="#achievements">Achievements</a></li>
+<li><a href="#leadership">Leadership</a></li>
 <li><a href="#experience">Experience</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
@@ -157,86 +114,198 @@ h1,h2{margin-bottom:20px;}
 </div>
 </section>
 
-<!-- SKILLS -->
+<!-- SKILLS (CARDS) -->
 <section id="skills" class="fade-in">
 <h2>Skills</h2>
-<div class="skills-box"><h3>Programming</h3><p>PHP, MySQL, HTML, CSS, JavaScript</p></div>
-<div class="skills-box"><h3>Tools</h3><p>XAMPP, GitHub, VS Code, phpMyAdmin</p></div>
-<div class="skills-box"><h3>Deployment</h3><p>Hostinger, InfinityFree, cPanel</p></div>
-<div class="skills-box"><h3>Soft Skills</h3><p>Leadership, teamwork, communication</p></div>
-</section>
+<div class="card-grid">
 
-<!-- CERTIFICATES -->
-<section id="certificates" class="fade-in">
-<h2>E-Certificates</h2>
-<div class="certificate-gallery">
-<div class="certificate-card"><img src="rsu.jpg"><p>Cybersecurity Awareness</p></div>
-<div class="certificate-card"><img src="python.jpg"><p>Python Programming</p></div>
-<div class="certificate-card"><img src="stat.jpg"><p>Excel Statistics</p></div>
-<div class="certificate-card"><img src="canvaai.jpg"><p>Canva AI</p></div>
+<div class="card">
+<h3>Technical Skills</h3>
+<ul>
+<li>PHP, MySQL / MariaDB</li>
+<li>HTML5, CSS3, JavaScript</li>
+<li>Bootstrap</li>
+<li>DOMPDF</li>
+<li>Git & GitHub</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Backend & Tools</h3>
+<ul>
+<li>Validation & Authentication</li>
+<li>Debugging & Error Handling</li>
+<li>XAMPP / Apache</li>
+<li>phpMyAdmin</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Deployment</h3>
+<ul>
+<li>Hostinger & InfinityFree</li>
+<li>cPanel, FTP</li>
+<li>Domain & DNS Setup</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Soft Skills</h3>
+<ul>
+<li>Leadership</li>
+<li>Teamwork</li>
+<li>Communication</li>
+<li>Attention to Detail</li>
+<li>Problem Solving</li>
+</ul>
+</div>
+
 </div>
 </section>
 
-<!-- PROJECTS -->
+<!-- PROJECTS (CARDS) -->
 <section id="projects" class="fade-in">
-<h2>My Projects</h2>
+<h2>Projects</h2>
+<div class="card-grid">
+
+<div class="card">
+<h3>SakaMart</h3>
+<span>IT × Agriculture Platform</span>
 <ul>
-<li><b>SakaMart</b> – <a href="#">Open</a></li>
-<li><b>Academic Prospectus System</b> – <a href="#">Open</a></li>
-<li><b>ZONA AI</b> – <a href="#">Open</a></li>
+<li>Team Leader</li>
+<li>Connects farmers & buyers</li>
+<li>Reduces waste, ensures fair pricing</li>
 </ul>
+</div>
+
+<div class="card">
+<h3>Academic Prospectus System</h3>
+<span>Capstone Project</span>
+<ul>
+<li>Project Manager</li>
+<li>Curriculum tracking & GWA</li>
+<li>Automated reports & dashboards</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>ZONA AI</h3>
+<span>Disaster Risk Platform</span>
+<ul>
+<li>Team Leader</li>
+<li>AI-based hazard analysis</li>
+<li>Early decision support</li>
+</ul>
+</div>
+
+</div>
 </section>
 
-<!-- ACHIEVEMENTS -->
+<!-- ACHIEVEMENTS (CARDS) -->
 <section id="achievements" class="fade-in">
 <h2>Achievements</h2>
-<div class="skills-box">🏆 LIKHAMON Ideathon 2024 — Champion</div>
-<div class="skills-box">🥇 Game Dev Competition 2025 — 1st Place</div>
-<div class="skills-box">🎤 INSPIRE 2025 — Overall 3rd Place</div>
+<div class="card-grid">
+
+<div class="card">
+<h3>🏆 LIKHAMON Ideathon 2024</h3>
+<span>Champion</span>
+<p>Led the winning team behind <b>SakaMart</b>, recognized for innovation and impact.</p>
+</div>
+
+<div class="card">
+<h3>🥇 Game Development Competition 2025</h3>
+<span>1st Place</span>
+<p><b>ALAGA’s Quest</b> — Documenter & Presenter of the winning educational game.</p>
+</div>
+
+<div class="card">
+<h3>🎤 INSPIRE 2025</h3>
+<span>Overall 3rd Place</span>
+<p>Awarded as <b>3rd Best Presenter</b> and <b>3rd Best IEC</b>.</p>
+</div>
+
+<div class="card">
+<h3>🥈 LIKHAMON Ideathon 2025</h3>
+<span>Best Pitch Deck</span>
+<p>Led storytelling and pitch design for <b>ZONA AI</b>.</p>
+</div>
+
+</div>
+</section>
+
+<!-- LEADERSHIP (CARDS) -->
+<section id="leadership" class="fade-in">
+<h2>Leadership Experience</h2>
+<div class="card-grid">
+
+<div class="card">
+<h3>Class Mayor</h3>
+<span>2022 – 2023</span>
+<p>Represented students and coordinated academic activities.</p>
+</div>
+
+<div class="card">
+<h3>Treasurer</h3>
+<span>2023 – 2024</span>
+<p>Managed organization funds and financial records.</p>
+</div>
+
+<div class="card">
+<h3>2nd Vice President</h3>
+<span>2024 – 2025</span>
+<p>Supported executive decisions and led student initiatives.</p>
+</div>
+
+<div class="card">
+<h3>TECHSO Officer</h3>
+<span>1st – 3rd Year</span>
+<p>Active officer in the technology student organization.</p>
+</div>
+
+</div>
 </section>
 
 <!-- EXPERIENCE (CARDS) -->
 <section id="experience" class="fade-in">
 <h2>Work Experience</h2>
+<div class="card-grid">
 
-<div class="exp-grid">
-
-<div class="exp-card">
+<div class="card">
 <h3>KARZAI Corporation</h3>
 <span>Production Staff (2021–2022)</span>
 <ul>
-<li>Prepared and updated daily production reports</li>
+<li>Prepared production reports</li>
 <li>Monitored KPI and PPE compliance</li>
 <li>Handled department documentation</li>
 </ul>
 </div>
 
-<div class="exp-card">
+<div class="card">
 <h3>Vacuumtech Philippines</h3>
 <span>Quality Checker (2020)</span>
 <ul>
-<li>Inspected thermos and plastic products</li>
-<li>Checked dents and visual defects</li>
+<li>Inspected thermos & plastic products</li>
+<li>Checked dents and defects</li>
 <li>Recorded inspection results</li>
 </ul>
 </div>
 
-<div class="exp-card">
+<div class="card">
 <h3>Global Compak Inc.</h3>
 <span>Quality Sorter (2017–2020)</span>
 <ul>
-<li>Sorted injection-molded products</li>
-<li>Separated defective items</li>
+<li>Sorted injection-molded items</li>
+<li>Separated defective products</li>
 <li>Ensured quality standards</li>
 </ul>
 </div>
 
-<div class="exp-card">
+<div class="card">
 <h3>Yazaki–Torres Manufacturing</h3>
 <span>Production Operator (2014–2017)</span>
 <ul>
 <li>Assembled wire harness components</li>
-<li>Checked alignment and quality</li>
+<li>Checked alignment & quality</li>
 <li>Ensured process accuracy</li>
 </ul>
 </div>
