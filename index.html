@@ -59,6 +59,7 @@ h2{margin-bottom:25px;}
     text-align:left;
     border:1px solid rgba(255,255,255,.2);
     transition:.4s;
+    cursor:pointer;
 }
 .card:hover{
     transform:translateY(-10px) scale(1.02);
@@ -77,6 +78,69 @@ h2{margin-bottom:25px;}
 #leadership{background:#1b1b1b;}
 #experience{background:#151515;}
 #contact{background:#f4f4f4;color:#222;}
+
+/* ================= MODAL ================= */
+.modal{
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,.85);
+    z-index:3000;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:#111;
+    width:92%;
+    max-width:1100px;
+    border-radius:15px;
+    padding:20px;
+    position:relative;
+}
+
+.close-btn{
+    position:absolute;
+    top:10px;right:15px;
+    font-size:22px;
+    color:white;
+    cursor:pointer;
+}
+
+.modal-body{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.modal-left img{
+    width:100%;
+    border-radius:12px;
+}
+
+.modal-right h3{color:gold;}
+.modal-right ul{margin-top:10px;padding-left:18px;}
+.modal-right li{margin-bottom:6px;}
+
+/* THUMBNAILS */
+.modal-thumbs{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+.modal-thumbs img{
+    width:90px;
+    height:65px;
+    object-fit:cover;
+    border-radius:6px;
+    cursor:pointer;
+    border:2px solid transparent;
+}
+.modal-thumbs img:hover{
+    border-color:gold;
+}
 </style>
 </head>
 
@@ -114,61 +178,24 @@ h2{margin-bottom:25px;}
 </div>
 </section>
 
-<!-- SKILLS (CARDS) -->
+<!-- SKILLS -->
 <section id="skills" class="fade-in">
 <h2>Skills</h2>
 <div class="card-grid">
-
-<div class="card">
-<h3>Technical Skills</h3>
-<ul>
-<li>PHP, MySQL / MariaDB</li>
-<li>HTML5, CSS3, JavaScript</li>
-<li>Bootstrap</li>
-<li>DOMPDF</li>
-<li>Git & GitHub</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Backend & Tools</h3>
-<ul>
-<li>Validation & Authentication</li>
-<li>Debugging & Error Handling</li>
-<li>XAMPP / Apache</li>
-<li>phpMyAdmin</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Deployment</h3>
-<ul>
-<li>Hostinger & InfinityFree</li>
-<li>cPanel, FTP</li>
-<li>Domain & DNS Setup</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Soft Skills</h3>
-<ul>
-<li>Leadership</li>
-<li>Teamwork</li>
-<li>Communication</li>
-<li>Attention to Detail</li>
-<li>Problem Solving</li>
-</ul>
-</div>
-
+<div class="card"><h3>Technical Skills</h3><ul><li>PHP, MySQL</li><li>HTML, CSS, JS</li><li>Bootstrap, DOMPDF</li><li>Git & GitHub</li></ul></div>
+<div class="card"><h3>Backend & Tools</h3><ul><li>Validation</li><li>Debugging</li><li>XAMPP</li><li>phpMyAdmin</li></ul></div>
+<div class="card"><h3>Deployment</h3><ul><li>Hostinger</li><li>InfinityFree</li><li>cPanel</li></ul></div>
+<div class="card"><h3>Soft Skills</h3><ul><li>Leadership</li><li>Teamwork</li><li>Communication</li><li>Problem Solving</li></ul></div>
 </div>
 </section>
 
-<!-- PROJECTS (CARDS) -->
+<!-- PROJECTS -->
 <section id="projects" class="fade-in">
 <h2>Projects</h2>
 <div class="card-grid">
 
-<div class="card">
+<!-- SAKAMART -->
+<div class="card" onclick="openModal('sakamart')">
 <h3>SakaMart</h3>
 <span>IT × Agriculture Platform</span>
 <ul>
@@ -178,7 +205,8 @@ h2{margin-bottom:25px;}
 </ul>
 </div>
 
-<div class="card">
+<!-- ACADEMIC PROSPECTUS -->
+<div class="card" onclick="openModal('prospectus')">
 <h3>Academic Prospectus System</h3>
 <span>Capstone Project</span>
 <ul>
@@ -188,7 +216,8 @@ h2{margin-bottom:25px;}
 </ul>
 </div>
 
-<div class="card">
+<!-- ZONA AI -->
+<div class="card" onclick="openModal('zonaai')">
 <h3>ZONA AI</h3>
 <span>Disaster Risk Platform</span>
 <ul>
@@ -201,115 +230,36 @@ h2{margin-bottom:25px;}
 </div>
 </section>
 
-<!-- ACHIEVEMENTS (CARDS) -->
+<!-- ACHIEVEMENTS -->
 <section id="achievements" class="fade-in">
 <h2>Achievements</h2>
 <div class="card-grid">
-
-<div class="card">
-<h3>🏆 LIKHAMON Ideathon 2024</h3>
-<span>Champion</span>
-<p>Led the winning team behind <b>SakaMart</b>, recognized for innovation and impact.</p>
-</div>
-
-<div class="card">
-<h3>🥇 Game Development Competition 2025</h3>
-<span>1st Place</span>
-<p><b>ALAGA’s Quest</b> — Documenter & Presenter of the winning educational game.</p>
-</div>
-
-<div class="card">
-<h3>🎤 INSPIRE 2025</h3>
-<span>Overall 3rd Place</span>
-<p>Awarded as <b>3rd Best Presenter</b> and <b>3rd Best IEC</b>.</p>
-</div>
-
-<div class="card">
-<h3>🥈 LIKHAMON Ideathon 2025</h3>
-<span>Best Pitch Deck</span>
-<p>Led storytelling and pitch design for <b>ZONA AI</b>.</p>
-</div>
-
+<div class="card"><h3>🏆 LIKHAMON Ideathon 2024</h3><span>Champion</span><p>Led SakaMart to victory.</p></div>
+<div class="card"><h3>🥇 Game Dev 2025</h3><span>1st Place</span><p>ALAGA’s Quest presenter.</p></div>
+<div class="card"><h3>🎤 INSPIRE 2025</h3><span>Overall 3rd</span><p>3rd Best Presenter.</p></div>
+<div class="card"><h3>🥈 LIKHAMON 2025</h3><span>Best Pitch Deck</span><p>ZONA AI pitch lead.</p></div>
 </div>
 </section>
 
-<!-- LEADERSHIP (CARDS) -->
+<!-- LEADERSHIP -->
 <section id="leadership" class="fade-in">
-<h2>Leadership Experience</h2>
+<h2>Leadership</h2>
 <div class="card-grid">
-
-<div class="card">
-<h3>Class Mayor</h3>
-<span>2022 – 2023</span>
-<p>Represented students and coordinated academic activities.</p>
-</div>
-
-<div class="card">
-<h3>Treasurer</h3>
-<span>2023 – 2024</span>
-<p>Managed organization funds and financial records.</p>
-</div>
-
-<div class="card">
-<h3>2nd Vice President</h3>
-<span>2024 – 2025</span>
-<p>Supported executive decisions and led student initiatives.</p>
-</div>
-
-<div class="card">
-<h3>TECHSO Officer</h3>
-<span>1st – 3rd Year</span>
-<p>Active officer in the technology student organization.</p>
-</div>
-
+<div class="card"><h3>Class Mayor</h3><span>2022–2023</span></div>
+<div class="card"><h3>Treasurer</h3><span>2023–2024</span></div>
+<div class="card"><h3>2nd Vice President</h3><span>2024–2025</span></div>
+<div class="card"><h3>TECHSO Officer</h3><span>1st–3rd Year</span></div>
 </div>
 </section>
 
-<!-- EXPERIENCE (CARDS) -->
+<!-- EXPERIENCE -->
 <section id="experience" class="fade-in">
 <h2>Work Experience</h2>
 <div class="card-grid">
-
-<div class="card">
-<h3>KARZAI Corporation</h3>
-<span>Production Staff (2021–2022)</span>
-<ul>
-<li>Prepared production reports</li>
-<li>Monitored KPI and PPE compliance</li>
-<li>Handled department documentation</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Vacuumtech Philippines</h3>
-<span>Quality Checker (2020)</span>
-<ul>
-<li>Inspected thermos & plastic products</li>
-<li>Checked dents and defects</li>
-<li>Recorded inspection results</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Global Compak Inc.</h3>
-<span>Quality Sorter (2017–2020)</span>
-<ul>
-<li>Sorted injection-molded items</li>
-<li>Separated defective products</li>
-<li>Ensured quality standards</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Yazaki–Torres Manufacturing</h3>
-<span>Production Operator (2014–2017)</span>
-<ul>
-<li>Assembled wire harness components</li>
-<li>Checked alignment & quality</li>
-<li>Ensured process accuracy</li>
-</ul>
-</div>
-
+<div class="card"><h3>KARZAI Corp</h3><span>2021–2022</span></div>
+<div class="card"><h3>Vacuumtech</h3><span>2020</span></div>
+<div class="card"><h3>Global Compak</h3><span>2017–2020</span></div>
+<div class="card"><h3>Yazaki–Torres</h3><span>2014–2017</span></div>
 </div>
 </section>
 
@@ -320,14 +270,90 @@ h2{margin-bottom:25px;}
 <p>Contact no.: <b>+639660017181</b></p>
 </section>
 
+<!-- ============ MODAL ============ -->
+<div class="modal" id="projectModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">✖</span>
+
+    <div class="modal-body">
+      <div class="modal-left">
+        <img id="modalMainImg">
+      </div>
+
+      <div class="modal-right">
+        <h3 id="modalTitle"></h3>
+        <ul id="modalDetails"></ul>
+      </div>
+    </div>
+
+    <div class="modal-thumbs" id="modalThumbs"></div>
+  </div>
+</div>
+
 <script>
-const sections=document.querySelectorAll("section");
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting) entry.target.classList.add("fade-in");
-});
-},{threshold:.2});
-sections.forEach(sec=>observer.observe(sec));
+const data={
+  prospectus:{
+    title:"Academic Prospectus System",
+    details:[
+      "Role: Project Manager",
+      "Tech: PHP, MySQL, HTML, CSS, JS",
+      "Student Dashboard",
+      "Grade Encoding Forms",
+      "Dean’s List Ranking",
+      "PDF Downloads & Faculty Module"
+    ],
+    images:[
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/homepage.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/dashboard.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/form.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/prospectus.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/download.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/deanslist.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/faculty.png",
+      "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/search.png"
+    ]
+  },
+  sakamart:{
+    title:"SakaMart",
+    details:["Team Leader","Farmer–buyer connection","Marketplace system"],
+    images:["https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/saka1.png"]
+  },
+  zonaai:{
+    title:"ZONA AI",
+    details:["Team Leader","AI hazard mapping","Disaster prediction"],
+    images:["https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/zona1.png"]
+  }
+};
+
+function openModal(key){
+  const p=data[key];
+  document.getElementById("projectModal").style.display="flex";
+  document.getElementById("modalTitle").innerText=p.title;
+
+  const ul=document.getElementById("modalDetails");
+  ul.innerHTML="";
+  p.details.forEach(d=>{
+    const li=document.createElement("li");
+    li.innerText=d;
+    ul.appendChild(li);
+  });
+
+  const main=document.getElementById("modalMainImg");
+  main.src=p.images[0];
+
+  const thumbs=document.getElementById("modalThumbs");
+  thumbs.innerHTML="";
+  p.images.forEach(img=>{
+    const i=document.createElement("img");
+    i.src=img;
+    i.onclick=()=>main.src=img;
+    thumbs.appendChild(i);
+  });
+}
+
+function closeModal(){
+  document.getElementById("projectModal").style.display="none";
+}
 </script>
 
 </body>
