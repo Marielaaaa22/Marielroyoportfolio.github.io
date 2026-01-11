@@ -175,6 +175,58 @@ card_achieve{
   color: maroon;
   font-weight: bold;
 }
+/* ===== MOBILE NAV FIX ===== */
+.nav-container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 20px;
+}
+
+.brand{
+  color:maroon;
+}
+
+/* hamburger hidden on desktop */
+.hamburger{
+  display:none;
+  font-size:26px;
+  color:#333;
+  cursor:pointer;
+}
+
+/* mobile styles */
+@media(max-width:768px){
+
+  nav{
+    padding:12px 0;
+  }
+
+  .hamburger{
+    display:block;
+  }
+
+  .nav-links{
+    position:absolute;
+    top:60px;
+    left:0;
+    width:100%;
+    background:#fff;
+    display:none;
+    flex-direction:column;
+    text-align:center;
+    box-shadow:0 5px 10px rgba(0,0,0,.3);
+  }
+
+  .nav-links li{
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+  }
+
+  .nav-links.show{
+    display:flex;
+  }
+}
 
 /* SECTION COLORS */
 #skills{background:#1a1a1a;}
@@ -188,18 +240,28 @@ card_achieve{
 
 <body>
 
-<nav>
-<ul>
-<li><a href="#about">About</a></li>
-<li><a href="#skills">Skills</a></li>
- <li><a href="#projects">E-certificates</a></li>
-<li><a href="#projects">Projects</a></li>
-<li><a href="#achievements">Achievements</a></li>
-<li><a href="#leadership">Leadership</a></li>
-<li><a href="#experience">Experience</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
+<nav class="navbar">
+  <div class="nav-container">
+    <h2 class="brand">Mariel</h2>
+
+    <!-- HAMBURGER -->
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#certificates">E-certificates</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#leadership">Leadership</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 </nav>
+
 
 <!-- ABOUT -->
 <section id="about" class="fade-in">
@@ -542,9 +604,18 @@ document.getElementById("projectModal").style.display="none";
 <div class="modal-thumbs" id="modalThumbs"></div>
 </div>
 </div>
+<script>
+const burger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+
+burger.addEventListener("click", ()=>{
+  navLinks.classList.toggle("show");
+});
+</script>
 
 </body>
 </html> 
+
 
 
 
