@@ -137,6 +137,45 @@ card_achieve{
 .color_link{
     color:whiite;
 }
+    /* CERTIFICATES */
+#certificates {
+  background: white;
+  color: #333;
+}
+
+.certificate-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.certificate-card {
+  background: #fff8f0;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid maroon;
+  transition: 0.3s;
+}
+
+.certificate-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px maroon;
+}
+
+.certificate-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.certificate-card p {
+  margin-top: 10px;
+  color: maroon;
+  font-weight: bold;
+}
+
 /* SECTION COLORS */
 #skills{background:#1a1a1a;}
 #projects{background:#222;}
@@ -231,7 +270,19 @@ card_achieve{
 
 </div>
 </section>
-
+<!-- CERTIFICATES --> 
+<section id="certificates" class="fade-in"> <h2>E-Certificates</h2> 
+    <div class="certificate-gallery"> 
+        <div class="certificate-card"><img src="rsu.jpg"><p>Cybersecurity Awareness</p></div> 
+        <div class="certificate-card"><img src="python.jpg"><p>Python Programming</p></div> 
+        <div class="certificate-card"><img src="stat.jpg"><p>MS Excel Statistics</p></div> 
+        <div class="certificate-card"><img src="canvaai.jpg"><p>Canva AI for MSMEs</p></div> 
+        <div class="certificate-card"><img src="hoc.jpg"><p>Hour of Code</p></div> <div class="certificate-card">
+            <img src="iot.jpg"><p>IoT in Smart Cities</p></div> 
+        <div class="certificate-card"><img src="kada.jpg"><p>KADAKAMP Skills Webinar</p></div> 
+        <div class="certificate-card"><img src="qubit.jpg"><p>Cybersecurity Journey</p></div> 
+    </div> 
+</section>
 <section id="projects" class="fade-in">
 <h2>Projects</h2>
 <div class="card-grid">
@@ -493,5 +544,6 @@ document.getElementById("projectModal").style.display="none";
 
 </body>
 </html> 
+
 
 
