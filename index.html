@@ -1,685 +1,1071 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mariel Royo - Portfolio</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mariel Royo - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ─── RESET & BASE ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 12px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hamburger {
+            display: none;
+            font-size: 26px;
+            color: #333;
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        .nav-links li a {
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+            transition: .3s;
+        }
+        .nav-links li a:hover {
+            color: maroon;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Lora',serif;
-    background:linear-gradient(to bottom right,maroon,black,white);
-    color:#fff;
-}
-html{scroll-behavior:smooth;}
+        /* ─── SECTIONS ─── */
+        section {
+            padding: 130px 40px 80px;
+            min-height: 100vh;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            color: #1a1a1a;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* NAV */
-nav{
-    position:fixed;top:0;width:100%;
-    background:#fff;padding:12px 0;
-    z-index:1000;
-    box-shadow:0 2px 4px rgba(0,0,0,.25);
-}
-nav ul{list-style:none;display:flex;justify-content:center;gap:30px;}
-nav ul li a{color:#333;font-weight:bold;text-decoration:none;}
-nav ul li a:hover{color:maroon;}
+        /* ─── SECTION BACKGROUNDS ─── */
+        #about {
+            background: #ffffff;
+        }
+        #skills {
+            background: #f8f9fa;
+        }
+        #certificates {
+            background: #ffffff;
+        }
+        #projects {
+            background: #f8f9fa;
+        }
+        #international {
+            background: #ffffff;
+        }
+        #achievements {
+            background: #f8f9fa;
+        }
+        #leadership {
+            background: #ffffff;
+        }
+        #experience {
+            background: #f8f9fa;
+        }
+        #freelance {
+            background: #ffffff;
+        }
+        #contact {
+            background: #f4f4f4;
+        }
 
-/* SECTIONS */
-section{padding:130px 40px;min-height:100vh;text-align:center;}
-h2{margin-bottom:25px;}
+        /* ─── ABOUT ─── */
+        .about-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .about-container img {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 30px rgba(128, 0, 0, .15);
+            border: 4px solid maroon;
+        }
+        .about-text {
+            max-width: 650px;
+            text-align: left;
+        }
+        .about-text h1 {
+            font-size: 2.2rem;
+            color: #1a1a1a;
+        }
+        .about-text p {
+            margin: 8px 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #444;
+        }
+        .social-links a {
+            margin: 0 8px;
+            font-size: 26px;
+            color: #333;
+            display: inline-block;
+            transition: .3s;
+        }
+        .social-links a:hover {
+            color: maroon;
+            transform: scale(1.15);
+        }
 
-.fade-in{opacity:0;transform:translateY(30px);animation:fadeIn 1s forwards;}
-@keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+        /* ─── CARD GRID ─── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .card {
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 15px;
+            text-align: left;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+            transition: .4s;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            color: #1a1a1a;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+            border-color: maroon;
+        }
+        .card h3 {
+            color: maroon;
+            margin-bottom: 8px;
+        }
+        .card .sub {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+        .card p {
+            font-size: 15px;
+            margin-top: 4px;
+            line-height: 1.5;
+            flex: 1;
+            color: #444;
+        }
+        .card ul {
+            margin-top: 10px;
+            padding-left: 18px;
+            font-size: 15px;
+            color: #444;
+        }
+        .card ul li {
+            margin-bottom: 6px;
+        }
 
-/* ABOUT */
-.about-container{display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;}
-.about-container img{
-    width:240px;height:240px;border-radius:50%;
-    object-fit:cover;box-shadow:0 0 30px maroon;
-}
-.about-text{max-width:650px;text-align:left;}
-.about-text h1{color:#fff;}
-.about-text p{color:#f0e6e6;}
-.about-text p b{color:gold;}
+        /* ─── PROJECT CARD BUTTONS ─── */
+        .project-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .project-actions .btn {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: .3s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-gallery {
+            background: maroon;
+            color: #fff;
+        }
+        .btn-gallery:hover {
+            background: #a00000;
+            transform: scale(1.05);
+        }
+        .btn-link {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .btn-link:hover {
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
 
-/* ─── FREELANCE NOTE - MAROON BACKGROUND, PINALIIT ─── */
-.about-text .freelance-note {
-    background: maroon;
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: 10px;
-    margin-top: 12px;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    border-left: 4px solid gold;
-}
-.about-text .freelance-note strong {
-    color: gold;
-}
-.about-text .freelance-note .note-label {
-    font-weight: 700;
-    color: gold;
-    font-size: 0.88rem;
-    display: inline-block;
-    margin-right: 4px;
-}
+        /* ─── GALLERY MODAL ─── */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .85);
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .gallery-modal.active {
+            display: flex;
+        }
+        .gallery-content {
+            background: #fff;
+            border-radius: 18px;
+            max-width: 750px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px 24px 30px;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, .1);
+            color: #1a1a1a;
+        }
+        .gallery-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 26px;
+            color: #333;
+            cursor: pointer;
+            background: rgba(0, 0, 0, .05);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border: 1px solid #ddd;
+            transition: .3s;
+        }
+        .gallery-close:hover {
+            background: maroon;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+        .gallery-title {
+            color: maroon;
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            clear: both;
+        }
+        .gallery-desc {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+        }
+        .gallery-grid img {
+            width: 100%;
+            aspect-ratio: 16/10;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: .3s;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+        .gallery-grid img:hover {
+            border-color: maroon;
+            transform: scale(1.03);
+        }
+        .gallery-grid .no-img {
+            color: #999;
+            text-align: center;
+            padding: 40px 0;
+            grid-column: 1 / -1;
+            font-size: 0.95rem;
+        }
+        .gallery-link-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 28px;
+            background: maroon;
+            color: #fff;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .3s;
+            font-size: 15px;
+        }
+        .gallery-link-btn:hover {
+            background: #a00000;
+            transform: scale(1.04);
+        }
 
-.social-links a{margin:0 8px;font-size:26px;color:white;}
-.social-links a:hover{color:gold;}
+        /* ─── CERTIFICATES ─── */
+        #certificates h2 {
+            color: #1a1a1a;
+        }
+        .certificate-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .certificate-card {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: .3s;
+            text-align: center;
+        }
+        .certificate-card:hover {
+            transform: scale(1.05);
+            border-color: maroon;
+            box-shadow: 0 0 20px rgba(128, 0, 0, .08);
+        }
+        .certificate-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #fff;
+        }
+        .certificate-card p {
+            margin-top: 10px;
+            color: #1a1a1a;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .certificate-card .ongoing-badge {
+            display: inline-block;
+            background: maroon;
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
 
-/* UNIVERSAL CARD GRID */
-.card-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:25px;
-    margin-top:30px;
-}
-card_achieve{
-    background:white;
-    padding:22px;
-    border-radius:15px;
-    text-align:left;
-    border:1px solid rgba(255,255,255,.2);
-    transition:.4s;
-}
-    
-.card{
-    background:rgba(255,255,255,.08);
-    padding:22px;
-    border-radius:15px;
-    text-align:left;
-    border:1px solid rgba(255,255,255,.2);
-    transition:.4s;
-}
-.card:hover{
-    transform:translateY(-10px) scale(1.02);
-    box-shadow:0 15px 30px rgba(0,0,0,.5);
-    background:rgba(255,255,255,.12);
-}
-.card h3{color:gold;margin-bottom:8px;}
-.card span{font-size:14px;color:#ccc;}
-.card p{color:#ddd;}
-.card ul{margin-top:10px;padding-left:18px;font-size:15px;color:#ddd;}
-.card ul li{margin-bottom:6px;}
-/* ===== MODAL FIX ===== */
-.modal{
-    display:none;
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    background:rgba(0,0,0,.8);
-    justify-content:center;
-    align-items:center;
-    z-index:2000;
-}
+        /* ─── INTERNATIONAL CLIENT ─── */
+        .testimonial-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .testimonial-wrap img {
+            max-width: 420px;
+            width: 100%;
+            border-radius: 16px;
+            border: 3px solid maroon;
+            box-shadow: 0 0 30px rgba(128, 0, 0, .08);
+            transition: .4s;
+        }
+        .testimonial-wrap img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(128, 0, 0, .12);
+        }
+        .testimonial-text {
+            max-width: 480px;
+            text-align: left;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333;
+        }
+        .testimonial-text .client-name {
+            color: maroon;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .testimonial-text .client-role {
+            color: #777;
+            font-size: 0.95rem;
+        }
 
-.modal-content{
-    background:#111;
-    padding:18px;
-    border-radius:15px;
-    max-width:600px;
-    width:85%;
-    position:relative;
-}
+        /* ─── FREELANCE SERVICES ─── */
+        .freelance-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .freelance-wrap img {
+            max-width: 480px;
+            width: 100%;
+            border-radius: 16px;
+            border: 3px solid #e9ecef;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .04);
+            transition: .4s;
+        }
+        .freelance-wrap img:hover {
+            transform: scale(1.02);
+            border-color: maroon;
+            box-shadow: 0 0 40px rgba(128, 0, 0, .06);
+        }
+        .freelance-text {
+            max-width: 460px;
+            text-align: left;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333;
+        }
+        .freelance-text .highlight {
+            color: maroon;
+            font-weight: bold;
+        }
 
+        /* ─── CONTACT ─── */
+        #contact h2 {
+            color: #1a1a1a;
+        }
+        #contact p {
+            font-size: 1.1rem;
+            margin: 6px 0;
+            color: #333;
+        }
+        #contact a {
+            color: maroon;
+            text-decoration: underline;
+        }
 
-.modal-close{
-    position:absolute;
-    top:10px;right:15px;
-    cursor:pointer;
-    font-size:22px;
-    color:white;
-}
-
-.modal-main-img img{
-    width:100%;
-    border-radius:10px;
-}
-
-.modal-details{
-    margin-top:15px;
-}
-
-.modal-thumbs{
-    display:flex;
-    gap:10px;
-    margin-top:10px;
-    flex-wrap:wrap;
-}
-
-.modal-thumbs img{
-    width:70px;
-    height:70px;
-    object-fit:cover;
-    cursor:pointer;
-    border-radius:8px;
-    border:2px solid transparent;
-}
-.modal-thumbs img:hover{
-    border:2px solid gold;
-}
-.color_link{
-    color:whiite;
-}
-    /* CERTIFICATES */
-#certificates {
-  background: white;
-  color: #333;
-}
-
-.certificate-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
-
-.certificate-card {
-  background: #fff8f0;
-  padding: 12px;
-  border-radius: 12px;
-  border: 2px solid maroon;
-  transition: 0.3s;
-}
-
-.certificate-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px maroon;
-}
-
-.certificate-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.certificate-card p {
-  margin-top: 10px;
-  color: maroon;
-  font-weight: bold;
-}
-/* ===== MOBILE NAV FIX ===== */
-.nav-container{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 20px;
-}
-
-.brand{
-  color:maroon;
-}
-
-/* hamburger hidden on desktop */
-.hamburger{
-  display:none;
-  font-size:26px;
-  color:#333;
-  cursor:pointer;
-}
-
-/* mobile styles */
-@media(max-width:768px){
-
-  nav{
-    padding:12px 0;
-  }
-
-  .hamburger{
-    display:block;
-  }
-
-  .nav-links{
-    position:absolute;
-    top:60px;
-    left:0;
-    width:100%;
-    background:#fff;
-    display:none;
-    flex-direction:column;
-    text-align:center;
-    box-shadow:0 5px 10px rgba(0,0,0,.3);
-  }
-
-  .nav-links li{
-    padding:12px 0;
-    border-bottom:1px solid #eee;
-  }
-
-  .nav-links.show{
-    display:flex;
-  }
-}
-/* ===== DESKTOP CENTER NAV FIX ===== */
-@media(min-width:769px){
-
-  nav{
-    display:flex;
-    justify-content:center;
-  }
-
-  .nav-container{
-    width:100%;
-    max-width:1100px;
-    display:flex;
-    justify-content:center;
-  }
-
-  .nav-links{
-    display:flex;
-    justify-content:center;
-    gap:30px;
-  }
-
-  .hamburger{
-    display:none;
-  }
-}
-
-/* SECTION COLORS */
-#skills{background:#1a1a1a;}
-#projects{background:#222;}
-#achievements{background:#111;}
-#leadership{background:#1b1b1b;}
-#experience{background:#151515;}
-#contact{background:#f4f4f4;color:#222;}
-#contact h2{color:#222;}
-#contact p{color:#333;}
-</style>
+        /* ─── RESPONSIVE ─── */
+        @media(max-width:768px) {
+            .hamburger {
+                display: block;
+            }
+            .nav-container {
+                justify-content: space-between;
+            }
+            .nav-links {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: #fff;
+                display: none;
+                flex-direction: column;
+                text-align: center;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, .06);
+                padding: 10px 0;
+            }
+            .nav-links li {
+                padding: 12px 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            section {
+                padding: 110px 20px 60px;
+            }
+            .about-container {
+                gap: 20px;
+            }
+            .about-text {
+                text-align: center;
+            }
+            .about-text h1 {
+                font-size: 1.7rem;
+            }
+            .testimonial-wrap,
+            .freelance-wrap {
+                flex-direction: column;
+                text-align: center;
+            }
+            .testimonial-text,
+            .freelance-text {
+                text-align: center;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .certificate-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            .gallery-content {
+                padding: 16px;
+                width: 96%;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+        }
+        @media(min-width:769px) {
+            .nav-links {
+                display: flex !important;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<nav class="navbar">
-  <div class="nav-container">
+    <!-- ─── NAV ─── -->
+    <nav>
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#certificates">Certificates</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#international">International</a></li>
+                <li><a href="#achievements">Achievements</a></li>
+                <li><a href="#leadership">Leadership</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#freelance">Freelance</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <div class="hamburger" id="hamburger">
-      <i class="fas fa-bars"></i>
+    <!-- ─── ABOUT ─── -->
+    <section id="about" class="fade-in">
+        <div class="about-container">
+            <img src="Myphoto.jpg" alt="Mariel Royo" />
+            <div class="about-text">
+                <h1>Mariel Bolda Royo</h1>
+                <p><b>Web Developer | Project Leader</b></p>
+                <p>Entry-level Web Developer skilled in <b>Basic Laravel, PHP, MySQL, HTML, CSS, JavaScript</b>, and responsive design. Experienced in building academic and competition-based web applications and deploying systems through cPanel. Fast learner with strong problem-solving skills, attention to detail, and a positive, team-oriented work attitude.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/marielaaaa22?igsh=MWs1aXh6ZjI3ZmoyYg==" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://ph.jobstreet.com/profiles/jxSCgf1wHj" title="JobStreet"><i class="fas fa-briefcase"></i></a>
+                    <a href="https://www.tiktok.com/@royomarielaaaa?_r=1&_t=ZS-92DUEp1Hzgv" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── SKILLS ─── -->
+    <section id="skills" class="fade-in">
+        <h2>Skills</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Languages & Frameworks</h3>
+                <ul>
+                    <li>PHP, Basic Laravel</li>
+                    <li>MySQL / MariaDB</li>
+                    <li>HTML5, CSS3, JavaScript</li>
+                    <li>PHPMailer</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Tools & Platforms</h3>
+                <ul>
+                    <li>GitHub, cPanel</li>
+                    <li>XAMPP, Herd, Laragon, phpMyAdmin</li>
+                    <li>Hostinger, InfinityFree</li>
+                    <li>Domain & DNS Setup</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Additional</h3>
+                <ul>
+                    <li>Technical Documentation</li>
+                    <li>MS Office (Word, Excel, PPT)</li>
+                    <li>Canva</li>
+                    <li>Basic Python, Java</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Soft Skills</h3>
+                <ul>
+                    <li>Leadership & Teamwork</li>
+                    <li>Communication</li>
+                    <li>Attention to Detail</li>
+                    <li>Problem Solving</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CERTIFICATES ─── -->
+    <section id="certificates" class="fade-in">
+        <h2>Certificates</h2>
+        <div class="certificate-gallery">
+            <div class="certificate-card"><img src="rsu.jpg" alt="Cybersecurity" /><p>Data Privacy & Cybersecurity (RA 10173)</p></div>
+            <div class="certificate-card"><img src="python.jpg" alt="Python" /><p>Fundamentals of Python Programming</p></div>
+            <div class="certificate-card"><img src="iot.jpg" alt="IoT" /><p>IoT in Smart Cities</p></div>
+            <div class="certificate-card"><img src="qubit.jpg" alt="Hacker's Journey" /><p>The Hacker's Journey: Cybersecurity</p></div>
+            <div class="certificate-card"><img src="stat.jpg" alt="Excel" /><p>MS Excel Statistics</p></div>
+            <div class="certificate-card"><img src="canvaai.jpg" alt="Canva AI" /><p>Canva AI for MSMEs</p></div>
+            <div class="certificate-card"><img src="hoc.jpg" alt="Hour of Code" /><p>Hour of Code</p></div>
+            <div class="certificate-card"><img src="kada.jpg" alt="KADAKAMP" /><p>KADAKAMP Skills Webinar</p></div>
+            <div class="certificate-card" style="border-color:maroon;">
+                <img src="java_nc3.jpg" alt="NC III Java" onerror="this.src='https://via.placeholder.com/200x160/800000/ffffff?text=Java+NC+III'" />
+                <p>NC III Java Programming <span class="ongoing-badge">Ongoing</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── PROJECTS (Visit button removed from ALAGA's Quest and DACS) ─── -->
+    <section id="projects" class="fade-in">
+        <h2>Projects</h2>
+        <div class="card-grid">
+
+            <!-- SAKAMART -->
+            <div class="card">
+                <h3>SakaMart</h3>
+                <div class="sub">🏆 LIKHAMON Ideathon 2024 Champion · Team Leader</div>
+                <p>Web app <strong>prototype</strong> connecting farmers and buyers to reduce agricultural waste and ensure fair pricing.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('sakamart')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://sakamart.great-site.net/index.html" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
+            </div>
+
+            <!-- ZONA AI -->
+            <div class="card">
+                <h3>ZONA AI</h3>
+                <div class="sub">🥈 LIKHAMON Ideathon 2025 Best Pitch Deck · Team Leader</div>
+                <p>AI <strong>prototype</strong> for disaster risk analysis and hazard mapping, enabling early decision support.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('zona')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://zonaai.great-site.net/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
+            </div>
+
+            <!-- ALAGA's Quest (Visit button removed) -->
+            <div class="card">
+                <h3>ALAGA's Quest</h3>
+                <div class="sub">🥇 Game Development 2025 1st Place · Documenter & Presenter</div>
+                <p>Educational game built with <strong>GDevelop</strong> that won 1st place in the Game Development Competition 2025.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('alaga')"><i class="fas fa-images"></i> Gallery</button>
+                    <!-- Visit button removed as requested -->
+                </div>
+            </div>
+
+            <!-- Academic Prospectus System -->
+            <div class="card">
+                <h3>Academic Prospectus System</h3>
+                <div class="sub">Capstone Project · Project Manager</div>
+                <p><strong>Full system with AI assistant</strong> for curriculum tracking, automated grade reporting, GWA computation, and Dean's List ranking.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('prospectus')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://academicprospectus.great-site.net/capstone/homepage.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
+            </div>
+
+            <!-- CodeBuddyPH -->
+            <div class="card">
+                <h3>CodeBuddyPH</h3>
+                <div class="sub">Web-based IDE Editor · Developer</div>
+                <p><strong>AI-assisted</strong> live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('codebuddy')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://codebuddyph.great-site.net/Codebuddy/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
+            </div>
+
+            <!-- DACS (Visit button removed) -->
+            <div class="card">
+                <h3>DACS</h3>
+                <div class="sub">Document Administration Control System</div>
+                <p><strong>AI-assisted full system</strong> that replaced manual Excel encoding with a digital tracking system for OM‑ICTO Admin Department. <em>(Deployed internally / intranet)</em></p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('dacs')"><i class="fas fa-images"></i> Gallery</button>
+                    <!-- Visit button removed as requested -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ─── GALLERY MODAL ─── -->
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-content">
+            <div class="gallery-close" onclick="closeGallery()">✖</div>
+            <h3 class="gallery-title" id="galleryTitle">Project</h3>
+            <p class="gallery-desc" id="galleryDesc">Description</p>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images injected by JS -->
+            </div>
+            <a href="#" target="_blank" class="gallery-link-btn" id="galleryVisitBtn"><i class="fas fa-external-link-alt"></i> Visit Live Site</a>
+        </div>
     </div>
 
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#certificates">E-certificates</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#leadership">Leadership</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
+    <!-- ─── INTERNATIONAL CLIENT ─── -->
+    <section id="international" class="fade-in">
+        <h2>🌍 International Client</h2>
+        <div class="testimonial-wrap">
+            <img src="chris.jpg" alt="Client: Chris Cristobal" />
+            <div class="testimonial-text">
+                <p><span class="client-name">Chris Cristobal</span><br />
+                <span class="client-role">Pre‑Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
+                <p style="margin-top:12px;">
+                    <i class="fas fa-check-circle" style="color:maroon;"></i> 
+                    I developed a professional website for his legal practice, helping showcase his services and connect with clients.
+                </p>
+                <p style="margin-top:8px; font-size:0.95rem; color:#777;">
+                    <i class="fas fa-globe"></i> Los Angeles, CA, USA
+                </p>
+            </div>
+        </div>
+    </section>
 
+    <!-- ─── ACHIEVEMENTS & RECOGNITIONS ─── -->
+    <section id="achievements" class="fade-in">
+        <h2>Achievements & Recognitions</h2>
+        <div class="card-grid">
 
-<!-- ABOUT -->
-<section id="about" class="fade-in">
-<div class="about-container">
-<img src="Myphoto.jpg">
-<div class="about-text">
-<h1>Hello, I'm Mariel Bolda Royo!</h1>
-<p><b>Aspiring Web Developer | IT Student | Project Leader</b></p>
-<p>Driven IT student passionate about building real-world systems and solving community problems through technology.</p>
+            <div class="card">
+                <h3>🏆 LIKHAMON Ideathon 2024</h3>
+                <div class="sub">Champion</div>
+                <p>Led the winning team behind <b>SakaMart</b>, a web app connecting farmers and buyers to reduce agricultural waste.</p>
+            </div>
 
-<!-- ─── FREELANCE NOTE - MAROON BACKGROUND, PINALIIT ─── -->
-<div class="freelance-note">
-    <span class="note-label">📌 Open for Freelance Work</span>
-    I am currently accepting freelance projects. Whether you need a <strong>website</strong>, a <strong>custom system</strong>, help with <strong>thesis formatting</strong>, or <strong>MS Office assistance</strong>, I'm here to help. I offer <strong>affordable rates</strong> and deliver <strong>quality work</strong> tailored to your needs. Feel free to reach out for a free quotation — let's bring your ideas to life!
-</div>
+            <div class="card">
+                <h3>🥇 Game Development 2025</h3>
+                <div class="sub">1st Place</div>
+                <p><b>ALAGA's Quest</b> — Documenter & Presenter of the winning educational game.</p>
+            </div>
 
-<div class="social-links">
-<a<div class="social-links"> 
-    <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
-    <a href="https://www.instagram.com/marielaaaa22?igsh=MWs1aXh6ZjI3ZmoyYg==" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://ph.jobstreet.com/profiles/jxSCgf1wHj" title="JobStreet"><i class="fas fa-briefcase"></i></a> 
-    <a href="https://www.tiktok.com/@royomarielaaaa?_r=1&_t=ZS-92DUEp1Hzgv" title="TikTok"><i class="fab fa-tiktok"></i></a>
-</div>
-</div>
-</div>
-</div>
-</section>
+            <div class="card">
+                <h3>🎤 INSPIRE 2025</h3>
+                <div class="sub">3rd Place Overall</div>
+                <p>Recognized for outstanding presentation and performance at the INSPIRE 2025 competition.</p>
+            </div>
 
-<!-- SKILLS (CARDS) -->
-<section id="skills" class="fade-in">
-<h2>Skills</h2>
-<div class="card-grid">
+            <div class="card">
+                <h3>🎤 INSPIRE 2025</h3>
+                <div class="sub">3rd Best Presenter</div>
+                <p>Awarded for exceptional presentation skills at INSPIRE 2025.</p>
+            </div>
 
-<div class="card">
-<h3>Technical Skills</h3>
-<ul>
-<li>PHP, MySQL / MariaDB</li>
-<li>HTML5, CSS3, JavaScript</li>
-<li>Bootstrap</li>
-<li>DOMPDF</li>
-<li>Git & GitHub</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>🎤 INSPIRE 2025</h3>
+                <div class="sub">3rd Best IEC</div>
+                <p>Recognized for outstanding Information, Education, and Communication material.</p>
+            </div>
 
-<div class="card">
-<h3>Backend & Tools</h3>
-<ul>
-<li>Validation & Authentication</li>
-<li>Debugging & Error Handling</li>
-<li>XAMPP / Apache</li>
-<li>phpMyAdmin</li>
-<li>PHPMailer</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>🥈 LIKHAMON Ideathon 2025</h3>
+                <div class="sub">Best Pitch Deck</div>
+                <p>Led storytelling and pitch design for <b>ZONA AI</b>, an AI platform for disaster risk analysis.</p>
+            </div>
 
-<div class="card">
-<h3>Deployment</h3>
-<ul>
-<li>Hostinger & InfinityFree</li>
-<li>cPanel, FTP</li>
-<li>Domain & DNS Setup</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>🏅 Best Output Presenter</h3>
+                <div class="sub">The Digital Era Symposium</div>
+                <p>Awarded for outstanding presentation at the Digital Era Symposium.</p>
+            </div>
 
-<div class="card">
-<h3>Soft Skills</h3>
-<ul>
-<li>Leadership</li>
-<li>Teamwork</li>
-<li>Communication</li>
-<li>Attention to Detail</li>
-<li>Problem Solving</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>📜 LIKHAMON PROMAX 2026</h3>
+                <div class="sub">Research Congress</div>
+                <p>Presented research at the LIKHAMON PROMAX Research Congress.</p>
+            </div>
 
-</div>
-</section>
-<!-- CERTIFICATES --> 
-<section id="certificates" class="fade-in"> <h2>E-Certificates</h2> 
-    <div class="certificate-gallery"> 
-        <div class="certificate-card"><img src="rsu.jpg"><p>Cybersecurity Awareness</p></div> 
-        <div class="certificate-card"><img src="python.jpg"><p>Python Programming</p></div> 
-        <div class="certificate-card"><img src="stat.jpg"><p>MS Excel Statistics</p></div> 
-        <div class="certificate-card"><img src="canvaai.jpg"><p>Canva AI for MSMEs</p></div> 
-        <div class="certificate-card"><img src="hoc.jpg"><p>Hour of Code</p></div> <div class="certificate-card">
-            <img src="iot.jpg"><p>IoT in Smart Cities</p></div> 
-        <div class="certificate-card"><img src="kada.jpg"><p>KADAKAMP Skills Webinar</p></div> 
-        <div class="certificate-card"><img src="qubit.jpg"><p>Cybersecurity Journey</p></div> 
-    </div> 
-</section>
-<section id="projects" class="fade-in">
-<h2>Projects</h2>
-<div class="card-grid">
+            <div class="card">
+                <h3>⭐ Best Capstone / Thesis</h3>
+                <div class="sub">Academic Excellence</div>
+                <p>Recognized for outstanding capstone project / thesis work.</p>
+            </div>
 
-<div class="card" onclick="window.open('https://sakamart.great-site.net/index.html','_blank')">
-<h3>SakaMart</h3>
-<span>IT × Agriculture Platform</span>
-<ul>
-<li>Team Leader</li>
-<li>Connects farmers & buyers</li>
-<li>Reduces waste, ensures fair pricing</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>🏅 Most Outstanding Intern</h3>
+                <div class="sub">Internship Recognition</div>
+                <p>Recognized as the Most Outstanding Intern for exceptional performance during OJT.</p>
+            </div>
 
-<div class="card" onclick="window.open('https://academicprospectus.great-site.net/capstone/homepage.php','_blank')">
-<h3>Academic Prospectus System</h3>
-<span>Capstone Project</span>
-<ul>
-<li>Project Manager</li>
-<li>Curriculum tracking & GWA</li>
-<li>Automated reports & dashboards</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>📑 Research Participant Awardee</h3>
+                <div class="sub">Research Recognition</div>
+                <p>Recognized for active participation and contribution in research.</p>
+            </div>
 
-<div class="card" onclick="window.open('https://zonaai.great-site.net/index.php','_blank')">
-<h3>ZONA AI</h3>
-<span>Disaster Risk Platform</span>
-<ul>
-<li>Team Leader</li>
-<li>AI-based hazard analysis</li>
-<li>Early decision support</li>
-</ul>
-</div>
+            <div class="card">
+                <h3>🌟 Service Awardee</h3>
+                <div class="sub">Service Recognition</div>
+                <p>Recognized for dedicated service and contribution to the organization.</p>
+            </div>
 
-<div class="card" onclick="window.open('https://codebuddyph.great-site.net/Codebuddy/index.php','_blank')">
-<h3>CodeBuddyPH</h3>
-<span>Web-based Mini IDE Editor </span>
- <ul>
-    <li>Creator & Developer</li>
-    <li>Live code editor with preview</li>
-    <li>Designed for beginners</li>
-  </ul>
-</div>
-</div>
-</section>
+        </div>
+    </section>
 
+    <!-- ─── LEADERSHIP ─── -->
+    <section id="leadership" class="fade-in">
+        <h2>Leadership Experience</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Class Mayor</h3>
+                <div class="sub">2022 – 2023</div>
+                <p>Represented students and coordinated academic activities.</p>
+            </div>
+            <div class="card">
+                <h3>TECHNO Treasurer</h3>
+                <div class="sub">2023 – 2024</div>
+                <p>Managed organization funds and financial records.</p>
+            </div>
+            <div class="card">
+                <h3>TECHSO 2nd Vice President</h3>
+                <div class="sub">2024 – 2025</div>
+                <p>Supported executive decisions and led student initiatives.</p>
+            </div>
+        </div>
+    </section>
 
-<!-- ACHIEVEMENTS (CARDS) -->
-<section id="achievements" class="fade-in">
-<h2>Achievements</h2>
-<div class="card-grid">
+    <!-- ─── EXPERIENCE ─── -->
+    <section id="experience" class="fade-in">
+        <h2>Work Experience</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>City Government of Makati</h3>
+                <div class="sub">OJT / Web Developer · Jan 2026 – Mar 2026</div>
+                <ul>
+                    <li>Developed and maintained web-based systems for internal government operations.</li>
+                    <li>Applied debugging, validation, and authentication protocols to ensure system security.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>KarZai Corporation</h3>
+                <div class="sub">Production Staff · Jan 2021 – Jan 2022</div>
+                <ul>
+                    <li>Handled office-based documentation and production coordination tasks.</li>
+                    <li>Prepared production reports and monitored KPI compliance.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Vacuumtech Philippines Inc.</h3>
+                <div class="sub">Quality Checker · Jul 2020 – Dec 2020</div>
+                <ul>
+                    <li>Ensured product quality through meticulous inspection and accurate documentation.</li>
+                    <li>Checked thermos and plastic products for dents and defects.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Global Compak Inc.</h3>
+                <div class="sub">Quality Sorter · Aug 2017 – Jun 2020</div>
+                <ul>
+                    <li>Sorted injection-molded items and separated defective products.</li>
+                    <li>Ensured quality standards were met.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Yazaki–Torres Manufacturing Inc.</h3>
+                <div class="sub">Production Operator · Sep 2014 – Jun 2017</div>
+                <ul>
+                    <li>Assembled wire harness components with precision.</li>
+                    <li>Checked alignment and ensured process accuracy.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<h3>🏆 LIKHAMON Ideathon 2024</h3>
-<span>Champion</span>
-<p>Led the winning team behind <b>SakaMart</b>, recognized for innovation and impact.</p>
-</div>
+    <!-- ─── FREELANCE SERVICES ─── -->
+    <section id="freelance" class="fade-in">
+        <h2>🖥️ Freelance Services</h2>
+        <div class="freelance-wrap">
+            <img src="mayeh.jpg" alt="Freelance Services" onerror="this.src='https://via.placeholder.com/480x600/222222/ffffff?text=Freelance+Services'" />
+            <div class="freelance-text">
+                <p><span class="highlight">🔹 Affordable Rates</span> · <span class="highlight">Quality Work</span></p>
+                <p style="margin-top:10px;">
+                    I offer <strong>website development, system development, thesis formatting,</strong>
+                    and <strong>MS Office assistance</strong> — tailored to your needs.
+                </p>
+                <p style="margin-top:8px;">
+                    <i class="fas fa-envelope" style="color:maroon;"></i> <strong>Email:</strong> royomariel14@gmail.com<br />
+                    <i class="fas fa-phone" style="color:maroon;"></i> <strong>Viber / Telegram:</strong> +639660017181<br />
+                    <i class="fab fa-facebook" style="color:maroon;"></i> <strong>Facebook:</strong> Mariel Royo
+                </p>
+                <p style="margin-top:10px;font-size:0.95rem;color:#555;">
+                    <i class="fas fa-check-circle" style="color:maroon;"></i> 50% Down Payment · 50% Upon Completion
+                </p>
+                <p style="margin-top:6px;font-size:0.95rem;color:#555;">
+                    <i class="fas fa-rocket" style="color:maroon;"></i> Free quotation available!
+                </p>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<h3>🥇 Game Development Competition 2025</h3>
-<span>1st Place</span>
-<p><b>ALAGA’s Quest</b> — Documenter & Presenter of the winning educational game.</p>
-</div>
+    <!-- ─── CONTACT ─── -->
+    <section id="contact" class="fade-in">
+        <h2>Contact Me</h2>
+        <p><i class="fas fa-envelope" style="color:maroon;"></i> <b>royomariel14@gmail.com</b></p>
+        <p><i class="fas fa-phone" style="color:maroon;"></i> <b>+639660017181</b></p>
+        <p><i class="fas fa-map-marker-alt" style="color:maroon;"></i> San Fernando, Sto. Tomas, Batangas</p>
+        <p style="margin-top:6px;font-size:0.9rem;color:#555;">
+            <i class="fas fa-globe" style="color:maroon;"></i> <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" target="_blank">marielaaaa22.github.io</a>
+        </p>
+    </section>
 
-<div class="card">
-<h3>🎤 INSPIRE 2025</h3>
-<span>Overall 3rd Place</span>
-<p>Awarded as <b>3rd Best Presenter</b> and <b>3rd Best IEC</b>.</p>
-</div>
+    <!-- ─── SCRIPTS ─── -->
+    <script>
+        // ─── Fade-in Observer ───
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('fade-in');
+            });
+        }, { threshold: .2 });
+        sections.forEach(sec => observer.observe(sec));
 
-<div class="card">
-<h3>🥈 LIKHAMON Ideathon 2025</h3>
-<span>Best Pitch Deck</span>
-<p>Led storytelling and pitch design for <b>ZONA AI</b>.</p>
-</div>
+        // ─── Hamburger ───
+        const burger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
 
-</div>
-</section>
+        // ─── Gallery Data (LAHAT .png) ───
+        const galleryData = {
+            sakamart: {
+                title: 'SakaMart',
+                desc: 'Web app prototype connecting farmers and buyers to reduce agricultural waste and ensure fair pricing. LIKHAMON Ideathon 2024 Champion.',
+                link: 'https://sakamart.great-site.net/index.html',
+                images: ['sakamart1.png', 'sakamart2.png', 'sakamart3.png']
+            },
+            zona: {
+                title: 'ZONA AI',
+                desc: 'AI prototype for disaster risk analysis and hazard mapping, enabling early decision support. LIKHAMON Ideathon 2025 Best Pitch Deck.',
+                link: 'https://zonaai.great-site.net/index.php',
+                images: ['zona1.png', 'zona2.png', 'zona3.png']
+            },
+            alaga: {
+                title: 'ALAGA\'s Quest',
+                desc: 'Educational game built with GDevelop that won 1st place in the Game Development Competition 2025. Documenter & Presenter.',
+                link: '#',
+                images: ['alaga1.png', 'alaga2.png', 'alaga3.png']
+            },
+            prospectus: {
+                title: 'Academic Prospectus System',
+                desc: 'Full system with AI assistant for curriculum tracking, automated grade reporting, GWA computation, and Dean\'s List ranking. Capstone Project.',
+                link: 'https://academicprospectus.great-site.net/capstone/homepage.php',
+                images: ['aps1.png', 'aps2.png', 'aps3.png', 'aps4.png', 'aps5.png']
+            },
+            codebuddy: {
+                title: 'CodeBuddyPH',
+                desc: 'AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.',
+                link: 'https://codebuddyph.great-site.net/Codebuddy/index.php',
+                images: ['cb1.png', 'cb2.png', 'cb3.png']
+            },
+            dacs: {
+                title: 'DACS — Document Administration Control System',
+                desc: 'AI-assisted full system that replaced manual Excel encoding with a digital tracking system for OM‑ICTO Admin Department. (Deployed internally / intranet)',
+                link: '#',
+                images: ['dacs1.png', 'dacs2.png', 'dacs3.png']
+            }
+        };
 
-<!-- LEADERSHIP (CARDS) -->
-<section id="leadership" class="fade-in">
-<h2>Leadership Experience</h2>
-<div class="card-grid">
+        // ─── Open Gallery ───
+        function openGallery(key) {
+            const data = galleryData[key];
+            if (!data) return;
 
-<div class="card">
-<h3>Class Mayor</h3>
-<span>2022 – 2023</span>
-<p>Represented students and coordinated academic activities.</p>
-</div>
+            document.getElementById('galleryTitle').textContent = data.title;
+            document.getElementById('galleryDesc').textContent = data.desc;
+            document.getElementById('galleryVisitBtn').href = data.link;
 
-<div class="card">
-<h3>Treasurer</h3>
-<span>2023 – 2024</span>
-<p>Managed organization funds and financial records.</p>
-</div>
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
 
-<div class="card">
-<h3>2nd Vice President</h3>
-<span>2024 – 2025</span>
-<p>Supported executive decisions and led student initiatives.</p>
-</div>
+            if (data.images && data.images.length > 0) {
+                data.images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = data.title + ' screenshot';
+                    img.onerror = function() {
+                        this.src = 'https://via.placeholder.com/300x180/eee/888?text=No+Screenshot';
+                    };
+                    grid.appendChild(img);
+                });
+            } else {
+                const fallback = document.createElement('div');
+                fallback.className = 'no-img';
+                fallback.textContent = 'No screenshots available yet.';
+                grid.appendChild(fallback);
+            }
 
-<div class="card">
-<h3>TECHSO Officer</h3>
-<span>1st – 3rd Year</span>
-<p>Active officer in the technology student organization.</p>
-</div>
+            document.getElementById('galleryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-</div>
-</section>
+        // ─── Close Gallery ───
+        function closeGallery() {
+            document.getElementById('galleryModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
-<!-- EXPERIENCE (CARDS) -->
-<section id="experience" class="fade-in">
-<h2>Work Experience</h2>
-<div class="card-grid">
+        // ─── Close on backdrop click ───
+        document.getElementById('galleryModal').addEventListener('click', function(e) {
+            if (e.target === this) closeGallery();
+        });
 
-<div class="card">
-<h3>KARZAI Corporation</h3>
-<span>Production Staff (2021–2022)</span>
-<ul>
-<li>Prepared production reports</li>
-<li>Monitored KPI and PPE compliance</li>
-<li>Handled department documentation</li>
-</ul>
-</div>
+        // ─── ESC to close ───
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeGallery();
+        });
 
-<div class="card">
-<h3>Vacuumtech Philippines</h3>
-<span>Quality Checker (2020)</span>
-<ul>
-<li>Inspected thermos & plastic products</li>
-<li>Checked dents and defects</li>
-<li>Recorded inspection results</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Global Compak Inc.</h3>
-<span>Quality Sorter (2017–2020)</span>
-<ul>
-<li>Sorted injection-molded items</li>
-<li>Separated defective products</li>
-<li>Ensured quality standards</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Yazaki–Torres Manufacturing</h3>
-<span>Production Operator (2014–2017)</span>
-<ul>
-<li>Assembled wire harness components</li>
-<li>Checked alignment & quality</li>
-<li>Ensured process accuracy</li>
-</ul>
-</div>
-
-</div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="fade-in">
-<h2>Contact Me</h2>
-<p>Email: <b>royomariel14@gmail.com</b></p>
-<p>Contact no.: <b>+639660017181</b></p>
-</section>
-
-<script>
-const sections=document.querySelectorAll("section");
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting) entry.target.classList.add("fade-in");
-});
-},{threshold:.2});
-sections.forEach(sec=>observer.observe(sec));
-</script>
-<script>
-const projectData={
-prospectus:{
-title:"Academic Prospectus System",
-main:"homepage.png",
-details:[
-"Project Manager",
-"PHP, MySQL, HTML, CSS, JavaScript",
-"Curriculum tracking",
-"GWA computation",
-"Dean’s List ranking",
-"PDF reports"
-],
-thumbs:[
-"homepage.png",
-"dashboard.png",
-"form.png",
-"prospectus.png",
-"download.png",
-"deanslist.png",
-"faculty.png",
-
-]
-},
-sakamart:{
-title:"SakaMart",
-main:"saka_home.png",
-details:[
-"Team Leader",
-"Connects farmers & buyers",
-"Ensures fair pricing"
-],
-thumbs:["saka_home.png"]
-},
-zona:{
-title:"ZONA AI",
-main:"zona_home.png",
-details:[
-"Team Leader",
-"AI-based hazard analysis",
-"Early alerts & decision support"
-],
-thumbs:["zona_home.png"]
-}
-};
-
-function openProject(key){
-const p=projectData[key];
-
-document.getElementById("modalTitle").innerText=p.title;
-document.getElementById("modalMainImg").src=p.main;
-
-const ul=document.getElementById("modalDetails");
-ul.innerHTML="";
-p.details.forEach(d=>{
-let li=document.createElement("li");
-li.textContent=d;
-ul.appendChild(li);
-});
-
-const thumbs=document.getElementById("modalThumbs");
-thumbs.innerHTML="";
-p.thumbs.forEach(img=>{
-let i=document.createElement("img");
-i.src=img;
-i.onclick=()=>document.getElementById("modalMainImg").src=img;
-thumbs.appendChild(i);
-});
-
-document.getElementById("projectModal").style.display="flex";
-}
-
-function closeModal(){
-document.getElementById("projectModal").style.display="none";
-}
-</script>
-<div class="modal" id="projectModal">
-<div class="modal-content">
-<span class="modal-close" onclick="closeModal()">✖</span>
-
-<div class="modal-main-img">
-<img id="modalMainImg" src="">
-</div>
-
-<div class="modal-details">
-<h3 id="modalTitle"></h3>
-<ul id="modalDetails"></ul>
-</div>
-
-<div class="modal-thumbs" id="modalThumbs"></div>
-</div>
-</div>
-<script>
-const burger = document.getElementById("hamburger");
-const navLinks = document.getElementById("navLinks");
-
-burger.addEventListener("click", ()=>{
-  navLinks.classList.toggle("show");
-});
-</script>
+        // ─── Fix broken images ───
+        document.querySelectorAll('.certificate-card img').forEach(img => {
+            img.onerror = function() {
+                this.src = 'https://via.placeholder.com/200x160/eee/888?text=Cert';
+            };
+        });
+    </script>
 
 </body>
 </html>
