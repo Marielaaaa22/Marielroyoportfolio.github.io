@@ -14,8 +14,8 @@
         }
         body {
             font-family: 'Lora', serif;
-            background: linear-gradient(to bottom right, maroon, black, white);
-            color: #fff;
+            background: #ffffff;
+            color: #1a1a1a;
         }
         html {
             scroll-behavior: smooth;
@@ -26,10 +26,10 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: #fff;
+            background: #ffffff;
             padding: 12px 0;
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
         }
         .nav-container {
             display: flex;
@@ -54,6 +54,7 @@
             color: #333;
             font-weight: bold;
             text-decoration: none;
+            transition: .3s;
         }
         .nav-links li a:hover {
             color: maroon;
@@ -69,6 +70,7 @@
             margin-bottom: 25px;
             font-size: 2.2rem;
             letter-spacing: 1px;
+            color: #1a1a1a;
         }
         .fade-in {
             opacity: 0;
@@ -80,6 +82,38 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* ─── SECTION BACKGROUNDS (CLEAN WHITE & LIGHT GRAY) ─── */
+        #about {
+            background: #ffffff;
+        }
+        #skills {
+            background: #f8f9fa;
+        }
+        #certificates {
+            background: #ffffff;
+        }
+        #projects {
+            background: #f8f9fa;
+        }
+        #international {
+            background: #ffffff;
+        }
+        #achievements {
+            background: #f8f9fa;
+        }
+        #leadership {
+            background: #ffffff;
+        }
+        #experience {
+            background: #f8f9fa;
+        }
+        #freelance {
+            background: #ffffff;
+        }
+        #contact {
+            background: #f4f4f4;
         }
 
         /* ─── ABOUT ─── */
@@ -95,7 +129,8 @@
             height: 240px;
             border-radius: 50%;
             object-fit: cover;
-            box-shadow: 0 0 30px maroon;
+            box-shadow: 0 0 30px rgba(128, 0, 0, .15);
+            border: 4px solid maroon;
         }
         .about-text {
             max-width: 650px;
@@ -103,21 +138,23 @@
         }
         .about-text h1 {
             font-size: 2.2rem;
+            color: #1a1a1a;
         }
         .about-text p {
             margin: 8px 0;
             font-size: 1.05rem;
             line-height: 1.6;
+            color: #444;
         }
         .social-links a {
             margin: 0 8px;
             font-size: 26px;
-            color: white;
+            color: #333;
             display: inline-block;
             transition: .3s;
         }
         .social-links a:hover {
-            color: gold;
+            color: maroon;
             transform: scale(1.15);
         }
 
@@ -129,28 +166,30 @@
             margin-top: 30px;
         }
         .card {
-            background: rgba(255, 255, 255, .08);
+            background: #ffffff;
             padding: 22px;
             border-radius: 15px;
             text-align: left;
-            border: 1px solid rgba(255, 255, 255, .2);
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
             transition: .4s;
             cursor: default;
             display: flex;
             flex-direction: column;
+            color: #1a1a1a;
         }
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
-            background: rgba(255, 255, 255, .12);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+            border-color: maroon;
         }
         .card h3 {
-            color: gold;
+            color: maroon;
             margin-bottom: 8px;
         }
         .card .sub {
             font-size: 13px;
-            color: #ccc;
+            color: #777;
             margin-bottom: 8px;
         }
         .card p {
@@ -158,11 +197,13 @@
             margin-top: 4px;
             line-height: 1.5;
             flex: 1;
+            color: #444;
         }
         .card ul {
             margin-top: 10px;
             padding-left: 18px;
             font-size: 15px;
+            color: #444;
         }
         .card ul li {
             margin-bottom: 6px;
@@ -190,20 +231,20 @@
             font-family: inherit;
         }
         .btn-gallery {
-            background: gold;
-            color: #111;
+            background: maroon;
+            color: #fff;
         }
         .btn-gallery:hover {
-            background: #ffd700;
+            background: #a00000;
             transform: scale(1.05);
         }
         .btn-link {
-            background: rgba(255, 255, 255, .15);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, .3);
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
         }
         .btn-link:hover {
-            background: rgba(255, 255, 255, .25);
+            background: #e0e0e0;
             transform: scale(1.05);
         }
 
@@ -215,7 +256,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, .9);
+            background: rgba(0, 0, 0, .85);
             justify-content: center;
             align-items: center;
             z-index: 3000;
@@ -224,7 +265,7 @@
             display: flex;
         }
         .gallery-content {
-            background: #1a1a1a;
+            background: #fff;
             border-radius: 18px;
             max-width: 750px;
             width: 92%;
@@ -232,16 +273,17 @@
             overflow-y: auto;
             padding: 24px 24px 30px;
             position: relative;
-            border: 1px solid rgba(255, 215, 0, .2);
+            border: 1px solid rgba(0, 0, 0, .1);
+            color: #1a1a1a;
         }
         .gallery-close {
             position: sticky;
             top: 0;
             float: right;
             font-size: 26px;
-            color: #fff;
+            color: #333;
             cursor: pointer;
-            background: rgba(0, 0, 0, .6);
+            background: rgba(0, 0, 0, .05);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -249,21 +291,22 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
-            border: 1px solid rgba(255, 255, 255, .1);
+            border: 1px solid #ddd;
             transition: .3s;
         }
         .gallery-close:hover {
             background: maroon;
+            color: #fff;
             transform: rotate(90deg);
         }
         .gallery-title {
-            color: gold;
+            color: maroon;
             font-size: 1.5rem;
             margin-bottom: 6px;
             clear: both;
         }
         .gallery-desc {
-            color: #ccc;
+            color: #555;
             font-size: 0.95rem;
             margin-bottom: 18px;
         }
@@ -277,17 +320,17 @@
             aspect-ratio: 16/10;
             object-fit: cover;
             border-radius: 10px;
-            border: 2px solid transparent;
+            border: 2px solid #e9ecef;
             transition: .3s;
             cursor: pointer;
-            background: #2a2a2a;
+            background: #f8f9fa;
         }
         .gallery-grid img:hover {
-            border-color: gold;
+            border-color: maroon;
             transform: scale(1.03);
         }
         .gallery-grid .no-img {
-            color: #666;
+            color: #999;
             text-align: center;
             padding: 40px 0;
             grid-column: 1 / -1;
@@ -297,8 +340,8 @@
             display: inline-block;
             margin-top: 18px;
             padding: 10px 28px;
-            background: gold;
-            color: #111;
+            background: maroon;
+            color: #fff;
             border-radius: 30px;
             font-weight: 600;
             text-decoration: none;
@@ -306,17 +349,13 @@
             font-size: 15px;
         }
         .gallery-link-btn:hover {
-            background: #ffd700;
+            background: #a00000;
             transform: scale(1.04);
         }
 
         /* ─── CERTIFICATES ─── */
-        #certificates {
-            background: white;
-            color: #333;
-        }
         #certificates h2 {
-            color: #222;
+            color: #1a1a1a;
         }
         .certificate-gallery {
             display: grid;
@@ -325,26 +364,28 @@
             margin-top: 30px;
         }
         .certificate-card {
-            background: #fff8f0;
+            background: #f8f9fa;
             padding: 12px;
             border-radius: 12px;
-            border: 2px solid maroon;
+            border: 2px solid #e9ecef;
             transition: .3s;
             text-align: center;
         }
         .certificate-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px maroon;
+            border-color: maroon;
+            box-shadow: 0 0 20px rgba(128, 0, 0, .08);
         }
         .certificate-card img {
             width: 100%;
             height: 160px;
             object-fit: cover;
             border-radius: 8px;
+            background: #fff;
         }
         .certificate-card p {
             margin-top: 10px;
-            color: maroon;
+            color: #1a1a1a;
             font-weight: bold;
             font-size: 0.95rem;
         }
@@ -360,9 +401,6 @@
         }
 
         /* ─── INTERNATIONAL CLIENT ─── */
-        #international {
-            background: #1a1a1a;
-        }
         .testimonial-wrap {
             display: flex;
             justify-content: center;
@@ -375,34 +413,32 @@
             max-width: 420px;
             width: 100%;
             border-radius: 16px;
-            border: 3px solid gold;
-            box-shadow: 0 0 40px rgba(255, 215, 0, .25);
+            border: 3px solid maroon;
+            box-shadow: 0 0 30px rgba(128, 0, 0, .08);
             transition: .4s;
         }
         .testimonial-wrap img:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 60px rgba(255, 215, 0, .4);
+            box-shadow: 0 0 40px rgba(128, 0, 0, .12);
         }
         .testimonial-text {
             max-width: 480px;
             text-align: left;
             font-size: 1.05rem;
             line-height: 1.7;
+            color: #333;
         }
         .testimonial-text .client-name {
-            color: gold;
+            color: maroon;
             font-weight: bold;
             font-size: 1.2rem;
         }
         .testimonial-text .client-role {
-            color: #ccc;
+            color: #777;
             font-size: 0.95rem;
         }
 
         /* ─── FREELANCE SERVICES ─── */
-        #freelance {
-            background: #0d0d0d;
-        }
         .freelance-wrap {
             display: flex;
             justify-content: center;
@@ -415,58 +451,39 @@
             max-width: 480px;
             width: 100%;
             border-radius: 16px;
-            border: 3px solid #444;
-            box-shadow: 0 0 30px rgba(255, 255, 255, .08);
+            border: 3px solid #e9ecef;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .04);
             transition: .4s;
         }
         .freelance-wrap img:hover {
             transform: scale(1.02);
-            border-color: gold;
-            box-shadow: 0 0 40px rgba(255, 215, 0, .15);
+            border-color: maroon;
+            box-shadow: 0 0 40px rgba(128, 0, 0, .06);
         }
         .freelance-text {
             max-width: 460px;
             text-align: left;
             font-size: 1.05rem;
             line-height: 1.7;
+            color: #333;
         }
         .freelance-text .highlight {
-            color: gold;
+            color: maroon;
             font-weight: bold;
         }
 
         /* ─── CONTACT ─── */
-        #contact {
-            background: #f4f4f4;
-            color: #222;
-        }
         #contact h2 {
-            color: #111;
+            color: #1a1a1a;
         }
         #contact p {
             font-size: 1.1rem;
             margin: 6px 0;
+            color: #333;
         }
         #contact a {
-            color: #222;
+            color: maroon;
             text-decoration: underline;
-        }
-
-        /* ─── SECTION BG COLORS ─── */
-        #skills {
-            background: #1a1a1a;
-        }
-        #projects {
-            background: #222;
-        }
-        #achievements {
-            background: #111;
-        }
-        #leadership {
-            background: #1b1b1b;
-        }
-        #experience {
-            background: #151515;
         }
 
         /* ─── RESPONSIVE ─── */
@@ -486,12 +503,12 @@
                 display: none;
                 flex-direction: column;
                 text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, .06);
                 padding: 10px 0;
             }
             .nav-links li {
                 padding: 12px 0;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid #f0f0f0;
             }
             .nav-links.show {
                 display: flex;
@@ -636,7 +653,7 @@
             <div class="certificate-card"><img src="canvaai.jpg" alt="Canva AI" /><p>Canva AI for MSMEs</p></div>
             <div class="certificate-card"><img src="hoc.jpg" alt="Hour of Code" /><p>Hour of Code</p></div>
             <div class="certificate-card"><img src="kada.jpg" alt="KADAKAMP" /><p>KADAKAMP Skills Webinar</p></div>
-            <div class="certificate-card" style="border-color:gold;">
+            <div class="certificate-card" style="border-color:maroon;">
                 <img src="java_nc3.jpg" alt="NC III Java" onerror="this.src='https://via.placeholder.com/200x160/800000/ffffff?text=Java+NC+III'" />
                 <p>NC III Java Programming <span class="ongoing-badge">Ongoing</span></p>
             </div>
@@ -739,10 +756,10 @@
                 <p><span class="client-name">Chris Cristobal</span><br />
                 <span class="client-role">Pre‑Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
                 <p style="margin-top:12px;">
-                    <i class="fas fa-check-circle" style="color:gold;"></i> 
+                    <i class="fas fa-check-circle" style="color:maroon;"></i> 
                     I developed a professional website for his legal practice, helping showcase his services and connect with clients.
                 </p>
-                <p style="margin-top:8px; font-size:0.95rem; color:#aaa;">
+                <p style="margin-top:8px; font-size:0.95rem; color:#777;">
                     <i class="fas fa-globe"></i> Los Angeles, CA, USA
                 </p>
             </div>
@@ -754,84 +771,72 @@
         <h2>Achievements & Recognitions</h2>
         <div class="card-grid">
 
-            <!-- LIKHAMON Ideathon 2024 -->
             <div class="card">
                 <h3>🏆 LIKHAMON Ideathon 2024</h3>
                 <div class="sub">Champion</div>
                 <p>Led the winning team behind <b>SakaMart</b>, a web app connecting farmers and buyers to reduce agricultural waste.</p>
             </div>
 
-            <!-- Game Development 2025 -->
             <div class="card">
                 <h3>🥇 Game Development 2025</h3>
                 <div class="sub">1st Place</div>
                 <p><b>ALAGA's Quest</b> — Documenter & Presenter of the winning educational game.</p>
             </div>
 
-            <!-- INSPIRE 2025 - Overall -->
             <div class="card">
                 <h3>🎤 INSPIRE 2025</h3>
                 <div class="sub">3rd Place Overall</div>
                 <p>Recognized for outstanding presentation and performance at the INSPIRE 2025 competition.</p>
             </div>
 
-            <!-- INSPIRE 2025 - Best Presenter -->
             <div class="card">
                 <h3>🎤 INSPIRE 2025</h3>
                 <div class="sub">3rd Best Presenter</div>
                 <p>Awarded for exceptional presentation skills at INSPIRE 2025.</p>
             </div>
 
-            <!-- INSPIRE 2025 - Best IEC -->
             <div class="card">
                 <h3>🎤 INSPIRE 2025</h3>
                 <div class="sub">3rd Best IEC</div>
                 <p>Recognized for outstanding Information, Education, and Communication material.</p>
             </div>
 
-            <!-- LIKHAMON Ideathon 2025 -->
             <div class="card">
                 <h3>🥈 LIKHAMON Ideathon 2025</h3>
                 <div class="sub">Best Pitch Deck</div>
                 <p>Led storytelling and pitch design for <b>ZONA AI</b>, an AI platform for disaster risk analysis.</p>
             </div>
 
-            <!-- Best Output Presenter -->
             <div class="card">
                 <h3>🏅 Best Output Presenter</h3>
                 <div class="sub">The Digital Era Symposium</div>
                 <p>Awarded for outstanding presentation at the Digital Era Symposium.</p>
             </div>
 
-            <!-- LIKHAMON PROMAX 2026 -->
             <div class="card">
                 <h3>📜 LIKHAMON PROMAX 2026</h3>
                 <div class="sub">Research Congress</div>
                 <p>Presented research at the LIKHAMON PROMAX Research Congress.</p>
             </div>
 
-            <!-- Best Capstone / Thesis -->
             <div class="card">
                 <h3>⭐ Best Capstone / Thesis</h3>
                 <div class="sub">Academic Excellence</div>
                 <p>Recognized for outstanding capstone project / thesis work.</p>
             </div>
 
-            <!-- Most Outstanding Intern -->
             <div class="card">
                 <h3>🏅 Most Outstanding Intern</h3>
                 <div class="sub">Internship Recognition</div>
                 <p>Recognized as the Most Outstanding Intern for exceptional performance during OJT.</p>
             </div>
 
-            <!-- Research Participant Awardee -->
             <div class="card">
                 <h3>📑 Research Participant Awardee</h3>
                 <div class="sub">Research Recognition</div>
                 <p>Recognized for active participation and contribution in research.</p>
             </div>
 
-            <!-- Service Awardee -->
             <div class="card">
                 <h3>🌟 Service Awardee</h3>
                 <div class="sub">Service Recognition</div>
@@ -927,15 +932,15 @@
                     and <strong>MS Office assistance</strong> — tailored to your needs.
                 </p>
                 <p style="margin-top:8px;">
-                    <i class="fas fa-envelope" style="color:gold;"></i> <strong>Email:</strong> royomariel14@gmail.com<br />
-                    <i class="fas fa-phone" style="color:gold;"></i> <strong>Viber / Telegram:</strong> +639660017181<br />
-                    <i class="fab fa-facebook" style="color:gold;"></i> <strong>Facebook:</strong> Mariel Royo
+                    <i class="fas fa-envelope" style="color:maroon;"></i> <strong>Email:</strong> royomariel14@gmail.com<br />
+                    <i class="fas fa-phone" style="color:maroon;"></i> <strong>Viber / Telegram:</strong> +639660017181<br />
+                    <i class="fab fa-facebook" style="color:maroon;"></i> <strong>Facebook:</strong> Mariel Royo
                 </p>
-                <p style="margin-top:10px;font-size:0.95rem;color:#ccc;">
-                    <i class="fas fa-check-circle" style="color:gold;"></i> 50% Down Payment · 50% Upon Completion
+                <p style="margin-top:10px;font-size:0.95rem;color:#555;">
+                    <i class="fas fa-check-circle" style="color:maroon;"></i> 50% Down Payment · 50% Upon Completion
                 </p>
-                <p style="margin-top:6px;font-size:0.95rem;color:#ccc;">
-                    <i class="fas fa-rocket" style="color:gold;"></i> Free quotation available!
+                <p style="margin-top:6px;font-size:0.95rem;color:#555;">
+                    <i class="fas fa-rocket" style="color:maroon;"></i> Free quotation available!
                 </p>
             </div>
         </div>
@@ -944,11 +949,11 @@
     <!-- ─── CONTACT ─── -->
     <section id="contact" class="fade-in">
         <h2>Contact Me</h2>
-        <p><i class="fas fa-envelope"></i> <b>royomariel14@gmail.com</b></p>
-        <p><i class="fas fa-phone"></i> <b>+639660017181</b></p>
-        <p><i class="fas fa-map-marker-alt"></i> San Fernando, Sto. Tomas, Batangas</p>
+        <p><i class="fas fa-envelope" style="color:maroon;"></i> <b>royomariel14@gmail.com</b></p>
+        <p><i class="fas fa-phone" style="color:maroon;"></i> <b>+639660017181</b></p>
+        <p><i class="fas fa-map-marker-alt" style="color:maroon;"></i> San Fernando, Sto. Tomas, Batangas</p>
         <p style="margin-top:6px;font-size:0.9rem;color:#555;">
-            <i class="fas fa-globe"></i> <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" target="_blank">marielaaaa22.github.io</a>
+            <i class="fas fa-globe" style="color:maroon;"></i> <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" target="_blank">marielaaaa22.github.io</a>
         </p>
     </section>
 
@@ -1028,7 +1033,7 @@
                     img.src = src;
                     img.alt = data.title + ' screenshot';
                     img.onerror = function() {
-                        this.src = 'https://via.placeholder.com/300x180/333/666?text=No+Screenshot';
+                        this.src = 'https://via.placeholder.com/300x180/eee/888?text=No+Screenshot';
                     };
                     grid.appendChild(img);
                 });
@@ -1062,7 +1067,7 @@
         // ─── Fix broken images ───
         document.querySelectorAll('.certificate-card img').forEach(img => {
             img.onerror = function() {
-                this.src = 'https://via.placeholder.com/200x160/800000/ffffff?text=Cert';
+                this.src = 'https://via.placeholder.com/200x160/eee/888?text=Cert';
             };
         });
     </script>
