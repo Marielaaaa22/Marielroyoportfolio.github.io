@@ -124,7 +124,7 @@
         /* ─── CARD GRID ─── */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-top: 30px;
         }
@@ -136,6 +136,8 @@
             border: 1px solid rgba(255, 255, 255, .2);
             transition: .4s;
             cursor: default;
+            display: flex;
+            flex-direction: column;
         }
         .card:hover {
             transform: translateY(-10px) scale(1.02);
@@ -146,9 +148,16 @@
             color: gold;
             margin-bottom: 8px;
         }
-        .card span {
-            font-size: 14px;
+        .card .sub {
+            font-size: 13px;
             color: #ccc;
+            margin-bottom: 8px;
+        }
+        .card p {
+            font-size: 15px;
+            margin-top: 4px;
+            line-height: 1.5;
+            flex: 1;
         }
         .card ul {
             margin-top: 10px;
@@ -158,79 +167,147 @@
         .card ul li {
             margin-bottom: 6px;
         }
-        .card p {
-            font-size: 15px;
-            margin-top: 6px;
-            line-height: 1.5;
+
+        /* ─── PROJECT CARD BUTTONS ─── */
+        .project-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
         }
-        .card.clickable {
+        .project-actions .btn {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: .3s;
+            border: none;
             cursor: pointer;
+            font-family: inherit;
         }
-        .card.clickable:hover {
-            border-color: gold;
+        .btn-gallery {
+            background: gold;
+            color: #111;
+        }
+        .btn-gallery:hover {
+            background: #ffd700;
+            transform: scale(1.05);
+        }
+        .btn-link {
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .3);
+        }
+        .btn-link:hover {
+            background: rgba(255, 255, 255, .25);
+            transform: scale(1.05);
         }
 
-        /* ─── MODAL ─── */
-        .modal {
+        /* ─── GALLERY MODAL ─── */
+        .gallery-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, .85);
+            background: rgba(0, 0, 0, .9);
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 3000;
         }
-        .modal-content {
-            background: #111;
-            padding: 18px;
-            border-radius: 15px;
-            max-width: 600px;
-            width: 85%;
-            position: relative;
+        .gallery-modal.active {
+            display: flex;
+        }
+        .gallery-content {
+            background: #1a1a1a;
+            border-radius: 18px;
+            max-width: 750px;
+            width: 92%;
             max-height: 90vh;
             overflow-y: auto;
+            padding: 24px 24px 30px;
+            position: relative;
+            border: 1px solid rgba(255, 215, 0, .2);
         }
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
+        .gallery-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 26px;
+            color: #fff;
             cursor: pointer;
-            font-size: 22px;
-            color: white;
-        }
-        .modal-main-img img {
-            width: 100%;
-            border-radius: 10px;
-        }
-        .modal-details {
-            margin-top: 15px;
-        }
-        .modal-details ul {
-            padding-left: 20px;
-            margin-top: 8px;
-        }
-        .modal-details ul li {
-            margin-bottom: 4px;
-        }
-        .modal-thumbs {
+            background: rgba(0, 0, 0, .6);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, .1);
+            transition: .3s;
         }
-        .modal-thumbs img {
-            width: 70px;
-            height: 70px;
+        .gallery-close:hover {
+            background: maroon;
+            transform: rotate(90deg);
+        }
+        .gallery-title {
+            color: gold;
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            clear: both;
+        }
+        .gallery-desc {
+            color: #ccc;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+        }
+        .gallery-grid img {
+            width: 100%;
+            aspect-ratio: 16/10;
             object-fit: cover;
-            cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             border: 2px solid transparent;
+            transition: .3s;
+            cursor: pointer;
+            background: #2a2a2a;
         }
-        .modal-thumbs img:hover {
-            border: 2px solid gold;
+        .gallery-grid img:hover {
+            border-color: gold;
+            transform: scale(1.03);
+        }
+        .gallery-grid .no-img {
+            color: #666;
+            text-align: center;
+            padding: 40px 0;
+            grid-column: 1 / -1;
+            font-size: 0.95rem;
+        }
+        .gallery-link-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 28px;
+            background: gold;
+            color: #111;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .3s;
+            font-size: 15px;
+        }
+        .gallery-link-btn:hover {
+            background: #ffd700;
+            transform: scale(1.04);
         }
 
         /* ─── CERTIFICATES ─── */
@@ -269,6 +346,7 @@
             margin-top: 10px;
             color: maroon;
             font-weight: bold;
+            font-size: 0.95rem;
         }
         .certificate-card .ongoing-badge {
             display: inline-block;
@@ -441,8 +519,13 @@
             .certificate-gallery {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
-            .modal-content {
-                max-width: 95%;
+            .gallery-content {
+                padding: 16px;
+                width: 96%;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
             }
         }
         @media(min-width:769px) {
@@ -463,7 +546,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
-                <li><a href="#certificates">E-certificates</a></li>
+                <li><a href="#certificates">Certificates</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#international">International</a></li>
                 <li><a href="#achievements">Achievements</a></li>
@@ -480,9 +563,9 @@
         <div class="about-container">
             <img src="Myphoto.jpg" alt="Mariel Royo" />
             <div class="about-text">
-                <h1>Hello, I'm Mariel Bolda Royo!</h1>
-                <p><b>Aspiring Web Developer | IT Student | Project Leader</b></p>
-                <p>Driven IT student passionate about building real-world systems and solving community problems through technology.</p>
+                <h1>Mariel Bolda Royo</h1>
+                <p><b>Web Developer | IT Student | Project Leader</b></p>
+                <p>Entry-level Web Developer skilled in <b>Laravel, PHP, MySQL, HTML, CSS, JavaScript</b>, and responsive design. Experienced in building academic and competition-based web applications and deploying systems through cPanel. Fast learner with strong problem-solving skills, attention to detail, and a positive, team-oriented work attitude.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
@@ -499,38 +582,36 @@
         <h2>Skills</h2>
         <div class="card-grid">
             <div class="card">
-                <h3>Technical Skills</h3>
+                <h3>Languages & Frameworks</h3>
                 <ul>
-                    <li>PHP, MySQL / MariaDB</li>
+                    <li>PHP, Laravel</li>
+                    <li>MySQL / MariaDB</li>
                     <li>HTML5, CSS3, JavaScript</li>
-                    <li>Bootstrap</li>
-                    <li>DOMPDF</li>
-                    <li>Git & GitHub</li>
+                    <li>Bootstrap, DOMPDF</li>
                 </ul>
             </div>
             <div class="card">
-                <h3>Backend & Tools</h3>
+                <h3>Tools & Platforms</h3>
                 <ul>
-                    <li>Validation & Authentication</li>
-                    <li>Debugging & Error Handling</li>
-                    <li>XAMPP / Apache</li>
-                    <li>phpMyAdmin</li>
-                    <li>PHPMailer</li>
+                    <li>Git, GitHub, cPanel</li>
+                    <li>XAMPP, phpMyAdmin</li>
+                    <li>Hostinger, InfinityFree</li>
+                    <li>FTP, Domain & DNS Setup</li>
                 </ul>
             </div>
             <div class="card">
-                <h3>Deployment</h3>
+                <h3>Additional</h3>
                 <ul>
-                    <li>Hostinger & InfinityFree</li>
-                    <li>cPanel, FTP</li>
-                    <li>Domain & DNS Setup</li>
+                    <li>Technical Documentation</li>
+                    <li>MS Office (Word, Excel, PPT)</li>
+                    <li>Canva</li>
+                    <li>Basic Python, Java, C++</li>
                 </ul>
             </div>
             <div class="card">
                 <h3>Soft Skills</h3>
                 <ul>
-                    <li>Leadership</li>
-                    <li>Teamwork</li>
+                    <li>Leadership & Teamwork</li>
                     <li>Communication</li>
                     <li>Attention to Detail</li>
                     <li>Problem Solving</li>
@@ -543,17 +624,16 @@
     <section id="certificates" class="fade-in">
         <h2>E-Certificates</h2>
         <div class="certificate-gallery">
-            <div class="certificate-card"><img src="rsu.jpg" alt="Cybersecurity" /><p>Cybersecurity Awareness</p></div>
-            <div class="certificate-card"><img src="python.jpg" alt="Python" /><p>Python Programming</p></div>
+            <div class="certificate-card"><img src="rsu.jpg" alt="Cybersecurity" /><p>Data Privacy & Cybersecurity (RA 10173)</p></div>
+            <div class="certificate-card"><img src="python.jpg" alt="Python" /><p>Fundamentals of Python Programming</p></div>
+            <div class="certificate-card"><img src="iot.jpg" alt="IoT" /><p>IoT in Smart Cities</p></div>
+            <div class="certificate-card"><img src="qubit.jpg" alt="Hacker's Journey" /><p>The Hacker's Journey: Cybersecurity</p></div>
             <div class="certificate-card"><img src="stat.jpg" alt="Excel" /><p>MS Excel Statistics</p></div>
             <div class="certificate-card"><img src="canvaai.jpg" alt="Canva AI" /><p>Canva AI for MSMEs</p></div>
             <div class="certificate-card"><img src="hoc.jpg" alt="Hour of Code" /><p>Hour of Code</p></div>
-            <div class="certificate-card"><img src="iot.jpg" alt="IoT" /><p>IoT in Smart Cities</p></div>
             <div class="certificate-card"><img src="kada.jpg" alt="KADAKAMP" /><p>KADAKAMP Skills Webinar</p></div>
-            <div class="certificate-card"><img src="qubit.jpg" alt="Qubit" /><p>Cybersecurity Journey</p></div>
-            <!-- NC III Java Programming (Ongoing) -->
             <div class="certificate-card" style="border-color:gold;">
-                <img src="java_nc3.jpg" alt="NC III Java Programming" onerror="this.src='https://via.placeholder.com/200x160/800000/ffffff?text=Java+NC+III'" />
+                <img src="java_nc3.jpg" alt="NC III Java" onerror="this.src='https://via.placeholder.com/200x160/800000/ffffff?text=Java+NC+III'" />
                 <p>NC III Java Programming <span class="ongoing-badge">Ongoing</span></p>
             </div>
         </div>
@@ -564,69 +644,92 @@
         <h2>Projects</h2>
         <div class="card-grid">
 
-            <!-- SakaMart -->
-            <div class="card clickable" onclick="window.open('https://sakamart.great-site.net/index.html','_blank')">
+            <!-- SAKAMART -->
+            <div class="card">
                 <h3>SakaMart</h3>
-                <span>IT × Agriculture Platform</span>
-                <ul>
-                    <li>Team Leader</li>
-                    <li>Connects farmers & buyers</li>
-                    <li>Reduces waste, ensures fair pricing</li>
-                </ul>
-            </div>
-
-            <!-- Academic Prospectus -->
-            <div class="card clickable" onclick="window.open('https://academicprospectus.great-site.net/capstone/homepage.php','_blank')">
-                <h3>Academic Prospectus System</h3>
-                <span>Capstone Project</span>
-                <ul>
-                    <li>Project Manager</li>
-                    <li>Curriculum tracking & GWA</li>
-                    <li>Automated reports & dashboards</li>
-                </ul>
+                <div class="sub">🏆 LIKHAMON Ideathon 2024 Champion · Team Leader</div>
+                <p>Web app connecting farmers and buyers to reduce agricultural waste and ensure fair pricing.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('sakamart')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://sakamart.great-site.net/index.html" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
             </div>
 
             <!-- ZONA AI -->
-            <div class="card clickable" onclick="window.open('https://zonaai.great-site.net/index.php','_blank')">
+            <div class="card">
                 <h3>ZONA AI</h3>
-                <span>Disaster Risk Platform</span>
-                <ul>
-                    <li>Team Leader</li>
-                    <li>AI-based hazard analysis</li>
-                    <li>Early decision support</li>
-                </ul>
+                <div class="sub">🥈 LIKHAMON Ideathon 2025 Best Pitch Deck · Team Leader</div>
+                <p>AI platform for disaster risk analysis and hazard mapping, enabling early decision support.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('zona')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://zonaai.great-site.net/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
+            </div>
+
+            <!-- ALAGA's Quest -->
+            <div class="card">
+                <h3>ALAGA's Quest</h3>
+                <div class="sub">🥇 Game Development 2025 1st Place · Documenter & Presenter</div>
+                <p>Educational game that won 1st place in the Game Development Competition 2025.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('alaga')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="#" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
+            </div>
+
+            <!-- Academic Prospectus System -->
+            <div class="card">
+                <h3>Academic Prospectus System</h3>
+                <div class="sub">Capstone Project · Project Manager</div>
+                <p>Curriculum tracking and automated grade reporting system with GWA computation and Dean's List ranking.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('prospectus')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://academicprospectus.great-site.net/capstone/homepage.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
             </div>
 
             <!-- CodeBuddyPH -->
-            <div class="card clickable" onclick="window.open('https://codebuddyph.great-site.net/Codebuddy/index.php','_blank')">
+            <div class="card">
                 <h3>CodeBuddyPH</h3>
-                <span>Web-based Mini IDE Editor</span>
-                <ul>
-                    <li>Creator & Developer</li>
-                    <li>Live code editor with preview</li>
-                    <li>Designed for beginners</li>
-                </ul>
+                <div class="sub">Web-based IDE Editor · Developer</div>
+                <p>Live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('codebuddy')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="https://codebuddyph.great-site.net/Codebuddy/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
             </div>
 
-            <!-- DACS (Document Administration Control System) -->
-            <div class="card clickable" onclick="openProject('dacs')">
-                <h3>📄 DACS</h3>
-                <span>Document Administration Control System</span>
-                <ul>
-                    <li>Developed for OM‑ICTO Admin Department</li>
-                    <li>Digitized Excel-based processes</li>
-                    <li>System testing & troubleshooting</li>
-                </ul>
+            <!-- DACS -->
+            <div class="card">
+                <h3>DACS</h3>
+                <div class="sub">Document Administration Control System</div>
+                <p>Replaced manual Excel encoding with a digital tracking system for OM‑ICTO Admin Department.</p>
+                <div class="project-actions">
+                    <button class="btn btn-gallery" onclick="openGallery('dacs')"><i class="fas fa-images"></i> Gallery</button>
+                    <a href="#" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+                </div>
             </div>
 
         </div>
     </section>
 
+    <!-- ─── GALLERY MODAL ─── -->
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-content">
+            <div class="gallery-close" onclick="closeGallery()">✖</div>
+            <h3 class="gallery-title" id="galleryTitle">Project</h3>
+            <p class="gallery-desc" id="galleryDesc">Description</p>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images injected by JS -->
+            </div>
+            <a href="#" target="_blank" class="gallery-link-btn" id="galleryVisitBtn"><i class="fas fa-external-link-alt"></i> Visit Live Site</a>
+        </div>
+    </div>
+
     <!-- ─── INTERNATIONAL CLIENT ─── -->
     <section id="international" class="fade-in">
         <h2>🌍 International Client</h2>
         <div class="testimonial-wrap">
-            <!-- Using chris.jpg with description in English -->
             <img src="chris.jpg" alt="Client: Chris Cristobal" />
             <div class="testimonial-text">
                 <p><span class="client-name">Chris Cristobal</span><br />
@@ -644,27 +747,42 @@
 
     <!-- ─── ACHIEVEMENTS ─── -->
     <section id="achievements" class="fade-in">
-        <h2>Achievements</h2>
+        <h2>Achievements & Recognitions</h2>
         <div class="card-grid">
             <div class="card">
                 <h3>🏆 LIKHAMON Ideathon 2024</h3>
-                <span>Champion</span>
-                <p>Led the winning team behind <b>SakaMart</b>, recognized for innovation and impact.</p>
+                <span class="sub">Champion</span>
+                <p>Led the winning team behind <b>SakaMart</b>, a web app connecting farmers and buyers to reduce agricultural waste.</p>
             </div>
             <div class="card">
-                <h3>🥇 Game Development Competition 2025</h3>
-                <span>1st Place</span>
-                <p><b>ALAGA’s Quest</b> — Documenter & Presenter of the winning educational game.</p>
+                <h3>🥇 Game Development 2025</h3>
+                <span class="sub">1st Place</span>
+                <p><b>ALAGA's Quest</b> — Documenter & Presenter of the winning educational game.</p>
             </div>
             <div class="card">
                 <h3>🎤 INSPIRE 2025</h3>
-                <span>Overall 3rd Place</span>
-                <p>Awarded as <b>3rd Best Presenter</b> and <b>3rd Best IEC</b>.</p>
+                <span class="sub">3rd Place Overall · 3rd Best Presenter · 3rd Best IEC</span>
+                <p>Recognized for outstanding presentation and IEC material.</p>
             </div>
             <div class="card">
                 <h3>🥈 LIKHAMON Ideathon 2025</h3>
-                <span>Best Pitch Deck</span>
-                <p>Led storytelling and pitch design for <b>ZONA AI</b>.</p>
+                <span class="sub">Best Pitch Deck</span>
+                <p>Led storytelling and pitch design for <b>ZONA AI</b>, an AI platform for disaster risk analysis.</p>
+            </div>
+            <div class="card">
+                <h3>🏅 Best Output Presenter</h3>
+                <span class="sub">The Digital Era Symposium</span>
+                <p>Awarded for outstanding presentation at the Digital Era Symposium.</p>
+            </div>
+            <div class="card">
+                <h3>📜 LIKHAMON PROMAX 2026</h3>
+                <span class="sub">Research Congress</span>
+                <p>Presented research at the LIKHAMON PROMAX Research Congress.</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Best Capstone / Thesis</h3>
+                <span class="sub">Most Outstanding Intern · Research Participant · Service Awardee</span>
+                <p>Multiple recognitions for academic excellence and service.</p>
             </div>
         </div>
     </section>
@@ -675,22 +793,22 @@
         <div class="card-grid">
             <div class="card">
                 <h3>Class Mayor</h3>
-                <span>2022 – 2023</span>
+                <span class="sub">2022 – 2023</span>
                 <p>Represented students and coordinated academic activities.</p>
             </div>
             <div class="card">
                 <h3>Treasurer</h3>
-                <span>2023 – 2024</span>
+                <span class="sub">2023 – 2024</span>
                 <p>Managed organization funds and financial records.</p>
             </div>
             <div class="card">
                 <h3>2nd Vice President</h3>
-                <span>2024 – 2025</span>
+                <span class="sub">2024 – 2025</span>
                 <p>Supported executive decisions and led student initiatives.</p>
             </div>
             <div class="card">
                 <h3>TECHSO Officer</h3>
-                <span>1st – 3rd Year</span>
+                <span class="sub">1st – 3rd Year</span>
                 <p>Active officer in the technology student organization.</p>
             </div>
         </div>
@@ -701,39 +819,43 @@
         <h2>Work Experience</h2>
         <div class="card-grid">
             <div class="card">
-                <h3>KARZAI Corporation</h3>
-                <span>Production Staff (2021–2022)</span>
+                <h3>City Government of Makati</h3>
+                <span class="sub">OJT / Web Developer · Jan 2026 – Mar 2026</span>
                 <ul>
-                    <li>Prepared production reports</li>
-                    <li>Monitored KPI and PPE compliance</li>
-                    <li>Handled department documentation</li>
+                    <li>Developed and maintained web-based systems for internal government operations.</li>
+                    <li>Applied debugging, validation, and authentication protocols to ensure system security.</li>
                 </ul>
             </div>
             <div class="card">
-                <h3>Vacuumtech Philippines</h3>
-                <span>Quality Checker (2020)</span>
+                <h3>KarZai Corporation</h3>
+                <span class="sub">Production Staff · Jan 2021 – Jan 2022</span>
                 <ul>
-                    <li>Inspected thermos & plastic products</li>
-                    <li>Checked dents and defects</li>
-                    <li>Recorded inspection results</li>
+                    <li>Handled office-based documentation and production coordination tasks.</li>
+                    <li>Prepared production reports and monitored KPI compliance.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Vacuumtech Philippines Inc.</h3>
+                <span class="sub">Quality Checker · Jul 2020 – Dec 2020</span>
+                <ul>
+                    <li>Ensured product quality through meticulous inspection and accurate documentation.</li>
+                    <li>Checked thermos and plastic products for dents and defects.</li>
                 </ul>
             </div>
             <div class="card">
                 <h3>Global Compak Inc.</h3>
-                <span>Quality Sorter (2017–2020)</span>
+                <span class="sub">Quality Sorter · Aug 2017 – Jun 2020</span>
                 <ul>
-                    <li>Sorted injection-molded items</li>
-                    <li>Separated defective products</li>
-                    <li>Ensured quality standards</li>
+                    <li>Sorted injection-molded items and separated defective products.</li>
+                    <li>Ensured quality standards were met.</li>
                 </ul>
             </div>
             <div class="card">
-                <h3>Yazaki–Torres Manufacturing</h3>
-                <span>Production Operator (2014–2017)</span>
+                <h3>Yazaki–Torres Manufacturing Inc.</h3>
+                <span class="sub">Production Operator · Sep 2014 – Jun 2017</span>
                 <ul>
-                    <li>Assembled wire harness components</li>
-                    <li>Checked alignment & quality</li>
-                    <li>Ensured process accuracy</li>
+                    <li>Assembled wire harness components with precision.</li>
+                    <li>Checked alignment and ensured process accuracy.</li>
                 </ul>
             </div>
         </div>
@@ -770,25 +892,11 @@
         <h2>Contact Me</h2>
         <p><i class="fas fa-envelope"></i> <b>royomariel14@gmail.com</b></p>
         <p><i class="fas fa-phone"></i> <b>+639660017181</b></p>
-        <p style="margin-top:10px;font-size:0.9rem;color:#555;">
-            <i class="fas fa-map-marker-alt"></i> Los Angeles, CA · Remote / On-site
+        <p><i class="fas fa-map-marker-alt"></i> San Fernando, Sto. Tomas, Batangas</p>
+        <p style="margin-top:6px;font-size:0.9rem;color:#555;">
+            <i class="fas fa-globe"></i> <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" target="_blank" style="color:#222;text-decoration:underline;">marielaaaa22.github.io</a>
         </p>
     </section>
-
-    <!-- ─── MODAL ─── -->
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">✖</span>
-            <div class="modal-main-img">
-                <img id="modalMainImg" src="" alt="Project preview" />
-            </div>
-            <div class="modal-details">
-                <h3 id="modalTitle" style="color:gold;"></h3>
-                <ul id="modalDetails"></ul>
-            </div>
-            <div class="modal-thumbs" id="modalThumbs"></div>
-        </div>
-    </div>
 
     <!-- ─── SCRIPTS ─── -->
     <script>
@@ -808,106 +916,96 @@
             navLinks.classList.toggle('show');
         });
 
-        // ─── Project Data ───
-        const projectData = {
-            prospectus: {
-                title: 'Academic Prospectus System',
-                main: 'homepage.png',
-                details: [
-                    'Project Manager',
-                    'PHP, MySQL, HTML, CSS, JavaScript',
-                    'Curriculum tracking',
-                    'GWA computation',
-                    'Dean’s List ranking',
-                    'PDF reports'
-                ],
-                thumbs: ['homepage.png', 'dashboard.png', 'form.png', 'prospectus.png', 'download.png', 'deanslist.png',
-                    'faculty.png'
-                ]
-            },
+        // ─── Gallery Data ───
+        const galleryData = {
             sakamart: {
                 title: 'SakaMart',
-                main: 'saka_home.png',
-                details: [
-                    'Team Leader',
-                    'Connects farmers & buyers',
-                    'Ensures fair pricing'
-                ],
-                thumbs: ['saka_home.png']
+                desc: 'Web app connecting farmers and buyers to reduce agricultural waste and ensure fair pricing. LIKHAMON Ideathon 2024 Champion.',
+                link: 'https://sakamart.great-site.net/index.html',
+                images: ['saka_home.png', 'saka_dashboard.png', 'saka_products.png']
             },
             zona: {
                 title: 'ZONA AI',
-                main: 'zona_home.png',
-                details: [
-                    'Team Leader',
-                    'AI-based hazard analysis',
-                    'Early alerts & decision support'
-                ],
-                thumbs: ['zona_home.png']
+                desc: 'AI platform for disaster risk analysis and hazard mapping, enabling early decision support. LIKHAMON Ideathon 2025 Best Pitch Deck.',
+                link: 'https://zonaai.great-site.net/index.php',
+                images: ['zona_home.png', 'zona_map.png', 'zona_alerts.png']
+            },
+            alaga: {
+                title: 'ALAGA\'s Quest',
+                desc: 'Educational game that won 1st place in the Game Development Competition 2025. Documenter & Presenter.',
+                link: '#',
+                images: ['alaga_1.png', 'alaga_2.png', 'alaga_3.png']
+            },
+            prospectus: {
+                title: 'Academic Prospectus System',
+                desc: 'Curriculum tracking and automated grade reporting system with GWA computation and Dean\'s List ranking. Capstone Project.',
+                link: 'https://academicprospectus.great-site.net/capstone/homepage.php',
+                images: ['homepage.png', 'dashboard.png', 'form.png', 'prospectus.png', 'download.png', 'deanslist.png']
+            },
+            codebuddy: {
+                title: 'CodeBuddyPH',
+                desc: 'Live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.',
+                link: 'https://codebuddyph.great-site.net/Codebuddy/index.php',
+                images: ['codebuddy_1.png', 'codebuddy_2.png', 'codebuddy_3.png']
             },
             dacs: {
                 title: 'DACS — Document Administration Control System',
-                main: 'dacs_dashboard.png',
-                details: [
-                    'Developed for OM‑ICTO Admin Department',
-                    'Digitized manual Excel-based processes',
-                    'Organized and managed office files & records',
-                    'Performed system testing & basic troubleshooting',
-                    'Completed tasks assigned by supervisors efficiently'
-                ],
-                thumbs: ['dacs_dashboard.png', 'dacs_tracking.png', 'dacs_reports.png']
+                desc: 'Replaced manual Excel encoding with a digital tracking system for OM‑ICTO Admin Department. Developed for internal government operations.',
+                link: '#',
+                images: ['dacs_dashboard.png', 'dacs_tracking.png', 'dacs_reports.png']
             }
         };
 
-        function openProject(key) {
-            const p = projectData[key];
-            if (!p) return;
+        // ─── Open Gallery ───
+        function openGallery(key) {
+            const data = galleryData[key];
+            if (!data) return;
 
-            document.getElementById('modalTitle').innerText = p.title;
-            document.getElementById('modalMainImg').src = p.main || 'https://via.placeholder.com/600x400/333/fff?text=No+Image';
+            document.getElementById('galleryTitle').textContent = data.title;
+            document.getElementById('galleryDesc').textContent = data.desc;
+            document.getElementById('galleryVisitBtn').href = data.link;
 
-            const ul = document.getElementById('modalDetails');
-            ul.innerHTML = '';
-            p.details.forEach(d => {
-                const li = document.createElement('li');
-                li.textContent = d;
-                ul.appendChild(li);
-            });
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
 
-            const thumbs = document.getElementById('modalThumbs');
-            thumbs.innerHTML = '';
-            if (p.thumbs && p.thumbs.length) {
-                p.thumbs.forEach(img => {
-                    const i = document.createElement('img');
-                    i.src = img;
-                    i.alt = 'thumbnail';
-                    i.onclick = () => document.getElementById('modalMainImg').src = img;
-                    thumbs.appendChild(i);
+            if (data.images && data.images.length > 0) {
+                data.images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = data.title + ' screenshot';
+                    img.onerror = function() {
+                        this.src = 'https://via.placeholder.com/300x180/333/666?text=No+Screenshot';
+                    };
+                    grid.appendChild(img);
                 });
             } else {
-                const i = document.createElement('img');
-                i.src = p.main || 'https://via.placeholder.com/70x70/333/fff?text=+';
-                i.alt = 'thumbnail';
-                i.onclick = () => document.getElementById('modalMainImg').src = i.src;
-                thumbs.appendChild(i);
+                const fallback = document.createElement('div');
+                fallback.className = 'no-img';
+                fallback.textContent = 'No screenshots available yet.';
+                grid.appendChild(fallback);
             }
 
-            document.getElementById('projectModal').style.display = 'flex';
+            document.getElementById('galleryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            document.getElementById('projectModal').style.display = 'none';
+        // ─── Close Gallery ───
+        function closeGallery() {
+            document.getElementById('galleryModal').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        document.getElementById('projectModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
+        // ─── Close on backdrop click ───
+        document.getElementById('galleryModal').addEventListener('click', function(e) {
+            if (e.target === this) closeGallery();
         });
 
+        // ─── ESC to close ───
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') closeGallery();
         });
 
-        // ─── Fix broken images in certificate gallery ───
+        // ─── Fix broken images ───
         document.querySelectorAll('.certificate-card img').forEach(img => {
             img.onerror = function() {
                 this.src = 'https://via.placeholder.com/200x160/800000/ffffff?text=Cert';
