@@ -146,6 +146,19 @@
             line-height: 1.6;
             color: #444;
         }
+        .about-text .freelance-note {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border-left: 4px solid maroon;
+            margin-top: 14px;
+            font-size: 0.98rem;
+            color: #333;
+            line-height: 1.7;
+        }
+        .about-text .freelance-note strong {
+            color: maroon;
+        }
         .social-links a {
             margin: 0 8px;
             font-size: 26px;
@@ -586,7 +599,14 @@
             <div class="about-text">
                 <h1>Mariel Bolda Royo</h1>
                 <p><b>Web Developer | Project Leader</b></p>
-                <p>Entry-level Web Developer skilled in <b>Basic Laravel, PHP, MySQL, HTML, CSS, JavaScript</b>, and responsive design. Experienced in building academic and competition-based web applications and deploying systems through cPanel. Fast learner with strong problem-solving skills, attention to detail, and a positive, team-oriented work attitude.</p>
+                <p>Entry-level Web Developer skilled in <b>Basic Laravel, PHP, MySQL, HTML, CSS, JavaScript</b>, and responsive design. Experienced in building academic and competition-based web applications and deploying systems through panel. Fast learner with strong problem-solving skills, attention to detail, and a positive, team-oriented work attitude.</p>
+
+                <!-- ─── FREELANCE NOTE ─── -->
+                <div class="freelance-note">
+                    <strong>📌 Open for Freelance Work</strong><br />
+                    I am currently accepting freelance projects. Whether you need a <strong>website</strong>, a <strong>custom system</strong>, help with <strong>thesis formatting</strong>, or <strong>MS Office assistance</strong>, I'm here to help. I offer <strong>affordable rates</strong> and deliver <strong>quality work</strong> tailored to your needs. Feel free to reach out for a free quotation — let's bring your ideas to life!
+                </div>
+
                 <div class="social-links">
                     <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
@@ -660,7 +680,7 @@
         </div>
     </section>
 
-    <!-- ─── PROJECTS (Visit button removed from ALAGA's Quest and DACS) ─── -->
+    <!-- ─── PROJECTS ─── -->
     <section id="projects" class="fade-in">
         <h2>Projects</h2>
         <div class="card-grid">
@@ -687,14 +707,13 @@
                 </div>
             </div>
 
-            <!-- ALAGA's Quest (Visit button removed) -->
+            <!-- ALAGA's Quest -->
             <div class="card">
                 <h3>ALAGA's Quest</h3>
                 <div class="sub">🥇 Game Development 2025 1st Place · Documenter & Presenter</div>
                 <p>Educational game built with <strong>GDevelop</strong> that won 1st place in the Game Development Competition 2025.</p>
                 <div class="project-actions">
                     <button class="btn btn-gallery" onclick="openGallery('alaga')"><i class="fas fa-images"></i> Gallery</button>
-                    <!-- Visit button removed as requested -->
                 </div>
             </div>
 
@@ -720,14 +739,13 @@
                 </div>
             </div>
 
-            <!-- DACS (Visit button removed) -->
+            <!-- DACS -->
             <div class="card">
                 <h3>DACS</h3>
                 <div class="sub">Document Administration Control System</div>
                 <p><strong>AI-assisted full system</strong> that replaced manual Excel encoding with a digital tracking system for OM‑ICTO Admin Department. <em>(Deployed internally / intranet)</em></p>
                 <div class="project-actions">
                     <button class="btn btn-gallery" onclick="openGallery('dacs')"><i class="fas fa-images"></i> Gallery</button>
-                    <!-- Visit button removed as requested -->
                 </div>
             </div>
 
@@ -970,7 +988,7 @@
             navLinks.classList.toggle('show');
         });
 
-        // ─── Gallery Data (LAHAT .png) ───
+        // ─── Gallery Data ───
         const galleryData = {
             sakamart: {
                 title: 'SakaMart',
