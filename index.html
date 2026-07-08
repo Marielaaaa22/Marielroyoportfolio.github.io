@@ -311,16 +311,14 @@
             font-size: 1.05rem;
             line-height: 1.7;
         }
-        .testimonial-text i {
-            color: gold;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            display: block;
-        }
         .testimonial-text .client-name {
             color: gold;
             font-weight: bold;
             font-size: 1.2rem;
+        }
+        .testimonial-text .client-role {
+            color: #ccc;
+            font-size: 0.95rem;
         }
 
         /* ─── FREELANCE SERVICES ─── */
@@ -553,7 +551,7 @@
             <div class="certificate-card"><img src="iot.jpg" alt="IoT" /><p>IoT in Smart Cities</p></div>
             <div class="certificate-card"><img src="kada.jpg" alt="KADAKAMP" /><p>KADAKAMP Skills Webinar</p></div>
             <div class="certificate-card"><img src="qubit.jpg" alt="Qubit" /><p>Cybersecurity Journey</p></div>
-            <!-- NEW: NC III Java Programming (Ongoing) -->
+            <!-- NC III Java Programming (Ongoing) -->
             <div class="certificate-card" style="border-color:gold;">
                 <img src="java_nc3.jpg" alt="NC III Java Programming" onerror="this.src='https://via.placeholder.com/200x160/800000/ffffff?text=Java+NC+III'" />
                 <p>NC III Java Programming <span class="ongoing-badge">Ongoing</span></p>
@@ -610,7 +608,7 @@
                 </ul>
             </div>
 
-            <!-- ★ NEW: DACS (Document Administration Control System) -->
+            <!-- DACS (Document Administration Control System) -->
             <div class="card clickable" onclick="openProject('dacs')">
                 <h3>📄 DACS</h3>
                 <span>Document Administration Control System</span>
@@ -628,14 +626,18 @@
     <section id="international" class="fade-in">
         <h2>🌍 International Client</h2>
         <div class="testimonial-wrap">
-            <img src="730266076_1202383888658014_9107307056284328170_n.jpg" alt="Client Testimonial" />
+            <!-- Gumamit ng chris.jpg at maikling paglalarawan -->
+            <img src="chris.jpg" alt="Client: Chris Cristobal" />
             <div class="testimonial-text">
-                <i class="fas fa-quote-left"></i>
-                <p><strong>“Chris kept me informed and made the process so much easier. He truly cares and goes above and beyond for his clients.”</strong></p>
-                <p style="margin-top:10px;">— <span class="client-name">Chris Cristobal</span><br />
-                <span style="font-size:0.9rem;color:#aaa;">Pre‑Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
-                <p style="margin-top:14px;font-size:0.95rem;color:#ccc;">
-                    <i class="fas fa-check-circle" style="color:gold;"></i> Developed a professional website for this international client.
+                <p><span class="client-name">Chris Cristobal</span><br />
+                <span class="client-role">Pre‑Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
+                <p style="margin-top:12px;">
+                    <i class="fas fa-check-circle" style="color:gold;"></i> 
+                    Bumuo ako ng propesyonal na website para sa kanyang legal practice. 
+                    Nakatulong ito upang maipakita ang kanyang serbisyo at kumonekta sa mga kliyente.
+                </p>
+                <p style="margin-top:8px; font-size:0.95rem; color:#aaa;">
+                    <i class="fas fa-globe"></i> Los Angeles, CA, USA
                 </p>
             </div>
         </div>
@@ -746,8 +748,8 @@
             <div class="freelance-text">
                 <p><span class="highlight">🔹 Affordable Rates</span> · <span class="highlight">Quality Work</span></p>
                 <p style="margin-top:10px;">
-                    I offer <strong>website development, system development, thesis formatting,</strong>
-                    and <strong>MS Office assistance</strong> — tailored to your needs.
+                    Nag-aalok ako ng <strong>website development, system development, thesis formatting,</strong>
+                    at <strong>MS Office assistance</strong> — naaayon sa iyong pangangailangan.
                 </p>
                 <p style="margin-top:8px;">
                     <i class="fas fa-envelope" style="color:gold;"></i> <strong>Email:</strong> royomariel14@gmail.com<br />
@@ -758,7 +760,7 @@
                     <i class="fas fa-check-circle" style="color:gold;"></i> 50% Down Payment · 50% Upon Completion
                 </p>
                 <p style="margin-top:6px;font-size:0.95rem;color:#ccc;">
-                    <i class="fas fa-rocket" style="color:gold;"></i> Free quotation available!
+                    <i class="fas fa-rocket" style="color:gold;"></i> Libreng quotation! Makipag-ugnayan na.
                 </p>
             </div>
         </div>
@@ -844,7 +846,6 @@
                 ],
                 thumbs: ['zona_home.png']
             },
-            // ★ NEW: DACS
             dacs: {
                 title: 'DACS — Document Administration Control System',
                 main: 'dacs_dashboard.png',
@@ -885,7 +886,6 @@
                     thumbs.appendChild(i);
                 });
             } else {
-                // fallback: show main image as thumb
                 const i = document.createElement('img');
                 i.src = p.main || 'https://via.placeholder.com/70x70/333/fff?text=+';
                 i.alt = 'thumbnail';
@@ -900,12 +900,10 @@
             document.getElementById('projectModal').style.display = 'none';
         }
 
-        // Click outside modal to close
         document.getElementById('projectModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // ESC key to close
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
