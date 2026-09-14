@@ -5,419 +5,340 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mariel B. Royo — Web Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.15.1/devicon.min.css" />
 <style>
 
   :root{
-    --black:#090d13;
-    --panel:#111720;
-    --panel-2:#171e29;
-    --line:#273140;
-    --maroon:#7d0f28;
-    --maroon-bright:#b8163d;
+    --black:#080a0f;
+    --panel:#10141d;
+    --panel-2:#161c28;
+    --line:#222b3a;
+    --maroon:#800e26;
+    --maroon-bright:#c2183f;
     --cream:#f5f7fa;
-    --muted:#8e99a8;
-    --gold:#c9a15a;
-    --blue:#1976ff;
+    --muted:#8b97a8;
+    --gold:#d9a84e;
   }
 
+  *{box-sizing:border-box;margin:0;padding:0;}
+
   body{
-    background:#080c12;
+    background:var(--black);
     color:var(--cream);
     font-family:'Inter',sans-serif;
     line-height:1.6;
+    overflow-x:hidden;
   }
 
   nav{
     position:fixed;top:0;left:0;width:100%;z-index:1000;
-    background:rgba(8,12,18,.82);
+    background:rgba(8,10,15,.88);
     backdrop-filter:blur(14px);
     border-bottom:1px solid rgba(255,255,255,.05);
   }
 
   .nav-container{
-    max-width:1240px;margin:0 auto;padding:15px 30px;
+    max-width:1280px;margin:0 auto;padding:18px 35px;
     display:flex;align-items:center;justify-content:space-between;
   }
 
   .nav-brand{
-    font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;
+    font-family:'Inter',sans-serif;font-size:.9rem;font-weight:800;
     letter-spacing:.02em;color:#fff;text-decoration:none;
+    display:flex;align-items:center;gap:6px;
   }
-  .nav-brand::before{content:'<>';color:#4b91ff;margin-right:5px;font-weight:800;}
-  .nav-brand span{color:#4b91ff;}
+  .nav-brand span.code-icon{color:var(--maroon-bright);font-weight:900;}
 
-  .nav-links{display:flex;list-style:none;gap:23px;}
+  .nav-links{display:flex;list-style:none;gap:28px;}
   .nav-links li a{
-    color:#8c96a4;text-decoration:none;font-size:.68rem;font-weight:500;
-    transition:color .25s;
+    color:var(--muted);text-decoration:none;font-size:.75rem;font-weight:600;
+    transition:color .25s;text-transform:uppercase;letter-spacing:.05em;
   }
-  .nav-links li a:hover{color:#fff;}
+  .nav-links li a:hover, .nav-links li a.active{color:#fff;}
+  .nav-links li a.active{border-bottom:2px solid var(--maroon-bright);padding-bottom:4px;}
 
-  section{padding:115px 30px 90px;max-width:1240px;margin:0 auto;}
+  .hamburger{display:none;color:#fff;font-size:1.2rem;cursor:pointer;}
 
-  /* REFERENCE-STYLE HERO */
+  section{padding:115px 35px 90px;max-width:1280px;margin:0 auto;}
+
+  /* HERO SECTION */
   #about{
     min-height:100vh;
     display:flex;align-items:center;
-    padding-top:90px;padding-bottom:55px;
+    padding-top:100px;padding-bottom:60px;
     max-width:none;
     background:
-      radial-gradient(circle at 50% 35%,rgba(42,63,91,.18),transparent 36%),
-      #090d13;
+      radial-gradient(circle at 50% 40%, rgba(128,14,38,.12), transparent 45%),
+      var(--black);
   }
 
   .hero-grid{
-    width:min(1180px,100%);
-    min-height:650px;
+    width:min(1240px,100%);
+    min-height:680px;
     margin:0 auto;
     display:grid;
-    grid-template-columns:1fr .95fr .72fr;
-    gap:25px;
+    grid-template-columns:1fr 1.05fr .75fr;
+    gap:20px;
     align-items:center;
     position:relative;
-    overflow:hidden;
-    padding:54px 45px 35px;
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:18px;
-    background:
-      radial-gradient(circle at 51% 42%,rgba(49,68,92,.22),transparent 33%),
-      linear-gradient(135deg,#121923 0%,#0d131c 62%,#0b1017 100%);
-    box-shadow:0 35px 80px rgba(0,0,0,.42);
+    padding:40px 45px;
   }
 
-  .hero-grid::before{
-    content:'';
-    position:absolute;inset:0;
-    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.015) 50%,transparent 100%);
-    pointer-events:none;
-  }
-
-  .hero-text{position:relative;z-index:2;padding-bottom:20px;}
+  .hero-text{position:relative;z-index:2;}
   .hero-text .eyebrow{
-    color:#6fa4ff;font-weight:600;font-size:.66rem;
-    letter-spacing:.08em;text-transform:uppercase;margin-bottom:15px;
+    color:var(--muted);font-weight:700;font-size:.72rem;
+    letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;
   }
 
   .hero-text h1{
     font-family:'Inter',sans-serif;
-    font-size:clamp(2.5rem,4.6vw,4.4rem);
-    line-height:.96;font-weight:750;letter-spacing:-.045em;
-    color:#fff;margin-bottom:12px;
+    font-size:clamp(2.8rem,5vw,4.6rem);
+    line-height:.92;font-weight:800;letter-spacing:-.03em;
+    color:#fff;margin-bottom:16px;
   }
+  .hero-text h1 span.dot{color:var(--maroon-bright);}
 
   .hero-text .role{
-    font-size:1rem;color:#d5a0ad;
-    font-family:'Inter',sans-serif;font-style:normal;
-    font-weight:600;margin-bottom:18px;
+    font-size:.85rem;color:var(--muted);
+    font-family:'Inter',sans-serif;
+    font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;margin-bottom:24px;
   }
 
   .hero-text p{
-    color:#8995a5;font-size:.76rem;line-height:1.7;
-    max-width:365px;margin-bottom:22px;
+    color:var(--muted);font-size:.82rem;line-height:1.75;
+    max-width:360px;margin-bottom:35px;
   }
 
-  .hero-meta{
-    display:none;
+  .scroll-down{
+    display:flex;align-items:center;gap:14px;margin-bottom:40px;
+  }
+  .scroll-btn{
+    width:42px;height:42px;border-radius:50%;background:var(--maroon);
+    display:flex;align-items:center;justify-content:center;color:#fff;
+    text-decoration:none;transition:.3s;border:1px solid rgba(255,255,255,.1);
+  }
+  .scroll-btn:hover{background:var(--maroon-bright);transform:translateY(3px);}
+  .scroll-text{
+    font-size:.62rem;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);line-height:1.3;
   }
 
-  .social-links{display:flex;gap:10px;}
-  .social-links a{
-    width:30px;height:30px;border:1px solid #293342;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    color:#b8c1cc;font-size:.7rem;
-    transition:.25s;text-decoration:none;
-  }
-  .social-links a:hover{
-    border-color:#4b91ff;background:#1976ff;color:#fff;transform:translateY(-2px);
+  .hero-footer-tags{
+    display:flex;gap:12px;font-size:.62rem;font-weight:700;
+    letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;
+    border-top:1px solid var(--line);padding-top:20px;max-width:360px;
   }
 
   .hero-photo{
     position:relative;justify-self:center;align-self:end;
     display:flex;align-items:flex-end;justify-content:center;
-    min-height:575px;width:100%;z-index:2;
+    height:100%;width:100%;z-index:2;
+  }
+
+  .hero-photo::before{
+    content:'';
+    position:absolute;width:320px;height:320px;
+    border-radius:50%;background:var(--maroon);
+    opacity:.35;filter:blur(60px);z-index:1;top:20%;
   }
 
   .hero-photo .frame{
-    width:min(390px,100%);min-height:575px;
-    border-radius:0;overflow:visible;border:none;
-    position:relative;display:flex;align-items:flex-end;justify-content:center;
-    background:transparent;
+    width:100%;max-width:440px;
+    position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;
   }
 
   .hero-photo .frame img{
-    width:100%;height:auto;max-height:600px;
+    width:100%;height:auto;max-height:620px;
     object-fit:contain;object-position:center bottom;
-    filter:drop-shadow(0 30px 30px rgba(0,0,0,.52));
+    filter:drop-shadow(0 20px 30px rgba(0,0,0,.7));
   }
-
-  .hero-photo .tag{
-    position:absolute;bottom:18px;left:50%;
-    transform:translateX(-50%);
-    background:rgba(16,22,31,.9);
-    color:#dce3eb;padding:8px 13px;border-radius:999px;
-    font-size:.65rem;font-weight:600;white-space:nowrap;
-    border:1px solid #293342;box-shadow:0 12px 24px rgba(0,0,0,.3);
-  }
-
-  /* RIGHT INFO RAIL */
-  .hero-grid::after{
-    content:'';
-    display:block;
-  }
-
-  .hero-text::after{
-    content:'';
-    position:absolute;left:0;bottom:-30px;width:42px;height:2px;
-    background:#1976ff;
-  }
-
-  .hero-photo + .tag{display:none;}
-
-  /* The existing tag stays hidden; info is supplied through pseudo-content. */
-  .hero-photo .tag{display:none;}
-
-  .hero-grid > .hero-photo::after{
-    content:'';
-    position:absolute;right:-25px;bottom:38px;width:170px;height:1px;
-    background:#273140;
-    opacity:.7;
-  }
-
-  /* Compact right rail built from the existing metadata/social links */
-  .hero-grid > .hero-photo::before{
-    content:'ABOUT ME\\A\\AEntry-level web developer focused on backend development, databases, and practical web systems.\\A\\AWORK\\A\\ABackend development • PHP • Java • Laravel • Spring Boot\\A\\ADiscover my work →';
-    white-space:pre-line;
-    position:absolute;right:-230px;top:85px;
-    width:185px;color:#8995a5;font-size:.61rem;line-height:1.65;
-    z-index:4;
-  }
-
 
   .hero-side{
     position:relative;z-index:5;align-self:center;
-    padding-left:8px;
+    padding-left:20px;
   }
   .side-block{
-    margin-bottom:27px;
-    border-left:1px solid #2a3543;
-    padding-left:13px;
+    margin-bottom:30px;
+    border-left:2px solid var(--maroon-bright);
+    padding-left:16px;
   }
   .side-block > span{
-    display:block;color:#f0f3f7;font-size:.56rem;font-weight:800;
-    letter-spacing:.1em;margin-bottom:7px;
+    display:block;color:#fff;font-size:.68rem;font-weight:800;
+    letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;
   }
   .side-block p{
-    color:#7f8b9a;font-size:.61rem;line-height:1.65;margin:0;
+    color:var(--muted);font-size:.72rem;line-height:1.65;margin:0;
   }
-  .side-socials{display:flex;gap:9px;margin-top:8px;}
+  .side-block a.learn-more{
+    color:#fff;font-size:.65rem;font-weight:700;text-decoration:none;
+    letter-spacing:.08em;display:inline-block;margin-top:8px;transition:.2s;
+  }
+  .side-block a.learn-more:hover{color:var(--maroon-bright);}
+  
+  .side-socials{display:flex;gap:14px;margin-top:10px;}
   .side-socials a{
-    color:#aeb8c4;font-size:.68rem;text-decoration:none;
+    color:var(--cream);font-size:.85rem;text-decoration:none;
     transition:.2s;
   }
-  .side-socials a:hover{color:#4b91ff;transform:translateY(-2px);}
+  .side-socials a:hover{color:var(--maroon-bright);transform:translateY(-2px);}
 
-  /* Section styling remains compatible with the existing portfolio */
-  #skills,#projects,#leadership,#international{
-    background:#111720;
-    border-top:1px solid #202936;border-bottom:1px solid #202936;
+  .side-tagline{
+    font-size:.58rem;letter-spacing:.12em;color:rgba(255,255,255,.25);
+    text-transform:uppercase;margin-top:40px;text-align:right;
   }
-  #education,#achievements,#experience,#freelance{background:#090d13;}
+
+  /* SECTION STYLING */
+  #skills,#projects,#leadership,#international{
+    background:var(--panel);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  #education,#achievements,#experience,#freelance{background:var(--black);}
 
   h1,h2,h3{font-family:'Inter',sans-serif;}
-  h2{font-size:2rem;color:#fff;margin-bottom:44px;font-weight:700;letter-spacing:-.03em;}
-  .section-label{font-size:.7rem;color:#6fa4ff;font-weight:700;margin-bottom:9px;letter-spacing:.1em;text-transform:uppercase;}
-
-  .card{
-    background:#131a24;border:1px solid #25303d;border-left:2px solid #344255;
-    border-radius:12px;padding:26px;transition:.3s;
-  }
-  .card:hover{border-left-color:#4b91ff;transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.25);}
-  .card h3{color:#f5f7fa;font-size:1.05rem;margin-bottom:6px;font-weight:700;}
-  .card .sub{font-size:.78rem;color:#6fa4ff;margin-bottom:10px;font-weight:600;}
-  .card p,.card ul{color:#8e99a8;font-size:.9rem;}
-
-  .skill-pill{
-    display:flex;align-items:center;gap:9px;background:#131a24;
-    border:1px solid #26313e;padding:10px 15px;border-radius:8px;
-    font-size:.86rem;color:#dfe5ec;transition:.25s;
-  }
-  .skill-pill:hover{border-color:#4b91ff;transform:translateY(-2px);}
-  .skill-pill i{font-size:1.1rem;color:#6fa4ff;}
-
-  .edu-card{
-    background:#131a24;border:1px solid #26313e;border-radius:12px;
-  }
-
-  .btn-gallery{background:#1976ff;color:#fff;}
-  .btn-gallery:hover{background:#4b91ff;}
-  .btn-link{background:transparent;color:#dfe5ec;border:1px solid #2b3745;}
-  .btn-link:hover{border-color:#4b91ff;color:#6fa4ff;}
-
-  #contact{background:#111720;border-top:1px solid #202936;text-align:center;padding-bottom:70px;}
-  footer{background:#0b1017;color:#737f8f;}
-
-  @media(max-width:1050px){
-    .hero-grid{
-      grid-template-columns:1fr 1fr;
-      padding:45px 35px 30px;
-    }
-    .hero-grid > .hero-photo::before{display:none;}
-    .hero-photo{grid-column:2;grid-row:1;min-height:500px;}
-    .hero-text{grid-column:1;grid-row:1;}
-    .hero-side{display:none;}
-  }
-
-  @media(max-width:768px){
-    .nav-links{gap:12px;}
-    .nav-links li a{font-size:.62rem;}
-    section{padding:95px 20px 60px;}
-    #about{padding:80px 15px 35px;}
-    .hero-grid{
-      grid-template-columns:1fr;
-      min-height:auto;
-      padding:38px 24px 25px;
-      text-align:left;
-    }
-    .hero-text{grid-column:auto;grid-row:auto;order:1;padding-top:10px;}
-    .hero-photo{grid-column:auto;grid-row:auto;order:0;min-height:420px;}
-    .hero-photo .frame{width:300px;min-height:420px;}
-    .hero-side{display:none;}
-    .hero-text h1{font-size:2.8rem;}
-    .hero-text p{max-width:100%;}
-    .hero-text::after{display:none;}
-    .nav-links{display:none;}
-    .hamburger{display:block;}
-  }
+  h2{font-size:2.2rem;color:#fff;margin-bottom:40px;font-weight:800;letter-spacing:-.02em;}
+  .section-label{font-size:.7rem;color:var(--maroon-bright);font-weight:800;margin-bottom:8px;letter-spacing:.15em;text-transform:uppercase;}
 
   /* SKILLS */
-  #skills{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
   .skill-group{margin-bottom:38px;}
   .skill-group h3{
-    font-size:.9rem;color:var(--gold);text-transform:none;font-weight:600;
-    margin-bottom:16px;font-family:'Inter',sans-serif;letter-spacing:.02em;
+    font-size:.85rem;color:var(--gold);text-transform:uppercase;font-weight:700;
+    margin-bottom:16px;letter-spacing:.08em;
   }
   .skill-icons{display:flex;flex-wrap:wrap;gap:12px;}
   .skill-pill{
-    display:flex;align-items:center;gap:9px;background:var(--panel-2);
-    border:1px solid var(--line);padding:10px 16px;border-radius:8px;
-    font-size:.9rem;color:var(--cream);transition:.25s;
+    display:flex;align-items:center;gap:10px;background:var(--panel-2);
+    border:1px solid var(--line);padding:10px 18px;border-radius:6px;
+    font-size:.85rem;color:var(--cream);transition:.25s;
   }
   .skill-pill:hover{border-color:var(--maroon-bright);transform:translateY(-2px);}
-  .skill-pill i{font-size:1.15rem;color:var(--maroon-bright);}
-  .skill-pill .fa-file-word,.skill-pill .fa-palette,.skill-pill .fa-database,.skill-pill .fa-server{color:var(--maroon-bright);}
+  .skill-pill i{font-size:1.1rem;color:var(--maroon-bright);}
 
-  /* GENERIC CARD GRID */
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;}
+  /* CARD GRID */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;}
   .card{
     background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--maroon);
-    border-radius:8px;padding:26px;display:flex;flex-direction:column;transition:.3s;
+    border-radius:8px;padding:28px;display:flex;flex-direction:column;transition:.3s;
   }
-  .card:hover{border-left-color:var(--maroon-bright);transform:translateY(-4px);box-shadow:0 20px 40px -20px rgba(0,0,0,.6);}
-  .card h3{color:var(--cream);font-size:1.15rem;margin-bottom:6px;font-weight:600;}
-  .card .sub{font-size:.82rem;color:var(--gold);margin-bottom:10px;font-weight:500;}
-  .card p{color:var(--muted);font-size:.93rem;flex:1;}
-  .card ul{margin-top:10px;padding-left:18px;color:var(--muted);font-size:.9rem;}
+  .card:hover{border-left-color:var(--maroon-bright);transform:translateY(-4px);box-shadow:0 20px 40px -20px rgba(0,0,0,.8);}
+  .card h3{color:#fff;font-size:1.15rem;margin-bottom:6px;font-weight:700;}
+  .card .sub{font-size:.82rem;color:var(--gold);margin-bottom:12px;font-weight:600;}
+  .card p{color:var(--muted);font-size:.88rem;line-height:1.65;flex:1;}
+  .card ul{margin-top:12px;padding-left:18px;color:var(--muted);font-size:.88rem;}
   .card ul li{margin-bottom:6px;}
 
-  #education{background:var(--black);}
+  /* EDUCATION */
   .edu-card{
-    background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:30px 32px;margin-bottom:20px;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:32px;
   }
-  .edu-card h3{color:var(--cream);font-size:1.25rem;margin-bottom:4px;}
-  .edu-card .sub{color:var(--gold);font-size:.88rem;margin-bottom:14px;}
-  .edu-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;}
+  .edu-card h3{color:#fff;font-size:1.3rem;margin-bottom:6px;font-weight:700;}
+  .edu-card .sub{color:var(--gold);font-size:.88rem;margin-bottom:16px;font-weight:600;}
+  .edu-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
   .edu-tags span{
-    background:rgba(125,15,40,.18);border:1px solid rgba(125,15,40,.4);color:var(--cream);
-    font-size:.8rem;padding:6px 12px;border-radius:20px;
+    background:rgba(128,14,38,.2);border:1px solid rgba(194,24,63,.4);color:#fff;
+    font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:20px;
   }
 
-  #projects{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .project-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  /* BUTTONS & ACTIONS */
+  .project-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
   .btn{
-    padding:9px 18px;border-radius:6px;font-size:.85rem;font-weight:600;text-decoration:none;
-    display:inline-flex;align-items:center;gap:7px;transition:.25s;border:none;cursor:pointer;font-family:inherit;
+    padding:9px 18px;border-radius:6px;font-size:.8rem;font-weight:700;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;transition:.25s;border:none;cursor:pointer;
+    letter-spacing:.03em;
   }
   .btn-gallery{background:var(--maroon);color:#fff;}
   .btn-gallery:hover{background:var(--maroon-bright);}
   .btn-link{background:transparent;color:var(--cream);border:1px solid var(--line);}
   .btn-link:hover{border-color:var(--maroon-bright);color:var(--maroon-bright);}
 
+  /* GALLERY MODAL */
   .gallery-modal{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);
     justify-content:center;align-items:center;z-index:3000;padding:20px;
   }
   .gallery-modal.active{display:flex;}
   .gallery-content{
-    background:var(--panel-2);border:1px solid var(--line);border-radius:12px;max-width:760px;width:100%;
-    max-height:88vh;overflow-y:auto;padding:26px;position:relative;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:12px;max-width:780px;width:100%;
+    max-height:88vh;overflow-y:auto;padding:30px;position:relative;
   }
   .gallery-close{
-    position:sticky;top:0;float:right;font-size:20px;color:var(--cream);cursor:pointer;
+    position:sticky;top:0;float:right;font-size:18px;color:#fff;cursor:pointer;
     background:var(--panel);width:36px;height:36px;border-radius:50%;display:flex;
     align-items:center;justify-content:center;border:1px solid var(--line);transition:.25s;
   }
   .gallery-close:hover{background:var(--maroon);border-color:var(--maroon);}
   .gallery-title{color:var(--gold);font-size:1.4rem;margin-bottom:6px;clear:both;}
-  .gallery-desc{color:var(--muted);font-size:.92rem;margin-bottom:18px;}
-  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+  .gallery-desc{color:var(--muted);font-size:.9rem;margin-bottom:20px;}
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;}
   .gallery-grid img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:var(--panel);}
   .gallery-grid .no-img{color:var(--muted);text-align:center;padding:40px 0;grid-column:1/-1;font-size:.9rem;}
   .gallery-link-btn{
-    display:inline-block;margin-top:18px;padding:10px 24px;background:var(--maroon);color:#fff;
-    border-radius:6px;font-weight:600;text-decoration:none;font-size:.9rem;transition:.25s;
+    display:inline-block;margin-top:20px;padding:10px 24px;background:var(--maroon);color:#fff;
+    border-radius:6px;font-weight:700;text-decoration:none;font-size:.85rem;transition:.25s;
   }
   .gallery-link-btn:hover{background:var(--maroon-bright);}
 
-  #achievements{background:var(--black);}
-  #leadership{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  #experience{background:var(--black);}
+  /* TESTIMONIAL / FREELANCE */
+  .testimonial-wrap, .freelance-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:center;}
+  .testimonial-wrap .frame, .freelance-wrap .frame{border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+  .testimonial-wrap img, .freelance-wrap img{width:100%;display:block;}
+  .testimonial-text .client-name{color:var(--gold);font-weight:700;font-size:1.2rem;}
+  .testimonial-text .client-role{color:var(--muted);font-size:.85rem;}
+  .testimonial-text p{color:var(--cream);font-size:.95rem;}
+  .testimonial-text .quote-mark{color:var(--maroon-bright);font-size:2.5rem;font-family:'Fraunces',serif;line-height:0;margin-bottom:15px;}
 
-  #international{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .testimonial-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:center;}
-  .testimonial-wrap .frame{border-radius:8px;overflow:hidden;border:1px solid var(--line);}
-  .testimonial-wrap img{width:100%;}
-  .testimonial-text .client-name{color:var(--gold);font-weight:600;font-size:1.25rem;font-family:'Fraunces',serif;}
-  .testimonial-text .client-role{color:var(--muted);font-size:.9rem;}
-  .testimonial-text p{color:var(--cream);}
-  .testimonial-text .quote-mark{color:var(--maroon-bright);font-size:2rem;font-family:'Fraunces',serif;line-height:0;}
-
-  #freelance{background:var(--black);}
-  .freelance-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center;}
-  .freelance-wrap .frame{border-radius:8px;overflow:hidden;border:1px solid var(--line);}
-  .freelance-text .highlight{color:var(--maroon-bright);font-weight:600;}
-  .freelance-text p{color:var(--muted);margin-bottom:10px;}
+  .freelance-text .highlight{color:var(--maroon-bright);font-weight:700;}
+  .freelance-text p{color:var(--muted);margin-bottom:12px;font-size:.9rem;}
   .freelance-text .rate-note{
-    margin-top:16px;border-top:1px solid var(--line);padding-top:16px;font-size:.88rem;color:var(--gold);
+    margin-top:20px;border-top:1px solid var(--line);padding-top:16px;font-size:.85rem;color:var(--gold);font-weight:600;
   }
 
+  /* CONTACT & FOOTER */
   #contact{
-    background:var(--panel);border-top:1px solid var(--line);text-align:center;padding-bottom:70px;
+    background:var(--panel);border-top:1px solid var(--line);text-align:center;padding-bottom:80px;
   }
-  #contact h2{margin-bottom:16px;}
-  #contact p{color:var(--muted);margin:6px 0;font-size:1.02rem;}
-  #contact a{color:var(--gold);text-decoration:none;}
+  #contact h2{margin-bottom:12px;}
+  #contact p{color:var(--muted);margin:8px 0;font-size:1rem;}
+  #contact a{color:var(--gold);text-decoration:none;font-weight:600;}
   #contact a:hover{color:var(--maroon-bright);}
-  footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;background:var(--panel);}
+  footer{text-align:center;padding:25px;color:var(--muted);font-size:.8rem;background:var(--black);border-top:1px solid var(--line);}
+
+  /* MEDIA QUERIES */
+  @media(max-width:1100px){
+    .hero-grid{
+      grid-template-columns:1fr 1fr;
+      padding:30px 20px;
+    }
+    .hero-photo{grid-column:2;grid-row:1;min-height:480px;}
+    .hero-text{grid-column:1;grid-row:1;}
+    .hero-side{display:none;}
+  }
 
   @media(max-width:860px){
-    .hero-grid,.testimonial-wrap,.freelance-wrap{grid-template-columns:1fr;}
-    .hero-photo{order:-1;min-height:390px;}
-    .hero-photo .frame{width:320px;min-height:390px;}
-    .hero-photo .tag{left:10px;bottom:8px;}
+    .testimonial-wrap,.freelance-wrap{grid-template-columns:1fr;}
   }
+
   @media(max-width:768px){
     .hamburger{display:block;}
     .nav-links{
-      position:absolute;top:60px;left:0;width:100%;background:var(--panel);
-      display:none;flex-direction:column;text-align:center;padding:10px 0;border-bottom:1px solid var(--line);
+      position:absolute;top:60px;left:0;width:100%;background:var(--panel-2);
+      display:none;flex-direction:column;text-align:center;padding:15px 0;border-bottom:1px solid var(--line);
     }
-    .nav-links li{padding:12px 0;border-top:1px solid var(--line);}
+    .nav-links li{padding:10px 0;}
     .nav-links.show{display:flex;}
-    section{padding:100px 20px 60px;}
-    .hero-text h1{font-size:2.3rem;}
+    
+    section{padding:85px 20px 60px;}
+    #about{padding-top:80px;}
+    .hero-grid{
+      grid-template-columns:1fr;
+      text-align:left;
+    }
+    .hero-photo{grid-column:auto;grid-row:auto;order:-1;min-height:380px;}
+    .hero-photo .frame img{max-height:420px;}
+    .hero-text h1{font-size:3rem;}
+    .hero-text p{max-width:100%;}
   }
 </style>
 </head>
@@ -425,70 +346,68 @@
 
 <nav>
   <div class="nav-container">
-    <a href="#about" class="nav-brand">M<span>.</span>Royo</a>
+    <a href="#about" class="nav-brand"><span class="code-icon">&lt;/&gt;</span> Mariel Royo</a>
     <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#education">Education</a></li>
+      <li><a href="#about" class="active">Home</a></li>
+      <li><a href="#skills">About</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#international">International</a></li>
       <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#leadership">Leadership</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#freelance">Freelance</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- ABOUT -->
+<!-- ABOUT / HERO -->
 <section id="about">
   <div class="hero-grid">
     <div class="hero-text">
-      <div class="eyebrow">Web Developer · BSIT Graduate</div>
-      <h1>Mariel B. Royo</h1>
-      <div class="role">Backend-leaning developer, systems builder</div>
-      <p>Entry-level web developer and BSIT graduate with hands-on experience in backend development, database management, and web-based systems. Skilled in PHP, MySQL/MariaDB, HTML5, CSS3, JavaScript, Laravel, Java, and Spring Boot — across academic, government, freelance, and competition-based projects.</p>
-      <div class="hero-meta">
-        <span><i class="fas fa-location-dot"></i>San Fernando, Sto. Tomas, Batangas, Philippines</span>
-        <span><i class="fas fa-phone"></i>0966 001 7181</span>
-        <span><i class="fas fa-envelope"></i>royomariel14@gmail.com</span>
+      <div class="eyebrow">HELLO, I'M</div>
+      <h1>MARIEL<br>B. ROYO<span class="dot">.</span></h1>
+      <div class="role">WEB DEVELOPER</div>
+      <p>A BSIT graduate passionate about building web-based solutions that create real impact.</p>
+      
+      <div class="scroll-down">
+        <a href="#projects" class="scroll-btn" aria-label="Scroll down"><i class="fas fa-arrow-down"></i></a>
+        <div class="scroll-text">SCROLL DOWN<br><span style="color:rgba(255,255,255,.3);">TO EXPLORE</span></div>
       </div>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://www.instagram.com/marielaaaa22?igsh=MWs1aXh6ZjI3ZmoyYg==" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://ph.jobstreet.com/profiles/jxSCgf1wHj" title="JobStreet"><i class="fas fa-briefcase"></i></a>
-        <a href="https://www.tiktok.com/@royomarielaaaa?_r=1&_t=ZS-92DUEp1Hzgv" title="TikTok"><i class="fab fa-tiktok"></i></a>
+
+      <div class="hero-footer-tags">
+        <span>CODE</span> • <span>CREATE</span> • <span>SOLVE</span> • <span>IMPACT</span>
       </div>
     </div>
+
     <div class="hero-photo">
       <div class="frame">
-        <img src="mariel.png" alt="Mariel Royo" onerror="this.src='https://via.placeholder.com/390x500/111720/8e99a8?text=Mariel+Royo'" />
+        <img src="mariel.png" alt="Mariel Royo" onerror="this.src='https://via.placeholder.com/440x600/10141d/8b97a8?text=Mariel+Royo'" />
       </div>
     </div>
+
     <aside class="hero-side">
       <div class="side-block">
         <span>ABOUT ME</span>
-        <p>Backend-leaning web developer building practical, database-driven systems and clean web experiences.</p>
+        <p>Entry-level Web Developer with hands-on experience in backend development, database management, and web-based systems.</p>
+        <a href="#skills" class="learn-more">LEARN MORE &rarr;</a>
       </div>
       <div class="side-block">
         <span>FOCUS</span>
-        <p>Backend Development<br>PHP · Java · Laravel<br>MySQL · Spring Boot</p>
+        <p>Back end development, web systems, and creating solutions that make processes more efficient.</p>
       </div>
       <div class="side-block">
         <span>BASED IN</span>
-        <p>Batangas, Philippines</p>
+        <p><i class="fas fa-location-dot" style="color:var(--maroon-bright);margin-right:4px;"></i> San Fernando, Sto. Tomas, Batangas, Philippines</p>
       </div>
       <div class="side-block">
         <span>FOLLOW ME</span>
         <div class="side-socials">
-          <a href="https://www.facebook.com/share/1D5VQb8zT4/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" aria-label="GitHub"><i class="fab fa-github"></i></a>
-          <a href="https://www.instagram.com/marielaaaa22" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://ph.jobstreet.com/profiles/jxSCgf1wHj" aria-label="JobStreet"><i class="fas fa-briefcase"></i></a>
+          <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://ph.jobstreet.com/profiles/jxSCgf1wHj" title="LinkedIn / JobStreet"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="mailto:royomariel14@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
         </div>
+      </div>
+      <div class="side-tagline">
+        TURN IDEAS<br>INTO REAL SOLUTIONS.
       </div>
     </aside>
   </div>
@@ -560,7 +479,7 @@
   <div class="edu-card">
     <h3>Bachelor of Science in Information Technology</h3>
     <div class="sub">Romblon State University — San Fernando Campus · 2022 – 2026</div>
-    <p style="color:var(--muted);font-size:.93rem;">Dean's Lister: A.Y. 2022–2023, 2023–2024, 2024–2025</p>
+    <p style="color:var(--muted);font-size:.9rem;">Dean's Lister: A.Y. 2022–2023, 2023–2024, 2024–2025</p>
     <div class="edu-tags">
       <span>Best Capstone / Thesis</span>
       <span>Most Outstanding Intern</span>
@@ -661,6 +580,7 @@
   </div>
 </section>
 
+<!-- GALLERY MODAL -->
 <div class="gallery-modal" id="galleryModal">
   <div class="gallery-content">
     <div class="gallery-close" onclick="closeGallery()">✖</div>
@@ -677,13 +597,13 @@
   <h2>International Client</h2>
   <div class="testimonial-wrap">
     <div class="frame">
-      <img src="chris.jpg" alt="Client: Chris Cristobal" onerror="this.src='https://via.placeholder.com/420x340/141213/9b9290?text=Chris+Cristobal'" />
+      <img src="chris.jpg" alt="Client: Chris Cristobal" onerror="this.src='https://via.placeholder.com/420x340/161c28/8b97a8?text=Chris+Cristobal'" />
     </div>
     <div class="testimonial-text">
-      <div class="quote-mark">"</div>
+      <div class="quote-mark">“</div>
       <p>I developed a professional, responsive website for his legal practice — helping showcase his services and connect with clients across screen sizes.</p>
-      <p style="margin-top:16px;"><span class="client-name">Chris Cristobal</span><br /><span class="client-role">Pre-Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
-      <p style="margin-top:8px;color:var(--muted);font-size:.9rem;"><i class="fas fa-globe"></i> Los Angeles, CA, USA</p>
+      <p style="margin-top:20px;"><span class="client-name">Chris Cristobal</span><br /><span class="client-role">Pre-Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
+      <p style="margin-top:8px;color:var(--muted);font-size:.85rem;"><i class="fas fa-globe" style="color:var(--maroon-bright);margin-right:4px;"></i> Los Angeles, CA, USA</p>
     </div>
   </div>
 </section>
@@ -725,50 +645,26 @@
       <div class="sub">OJT / Web Developer · Jan 2026 – Mar 2026</div>
       <ul>
         <li>Developed and maintained web-based systems for internal government operations.</li>
-        <li>Focused on backend development, database management, and system functionality.</li>
-        <li>Supported the digitalization of internal government processes through functional web-based systems.</li>
+        <li>Focused on backend development, database architecture, and optimization.</li>
+        <li>Built DACS (Document Administration & Control System) for intranet deployment.</li>
       </ul>
-    </div>
-    <div class="card">
-      <h3>Karzai Corporation</h3>
-      <div class="sub">Production Staff (Office-based) · Jan 2021 – Jan 2022</div>
-      <ul><li>Handled office-based documentation, production records, and coordination tasks.</li></ul>
-    </div>
-    <div class="card">
-      <h3>Vacuumtech Philippines Inc.</h3>
-      <div class="sub">Quality Checker · Jul 2020 – Dec 2020</div>
-      <ul><li>Inspected products for quality compliance and maintained accurate inspection records.</li></ul>
-    </div>
-    <div class="card">
-      <h3>Global Compak Inc.</h3>
-      <div class="sub">Quality Sorter · Aug 2017 – Jun 2020</div>
-      <ul><li>Performed product sorting and quality inspection according to production standards.</li></ul>
-    </div>
-    <div class="card">
-      <h3>Yazaki-Torres Manufacturing Inc.</h3>
-      <div class="sub">Production Operator · Sep 2014 – Jun 2017</div>
-      <ul><li>Operated production processes while following quality, safety, and workplace requirements.</li></ul>
     </div>
   </div>
 </section>
 
 <!-- FREELANCE -->
 <section id="freelance">
-  <div class="section-label">Hire me</div>
-  <h2>Freelance Services</h2>
+  <div class="section-label">Services</div>
+  <h2>Freelance Web Services</h2>
   <div class="freelance-wrap">
     <div class="frame">
-      <img src="mayeh.jpg" alt="Freelance Services" onerror="this.src='https://via.placeholder.com/480x400/141213/9b9290?text=Freelance+Services'" />
+      <img src="freelance.jpg" alt="Freelance Web Development" onerror="this.src='https://via.placeholder.com/420x300/161c28/8b97a8?text=Freelance+Web+Dev'" />
     </div>
     <div class="freelance-text">
-      <p><span class="highlight">Affordable rates</span> · <span class="highlight">Quality work</span></p>
-      <p>I offer website development, system development, thesis formatting, and MS Office assistance — tailored to your needs.</p>
-      <p><i class="fas fa-envelope" style="color:var(--maroon-bright);"></i> royomariel14@gmail.com<br />
-      <i class="fas fa-phone" style="color:var(--maroon-bright);"></i> Viber / Telegram: +63 966 001 7181<br />
-      <i class="fab fa-facebook" style="color:var(--maroon-bright);"></i> Facebook: Mariel Royo</p>
+      <p>I build custom, responsive, and database-driven web applications for small businesses, academic projects, and organizations.</p>
+      <p><span class="highlight">Services offered:</span> Custom PHP/Laravel Web Apps, MySQL Database Design, API Integration, Website Redesign, and System Documentation.</p>
       <div class="rate-note">
-        <i class="fas fa-check-circle"></i> 50% down payment · 50% upon completion<br/>
-        <i class="fas fa-rocket"></i> Free quotation available
+        <i class="fas fa-check-circle" style="color:var(--maroon-bright);margin-right:6px;"></i> Available for freelance projects, technical consultation, and contract work.
       </div>
     </div>
   </div>
@@ -778,90 +674,99 @@
 <section id="contact">
   <div class="section-label">Get in touch</div>
   <h2>Contact Me</h2>
-  <p><i class="fas fa-envelope" style="color:var(--maroon-bright);"></i> royomariel14@gmail.com</p>
-  <p><i class="fas fa-phone" style="color:var(--maroon-bright);"></i> 0966 001 7181</p>
-  <p><i class="fas fa-map-marker-alt" style="color:var(--maroon-bright);"></i> San Fernando, Sto. Tomas, Batangas</p>
-  <p style="margin-top:10px;"><i class="fas fa-globe" style="color:var(--maroon-bright);"></i> <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" target="_blank">marielaaaa22.github.io</a></p>
+  <p>Interested in working together or hiring me? Feel free to reach out!</p>
+  <p style="margin-top:20px;"><i class="fas fa-envelope" style="color:var(--maroon-bright);margin-right:8px;"></i> <a href="mailto:royomariel14@gmail.com">royomariel14@gmail.com</a></p>
+  <p><i class="fas fa-phone" style="color:var(--maroon-bright);margin-right:8px;"></i> 0966 001 7181</p>
+  <p><i class="fas fa-location-dot" style="color:var(--maroon-bright);margin-right:8px;"></i> San Fernando, Sto. Tomas, Batangas, Philippines</p>
 </section>
 
-<footer>&copy; 2026 Mariel B. Royo. Built with care, maroon, and a little bit of black.</footer>
+<footer>
+  <p>&copy; 2026 Mariel B. Royo. All rights reserved.</p>
+</footer>
 
 <script>
-  const burger = document.getElementById('hamburger');
+  // Mobile Nav Toggle
+  const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
-  burger.addEventListener('click', () => navLinks.classList.toggle('show'));
-  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('show')));
 
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+  });
+
+  // Simple Gallery Modal Handler
   const galleryData = {
+    prospectus: {
+      title: "Academic Prospectus System",
+      desc: "Curriculum tracking and automated grade management system.",
+      url: "https://academicprospectus.great-site.net/capstone/homepage.php",
+      images: []
+    },
+    dacs: {
+      title: "DACS",
+      desc: "Document Administration & Control System developed for Makati City Government.",
+      url: "#",
+      images: []
+    },
     sakamart: {
-      title: 'High Value Crop Production Data Management & Analytics System',
-      desc: 'PHP/MySQL agricultural data management and analytics system covering farmer, farmland, crop production, inventory, reporting, and analytics.',
-      link: 'https://sakamart.great-site.net/index.html',
-      images: ['sakamart1.png','sakamart2.png','sakamart3.png']
+      title: "High Value Crop Production Data System",
+      desc: "Agricultural data management and analytics system.",
+      url: "https://sakamart.great-site.net/index.html",
+      images: []
+    },
+    codebuddy: {
+      title: "CodeBuddyPH",
+      desc: "AI-assisted live code editor with instant preview.",
+      url: "https://codebuddyph.great-site.net/Codebuddy/index.php",
+      images: []
     },
     zona: {
-      title: 'ZONA AI',
-      desc: 'AI prototype for disaster risk analysis and hazard mapping, enabling early decision support. LIKHAMON Ideathon 2025 Best Pitch Deck.',
-      link: 'https://zonaai.great-site.net/index.php',
-      images: ['zona1.png','zona2.png','zona3.png']
+      title: "ZONA AI",
+      desc: "AI prototype for disaster risk analysis and hazard mapping.",
+      url: "https://zonaai.great-site.net/index.php",
+      images: []
     },
     alaga: {
       title: "ALAGA's Quest",
-      desc: 'Educational game built with GDevelop that won 1st place in the Game Development Competition 2025.',
-      link: '#',
-      images: ['alaga1.png','alaga2.png','alaga3.png']
-    },
-    prospectus: {
-      title: 'Academic Prospectus System',
-      desc: "Curriculum tracking and automated grade management system with data visualization and Dean's List ranking. Capstone Project.",
-      link: 'https://academicprospectus.great-site.net/capstone/homepage.php',
-      images: ['aps1.png','aps2.png','aps3.png','aps4.png','aps5.png']
-    },
-    codebuddy: {
-      title: 'CodeBuddyPH',
-      desc: 'AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.',
-      link: 'https://codebuddyph.great-site.net/Codebuddy/index.php',
-      images: ['cb1.png','cb2.png','cb3.png']
-    },
-    dacs: {
-      title: 'DACS — Document Administration & Control System',
-      desc: 'Digital document tracking system that replaced manual Excel-based tracking for the OM-ICTO Admin Department. Deployed internally / intranet.',
-      link: '#',
-      images: ['dacs1.png','dacs2.png','dacs3.png']
+      desc: "Educational game developed for competition.",
+      url: "#",
+      images: []
     }
   };
 
-  function openGallery(key){
+  function openGallery(key) {
     const data = galleryData[key];
     if(!data) return;
-    document.getElementById('galleryTitle').textContent = data.title;
-    document.getElementById('galleryDesc').textContent = data.desc;
-    document.getElementById('galleryVisitBtn').href = data.link;
+
+    document.getElementById('galleryTitle').innerText = data.title;
+    document.getElementById('galleryDesc').innerText = data.desc;
+    
+    const visitBtn = document.getElementById('galleryVisitBtn');
+    if(data.url && data.url !== '#') {
+      visitBtn.href = data.url;
+      visitBtn.style.display = 'inline-block';
+    } else {
+      visitBtn.style.display = 'none';
+    }
+
     const grid = document.getElementById('galleryGrid');
     grid.innerHTML = '';
-    if(data.images && data.images.length){
+
+    if(data.images.length > 0) {
       data.images.forEach(src => {
         const img = document.createElement('img');
         img.src = src;
-        img.alt = data.title + ' screenshot';
-        img.onerror = function(){ this.src = 'https://via.placeholder.com/300x180/1b1819/9b9290?text=No+Screenshot'; };
         grid.appendChild(img);
       });
     } else {
-      const fallback = document.createElement('div');
-      fallback.className = 'no-img';
-      fallback.textContent = 'No screenshots available yet.';
-      grid.appendChild(fallback);
+      grid.innerHTML = '<div class="no-img">No preview screenshots currently available for this project.</div>';
     }
+
     document.getElementById('galleryModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
   }
-  function closeGallery(){
+
+  function closeGallery() {
     document.getElementById('galleryModal').classList.remove('active');
-    document.body.style.overflow = '';
   }
-  document.getElementById('galleryModal').addEventListener('click', function(e){ if(e.target === this) closeGallery(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeGallery(); });
 </script>
 
 </body>
