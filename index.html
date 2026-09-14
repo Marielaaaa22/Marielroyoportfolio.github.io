@@ -1,646 +1,669 @@
+<?php
+
+session_start();
+
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
+
+if (!isset($_SESSION['user_id']) && !isset($_SESSION['registrar_id'])) {
+    header("Location: index.php");
+    exit();
+}
+
+if (!isset($_SESSION['role'])) {
+    header("Location: index.php");
+    exit();
+}
+
+$role = strtolower(trim($_SESSION['role']));
+
+if ($role !== 'admin' && $role !== 'registrar') {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
+
+include '../config/database.php';
+
+/* =====================================================
+   PARAMETERS
+===================================================== */
+
+$student_id = intval($_GET['student_id'] ?? 0);
+
+if ($student_id <= 0) {
+    die("Invalid student ID.");
+}
+
+/* =====================================================
+   PROGRAM → SUBJECT TABLE MAPPING
+===================================================== */
+
+$programSubjectMap = [
+    'BSIT'                             => 'subjects_it',
+    'BSHM'                             => 'subjects_bshm',
+    'BSBA-MM'                          => 'subjects_bsba_mm',
+    'BSBA-FM'                          => 'subjects_bsfm',
+    'BSFM'                             => 'subjects_bsfm',
+    'BTVTED - Electrical Technology'   => 'subjects_ted_et',
+    'BTVTED - Automotive Technology'   => 'subjects_ted_at',
+    'BTVTED - Food Service Management' => 'subjects_ted_fsm',
+    'BTVTED - Garments Fashion Design' => 'subjects_ted_gfd',
+    'BSEd - English'                   => 'subjects_ted_english',
+    'BSEd - Mathematics'               => 'subjects_ted_math',
+    'BSEd - Filipino'                  => 'subjects_ted_filipino',
+    'BSEd - Science'                   => 'subjects_ted_science'
+];
+
+$yearLabels = [1 => 'First', 2 => 'Second', 3 => 'Third', 4 => 'Fourth', 5 => 'Fifth'];
+
+function normalizeProgram($program, $map) {
+    $program = trim($program);
+    if (isset($map[$program])) return $program;
+    foreach ($map as $key => $table) {
+        if (strcasecmp(trim($key), $program) === 0) return $key;
+    }
+    if ($program === 'BSBA-FM' || $program === 'BSFM') return 'BSFM';
+    return null;
+}
+
+/* =====================================================
+   GET STUDENT INFO
+===================================================== */
+
+$stmt = $conn->prepare("
+    SELECT * FROM students WHERE student_id = ?
+");
+$stmt->bind_param("i", $student_id);
+$stmt->execute();
+$student = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+if (!$student) {
+    die("Student not found.");
+}
+
+$program = trim($student['program']);
+$fullName = trim($student['lastname'] . ', ' . $student['firstname'] . ' ' . ($student['middlename'] ?: '') . ' ' . ($student['suffix'] ?: ''));
+$surnameCommaName = trim($student['lastname'] . ', ' . $student['firstname'] . ' ' . ($student['middlename'] ?: ''));
+
+/* =====================================================
+   GET GRADES
+===================================================== */
+
+$grades = [];
+$stmt = $conn->prepare("SELECT subject_code, grade, remarks FROM grades WHERE student_id = ? AND grade IS NOT NULL ORDER BY subject_code ASC");
+$stmt->bind_param("i", $student_id);
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $grades[$row['subject_code']] = $row;
+}
+$stmt->close();
+
+/* =====================================================
+   GET SUBJECTS + GROUP BY YEAR & SEMESTER
+===================================================== */
+
+$studentProgram = normalizeProgram($program, $programSubjectMap);
+$subjectTable = $studentProgram ? $programSubjectMap[$studentProgram] : null;
+
+$groupedRows = [];
+
+if ($subjectTable && !empty($grades)) {
+    $checkTable = $conn->query("SHOW TABLES LIKE '$subjectTable'");
+    if ($checkTable && $checkTable->num_rows > 0) {
+        $hasSemesterCol = false;
+        $colCheck = $conn->query("SHOW COLUMNS FROM `$subjectTable` LIKE 'semester'");
+        if ($colCheck && $colCheck->num_rows > 0) $hasSemesterCol = true;
+        
+        $codes = array_keys($grades);
+        $placeholders = implode(',', array_fill(0, count($codes), '?'));
+        $types = str_repeat('s', count($codes));
+        
+        $sql = "SELECT subject_code, subject_name, units, year_level";
+        if ($hasSemesterCol) $sql .= ", semester";
+        $sql .= " FROM `$subjectTable` WHERE subject_code IN ($placeholders)";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($types, ...$codes);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        while ($subj = $result->fetch_assoc()) {
+            $code = $subj['subject_code'];
+            $grade_data = $grades[$code];
+            $grade_val = floatval($grade_data['grade']);
+            $units = floatval($subj['units']);
+            $year = intval($subj['year_level']);
+            $sem = $subj['semester'] ?? '1st';
+            
+            if (!isset($groupedRows[$year])) $groupedRows[$year] = [];
+            if (!isset($groupedRows[$year][$sem])) $groupedRows[$year][$sem] = [];
+            
+            $groupedRows[$year][$sem][] = [
+                'code' => $code,
+                'name' => $subj['subject_name'],
+                'units' => $units,
+                'grade' => $grade_val,
+                'grade_display' => number_format($grade_val, 2),
+                'remarks' => $grade_data['remarks']
+            ];
+        }
+        $stmt->close();
+    }
+}
+
+ksort($groupedRows);
+foreach ($groupedRows as $year => &$semesters) {
+    uksort($semesters, function($a, $b) {
+        $order = ['1st' => 1, '2nd' => 2, 'Summer' => 3];
+        return ($order[$a] ?? 4) - ($order[$b] ?? 4);
+    });
+}
+unset($semesters);
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function fmt($val, $default = '') {
+    return ($val !== null && $val !== '') ? htmlspecialchars($val) : $default;
+}
+
+function fmtDate($d) {
+    if (empty($d)) return '';
+    return date('F d, Y', strtotime($d));
+}
+
+$studentNumber = $student['student_number'];
+$address = $student['address'] ?? '';
+$dob = fmtDate($student['date_of_birth'] ?? null);
+$pob = $student['place_of_birth'] ?? '';
+$nationality = $student['nationality'] ?? 'Filipino';
+$schoolLast = $student['school_last_attended'] ?? '';
+$hs = $student['high_school'] ?? '';
+$credentials = $student['entrance_credentials'] ?? '';
+$gradYearHs = $student['graduation_year_hs'] ?? '';
+$admissionDate = fmtDate($student['admission_date'] ?? null);
+$nstpSerial = $student['nstp_serial'] ?? '';
+$copcNo = $student['copc_no'] ?? '';
+$copcDate = fmtDate($student['copc_date_issued'] ?? null);
+$boardRef = $student['board_ref_no'] ?? '';
+$boardRefDate = fmtDate($student['board_ref_date_issued'] ?? null);
+$graduationDate = fmtDate($student['graduation_date'] ?? null);
+
+$degree = $program;
+$today = new DateTime();
+$issuedDay = $today->format('j');
+$issuedMonth = $today->format('F');
+$issuedYear = $today->format('Y');
+$controlNo = 'TOR-' . $today->format('Y') . '-' . str_pad($student_id, 4, '0', STR_PAD_LEFT);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mariel B. Royo — Web Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.15.1/devicon.min.css" />
-<style>
-  :root{
-    --black:#0a0909;
-    --panel:#141213;
-    --panel-2:#1b1819;
-    --line:#2a2426;
-    --maroon:#7d0f28;
-    --maroon-bright:#b8163d;
-    --cream:#efe8e1;
-    --muted:#9b9290;
-    --gold:#c9a15a;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--black);
-    color:var(--cream);
-    font-family:'Inter',sans-serif;
-    line-height:1.6;
-  }
-  h1,h2,h3{font-family:'Fraunces',serif;}
-  a{color:inherit;}
-  img{max-width:100%;display:block;}
+    <meta charset="UTF-8">
+    <title>Official Transcript of Records - Romblon State University</title>
+    <style>
+        @page {
+            margin: 6mm 8mm;
+            size: A4 portrait;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: #e9e9e9;
+            padding: 10px;
+            color: #000;
+            font-size: 12px; /* Mula 10.5px pinalaki papuntang 12px */
+            line-height: 1.25;
+        }
+        .container {
+            max-width: 8.27in;
+            margin: 0 auto;
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 8px rgba(0,0,0,.1);
+            position: relative;
+        }
 
-  /* NAV */
-  nav{
-    position:fixed;top:0;left:0;width:100%;z-index:1000;
-    background:rgba(10,9,9,.9);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-container{
-    max-width:1180px;margin:0 auto;padding:16px 28px;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  .nav-brand{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;letter-spacing:.03em;color:var(--cream);text-decoration:none;}
-  .nav-brand span{color:var(--maroon-bright);}
-  .hamburger{display:none;font-size:22px;color:var(--cream);cursor:pointer;}
-  .nav-links{display:flex;list-style:none;gap:28px;}
-  .nav-links li a{
-    color:var(--muted);text-decoration:none;font-size:.92rem;font-weight:500;
-    transition:color .25s;
-  }
-  .nav-links li a:hover{color:var(--maroon-bright);}
+        /* HEADER */
+        .doc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .doc-header .logo {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+        }
+        .doc-header .header-text {
+            text-align: center;
+            flex-grow: 1;
+        }
+        .doc-header .uni-name {
+            font-size: 17px; /* Mula 15px */
+            font-weight: bold;
+            letter-spacing: .5px;
+        }
+        .doc-header .uni-sub {
+            font-size: 12px;
+        }
+        .doc-header .campus-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        .doc-header .office-name {
+            font-size: 11px;
+        }
+        .doc-header .doc-title {
+            font-size: 16px; /* Mula 14px */
+            font-weight: bold;
+            margin-top: 4px;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+        }
+        .doc-header .photo-box {
+            width: 80px;
+            height: 90px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: #777;
+            text-align: center;
+            background: #fafafa;
+        }
 
-  section{padding:120px 28px 90px;max-width:1180px;margin:0 auto;}
-  .section-label{
-    font-size:.78rem;color:var(--maroon-bright);font-weight:600;
-    margin-bottom:10px;letter-spacing:.02em;
-  }
-  h2{font-size:2rem;color:var(--cream);margin-bottom:44px;font-weight:600;}
+        /* SECTION TITLES */
+        .section-title {
+            background-color: #d2e4d0;
+            border: 1px solid #000;
+            font-weight: bold;
+            font-size: 11.5px; /* Mula 10px */
+            text-align: center;
+            padding: 3px 0;
+            margin-top: -1px;
+            letter-spacing: .5px;
+        }
 
-  /* HERO / ABOUT */
-  #about{
-    min-height:92vh;display:flex;align-items:center;padding-top:140px;
-    background:
-      radial-gradient(circle at 82% 18%, rgba(125,15,40,.28), transparent 55%),
-      var(--black);
-  }
-  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center;width:100%;}
-  .hero-text .eyebrow{color:var(--maroon-bright);font-weight:600;font-size:.85rem;letter-spacing:.03em;margin-bottom:18px;}
-  .hero-text h1{font-size:3.3rem;line-height:1.08;font-weight:600;color:var(--cream);margin-bottom:8px;}
-  .hero-text .role{font-size:1.2rem;color:var(--gold);font-family:'Fraunces',serif;font-style:italic;margin-bottom:22px;}
-  .hero-text p{color:var(--muted);font-size:1.03rem;max-width:520px;margin-bottom:26px;}
-  .hero-meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-bottom:26px;font-size:.92rem;color:var(--muted);}
-  .hero-meta span i{color:var(--maroon-bright);margin-right:7px;}
-  .social-links{display:flex;gap:14px;}
-  .social-links a{
-    width:40px;height:40px;border:1px solid var(--line);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;color:var(--cream);
-    transition:.25s;text-decoration:none;
-  }
-  .social-links a:hover{border-color:var(--maroon-bright);background:var(--maroon);color:#fff;transform:translateY(-3px);}
-  .hero-photo{position:relative;justify-self:center;}
-  .hero-photo .frame{
-    width:280px;height:340px;border-radius:6px;overflow:hidden;
-    border:1px solid var(--line);position:relative;
-    box-shadow:0 30px 60px -20px rgba(0,0,0,.7);
-  }
-  .hero-photo .frame img{width:100%;height:100%;object-fit:cover;}
-  .hero-photo .tag{
-    position:absolute;bottom:-18px;left:-18px;background:var(--maroon);
-    color:#fff;padding:10px 18px;border-radius:4px;font-size:.82rem;font-weight:600;
-    box-shadow:0 12px 24px -8px rgba(125,15,40,.6);
-  }
+        /* INFO TABLES */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+            border-top: none;
+        }
+        .info-table td {
+            padding: 3px 5px;
+            font-size: 11px; /* Mula 10px */
+            vertical-align: middle;
+        }
+        .info-table .lbl {
+            font-weight: bold;
+            width: 155px;
+        }
+        .info-table .sep {
+            width: 10px;
+            text-align: center;
+        }
+        .info-table .val {
+            font-weight: normal;
+        }
 
-  /* SKILLS */
-  #skills{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .skill-group{margin-bottom:38px;}
-  .skill-group h3{
-    font-size:.9rem;color:var(--gold);text-transform:none;font-weight:600;
-    margin-bottom:16px;font-family:'Inter',sans-serif;letter-spacing:.02em;
-  }
-  .skill-icons{display:flex;flex-wrap:wrap;gap:12px;}
-  .skill-pill{
-    display:flex;align-items:center;gap:9px;background:var(--panel-2);
-    border:1px solid var(--line);padding:10px 16px;border-radius:8px;
-    font-size:.9rem;color:var(--cream);transition:.25s;
-  }
-  .skill-pill:hover{border-color:var(--maroon-bright);transform:translateY(-2px);}
-  .skill-pill i{font-size:1.15rem;color:var(--maroon-bright);}
-  .skill-pill .fa-file-word,.skill-pill .fa-palette,.skill-pill .fa-database,.skill-pill .fa-server{color:var(--maroon-bright);}
+        /* SUBJECTS TABLE */
+        .subjects-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+            margin-top: 6px;
+        }
+        .subjects-table thead tr {
+            background-color: #d2e4d0;
+        }
+        .subjects-table thead th {
+            padding: 4px 5px;
+            font-size: 11px; /* Mula 9.5px */
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #000;
+        }
+        .subjects-table .semester-header {
+            text-decoration: underline;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 3px 6px;
+            border: 1px solid #000;
+        }
+        .subjects-table tbody td {
+            padding: 3px 6px;
+            font-size: 11px; /* Mula 9.5px */
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            vertical-align: middle;
+        }
+        .subjects-table .col-code { width: 18%; font-weight: normal; }
+        .subjects-table .col-name { width: 52%; }
+        .subjects-table .col-grade { width: 10%; text-align: center; }
+        .subjects-table .col-completion { width: 10%; text-align: center; }
+        .subjects-table .col-credits { width: 10%; text-align: center; }
 
-  /* GENERIC CARD GRID */
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;}
-  .card{
-    background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--maroon);
-    border-radius:8px;padding:26px;display:flex;flex-direction:column;transition:.3s;
-  }
-  .card:hover{border-left-color:var(--maroon-bright);transform:translateY(-4px);box-shadow:0 20px 40px -20px rgba(0,0,0,.6);}
-  .card h3{color:var(--cream);font-size:1.15rem;margin-bottom:6px;font-weight:600;}
-  .card .sub{font-size:.82rem;color:var(--gold);margin-bottom:10px;font-weight:500;}
-  .card p{color:var(--muted);font-size:.93rem;flex:1;}
-  .card ul{margin-top:10px;padding-left:18px;color:var(--muted);font-size:.9rem;}
-  .card ul li{margin-bottom:6px;}
+        /* GRADING SYSTEM */
+        .grading-system {
+            border: 1px solid #000;
+            padding: 5px 8px;
+            font-size: 10px; /* Mula 8.5px */
+            margin-top: 6px;
+            line-height: 1.35;
+        }
+        .grading-system strong {
+            display: block;
+            font-size: 10.5px;
+            margin-bottom: 2px;
+        }
+        .grading-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px 10px;
+        }
 
-  #education{background:var(--black);}
-  .edu-card{
-    background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:30px 32px;margin-bottom:20px;
-  }
-  .edu-card h3{color:var(--cream);font-size:1.25rem;margin-bottom:4px;}
-  .edu-card .sub{color:var(--gold);font-size:.88rem;margin-bottom:14px;}
-  .edu-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;}
-  .edu-tags span{
-    background:rgba(125,15,40,.18);border:1px solid rgba(125,15,40,.4);color:var(--cream);
-    font-size:.8rem;padding:6px 12px;border-radius:20px;
-  }
+        /* REMARKS & NOTES */
+        .remarks {
+            margin-top: 6px;
+            font-size: 11px; /* Mula 9.5px */
+            line-height: 1.3;
+        }
+        .remarks-note {
+            border: 1px solid #000;
+            padding: 5px 6px;
+            font-size: 10px; /* Mula 8.5px */
+            margin-top: 4px;
+            line-height: 1.3;
+        }
 
-  #projects{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .project-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
-  .btn{
-    padding:9px 18px;border-radius:6px;font-size:.85rem;font-weight:600;text-decoration:none;
-    display:inline-flex;align-items:center;gap:7px;transition:.25s;border:none;cursor:pointer;font-family:inherit;
-  }
-  .btn-gallery{background:var(--maroon);color:#fff;}
-  .btn-gallery:hover{background:var(--maroon-bright);}
-  .btn-link{background:transparent;color:var(--cream);border:1px solid var(--line);}
-  .btn-link:hover{border-color:var(--maroon-bright);color:var(--maroon-bright);}
+        /* CERTIFICATION & SIGNATURES */
+        .certification-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap: 15px;
+        }
+        .certification-left {
+            width: 45%;
+            font-size: 11px; /* Mula 9.5px */
+            line-height: 1.45;
+        }
+        .certification-left .cert-line {
+            display: flex;
+        }
+        .certification-left .cert-line .lbl { width: 95px; }
+        .certification-left .cert-line .sep { width: 10px; }
+        .certification-left .cert-line .val { font-weight: bold; }
 
-  .gallery-modal{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);
-    justify-content:center;align-items:center;z-index:3000;padding:20px;
-  }
-  .gallery-modal.active{display:flex;}
-  .gallery-content{
-    background:var(--panel-2);border:1px solid var(--line);border-radius:12px;max-width:760px;width:100%;
-    max-height:88vh;overflow-y:auto;padding:26px;position:relative;
-  }
-  .gallery-close{
-    position:sticky;top:0;float:right;font-size:20px;color:var(--cream);cursor:pointer;
-    background:var(--panel);width:36px;height:36px;border-radius:50%;display:flex;
-    align-items:center;justify-content:center;border:1px solid var(--line);transition:.25s;
-  }
-  .gallery-close:hover{background:var(--maroon);border-color:var(--maroon);}
-  .gallery-title{color:var(--gold);font-size:1.4rem;margin-bottom:6px;clear:both;}
-  .gallery-desc{color:var(--muted);font-size:.92rem;margin-bottom:18px;}
-  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
-  .gallery-grid img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:var(--panel);}
-  .gallery-grid .no-img{color:var(--muted);text-align:center;padding:40px 0;grid-column:1/-1;font-size:.9rem;}
-  .gallery-link-btn{
-    display:inline-block;margin-top:18px;padding:10px 24px;background:var(--maroon);color:#fff;
-    border-radius:6px;font-weight:600;text-decoration:none;font-size:.9rem;transition:.25s;
-  }
-  .gallery-link-btn:hover{background:var(--maroon-bright);}
+        .certification-right {
+            width: 50%;
+            font-size: 11px;
+        }
+        .certification-right .cert-text {
+            text-align: justify;
+            font-size: 10px; /* Mula 9px */
+            line-height: 1.3;
+            margin-bottom: 28px;
+        }
+        .certification-right .sig-block {
+            text-align: center;
+        }
+        .certification-right .sig-name {
+            font-weight: bold;
+            font-size: 12px; /* Mula 11px */
+            text-decoration: underline;
+        }
+        .certification-right .sig-title {
+            font-size: 11px;
+        }
 
-  #achievements{background:var(--black);}
-  #leadership{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  #experience{background:var(--black);}
+        /* FOOTER */
+        .page-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 9px;
+            color: #000;
+        }
 
-  #international{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .testimonial-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:center;}
-  .testimonial-wrap .frame{border-radius:8px;overflow:hidden;border:1px solid var(--line);}
-  .testimonial-wrap img{width:100%;}
-  .testimonial-text .client-name{color:var(--gold);font-weight:600;font-size:1.25rem;font-family:'Fraunces',serif;}
-  .testimonial-text .client-role{color:var(--muted);font-size:.9rem;}
-  .testimonial-text p{color:var(--cream);}
-  .testimonial-text .quote-mark{color:var(--maroon-bright);font-size:2rem;font-family:'Fraunces',serif;line-height:0;}
-
-  #freelance{background:var(--black);}
-  .freelance-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center;}
-  .freelance-wrap .frame{border-radius:8px;overflow:hidden;border:1px solid var(--line);}
-  .freelance-text .highlight{color:var(--maroon-bright);font-weight:600;}
-  .freelance-text p{color:var(--muted);margin-bottom:10px;}
-  .freelance-text .rate-note{
-    margin-top:16px;border-top:1px solid var(--line);padding-top:16px;font-size:.88rem;color:var(--gold);
-  }
-
-  #contact{
-    background:var(--panel);border-top:1px solid var(--line);text-align:center;padding-bottom:70px;
-  }
-  #contact h2{margin-bottom:16px;}
-  #contact p{color:var(--muted);margin:6px 0;font-size:1.02rem;}
-  #contact a{color:var(--gold);text-decoration:none;}
-  #contact a:hover{color:var(--maroon-bright);}
-  footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;background:var(--panel);}
-
-  @media(max-width:860px){
-    .hero-grid,.testimonial-wrap,.freelance-wrap{grid-template-columns:1fr;}
-    .hero-photo{order:-1;}
-  }
-  @media(max-width:768px){
-    .hamburger{display:block;}
-    .nav-links{
-      position:absolute;top:60px;left:0;width:100%;background:var(--panel);
-      display:none;flex-direction:column;text-align:center;padding:10px 0;border-bottom:1px solid var(--line);
-    }
-    .nav-links li{padding:12px 0;border-top:1px solid var(--line);}
-    .nav-links.show{display:flex;}
-    section{padding:100px 20px 60px;}
-    .hero-text h1{font-size:2.3rem;}
-  }
-</style>
+        @media print {
+            body { background: white; padding: 0; }
+            .container { border: none; box-shadow: none; padding: 0; }
+        }
+    </style>
 </head>
 <body>
+<div class="container">
 
-<nav>
-  <div class="nav-container">
-    <a href="#about" class="nav-brand">M<span>.</span>Royo</a>
-    <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#international">International</a></li>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#leadership">Leadership</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#freelance">Freelance</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="hero-grid">
-    <div class="hero-text">
-      <div class="eyebrow">Web Developer · BSIT Graduate</div>
-      <h1>Mariel B. Royo</h1>
-      <div class="role">Backend-leaning developer, systems builder</div>
-      <p>Entry-level web developer and BSIT graduate with hands-on experience in backend development, database management, and web-based systems. Skilled in PHP, MySQL/MariaDB, HTML5, CSS3, JavaScript, Laravel, Java, and Spring Boot — across academic, government, freelance, and competition-based projects.</p>
-      <div class="hero-meta">
-        <span><i class="fas fa-location-dot"></i>San Fernando, Sto. Tomas, Batangas, Philippines</span>
-        <span><i class="fas fa-phone"></i>0966 001 7181</span>
-        <span><i class="fas fa-envelope"></i>royomariel14@gmail.com</span>
-      </div>
-      <div class="social-links">
-        <a href="https://www.facebook.com/share/1D5VQb8zT4/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://www.instagram.com/marielaaaa22?igsh=MWs1aXh6ZjI3ZmoyYg==" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://ph.jobstreet.com/profiles/jxSCgf1wHj" title="JobStreet"><i class="fas fa-briefcase"></i></a>
-        <a href="https://www.tiktok.com/@royomarielaaaa?_r=1&_t=ZS-92DUEp1Hzgv" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      </div>
-    </div>
-    <div class="hero-photo">
-      <div class="frame">
-        <img src="Myphoto.jpg" alt="Mariel Royo" onerror="this.src='https://via.placeholder.com/280x340/141213/9b9290?text=Photo'" />
-      </div>
-      <div class="tag">Available for freelance work</div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-label">What I work with</div>
-  <h2>Technical Skills</h2>
-
-  <div class="skill-group">
-    <h3>Backend</h3>
-    <div class="skill-icons">
-      <div class="skill-pill"><i class="devicon-php-plain colored"></i>PHP</div>
-      <div class="skill-pill"><i class="devicon-java-plain colored"></i>Java</div>
-      <div class="skill-pill"><i class="devicon-spring-plain colored"></i>Spring Boot</div>
-      <div class="skill-pill"><i class="fas fa-database"></i>JDBC</div>
-      <div class="skill-pill"><i class="devicon-laravel-plain colored"></i>Laravel</div>
-    </div>
-  </div>
-
-  <div class="skill-group">
-    <h3>Frontend</h3>
-    <div class="skill-icons">
-      <div class="skill-pill"><i class="devicon-html5-plain colored"></i>HTML5</div>
-      <div class="skill-pill"><i class="devicon-css3-plain colored"></i>CSS3</div>
-      <div class="skill-pill"><i class="devicon-javascript-plain colored"></i>JavaScript</div>
-    </div>
-  </div>
-
-  <div class="skill-group">
-    <h3>Database</h3>
-    <div class="skill-icons">
-      <div class="skill-pill"><i class="devicon-mysql-plain colored"></i>MySQL / MariaDB</div>
-      <div class="skill-pill"><i class="fas fa-server"></i>phpMyAdmin</div>
-    </div>
-  </div>
-
-  <div class="skill-group">
-    <h3>Tools & IDEs</h3>
-    <div class="skill-icons">
-      <div class="skill-pill"><i class="devicon-github-original colored"></i>GitHub</div>
-      <div class="skill-pill"><i class="devicon-postman-plain colored"></i>Postman</div>
-      <div class="skill-pill"><i class="devicon-docker-plain colored"></i>Docker</div>
-      <div class="skill-pill"><i class="fas fa-layer-group"></i>XAMPP</div>
-      <div class="skill-pill"><i class="devicon-intellij-plain colored"></i>IntelliJ IDEA</div>
-      <div class="skill-pill"><i class="devicon-vscode-plain colored"></i>VS Code</div>
-      <div class="skill-pill"><i class="fas fa-code"></i>Sublime Text</div>
-      <div class="skill-pill"><i class="fas fa-cloud"></i>InfinityFree / Hostinger</div>
-    </div>
-  </div>
-
-  <div class="skill-group">
-    <h3>Additional</h3>
-    <div class="skill-icons">
-      <div class="skill-pill"><i class="devicon-python-plain colored"></i>Python</div>
-      <div class="skill-pill"><i class="devicon-cplusplus-plain colored"></i>C++</div>
-      <div class="skill-pill"><i class="fas fa-file-word"></i>MS Office</div>
-      <div class="skill-pill"><i class="fas fa-palette"></i>Canva</div>
-      <div class="skill-pill"><i class="fas fa-file-lines"></i>Technical Documentation</div>
-    </div>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education">
-  <div class="section-label">Background</div>
-  <h2>Education</h2>
-  <div class="edu-card">
-    <h3>Bachelor of Science in Information Technology</h3>
-    <div class="sub">Romblon State University — San Fernando Campus · 2022 – 2026</div>
-    <p style="color:var(--muted);font-size:.93rem;">Dean's Lister: A.Y. 2022–2023, 2023–2024, 2024–2025</p>
-    <div class="edu-tags">
-      <span>Best Capstone / Thesis</span>
-      <span>Most Outstanding Intern</span>
-      <span>Research Participant Awardee</span>
-      <span>Service Awardee</span>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="section-label">Selected work</div>
-  <h2>Projects</h2>
-  <div class="card-grid">
-
-    <div class="card">
-      <h3>JCash Banking App</h3>
-      <div class="sub">TESDA Portfolio Project</div>
-      <p>Banking application built with Java and Spring Boot, using JDBC and MySQL. Handled backend logic, database connectivity, API testing with Postman, and source control with GitHub.</p>
+    <!-- HEADER -->
+    <div class="doc-header">
+        <img class="logo" src="../assets/RSU.png" alt="RSU Logo" onerror="this.style.visibility='hidden'">
+        <div class="header-text">
+            <div class="uni-name">ROMBLON STATE UNIVERSITY</div>
+            <div class="uni-sub">Romblon, Philippines</div>
+            <div class="campus-name">SAN FERNANDO CAMPUS</div>
+            <div class="office-name">OFFICE OF THE UNIVERSITY REGISTRAR</div>
+            <div class="doc-title">OFFICIAL TRANSCRIPT OF RECORDS</div>
+        </div>
+        <div class="photo-box">
+            <span>2x2<br>PHOTO</span>
+        </div>
     </div>
 
-    <div class="card">
-      <h3>Academic Prospectus System</h3>
-      <div class="sub">Capstone Project · Project Manager</div>
-      <p>Curriculum tracking and automated grade management system with data visualization, providing a centralized platform for curriculum and academic grade information.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('prospectus')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://academicprospectus.great-site.net/capstone/homepage.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
+    <!-- PERSONAL INFORMATION -->
+    <div class="section-title">PERSONAL INFORMATION</div>
+    <table class="info-table">
+        <tr>
+            <td class="lbl">Student ID Number</td>
+            <td class="sep">:</td>
+            <td class="val" style="width:35%;"><?= fmt($studentNumber) ?></td>
+            <td class="lbl">Date of Birth</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($dob) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">Student Name</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($surnameCommaName) ?></td>
+            <td class="lbl">Place of Birth</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($pob) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">Address</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($address) ?></td>
+            <td class="lbl">Nationality</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($nationality) ?></td>
+        </tr>
+    </table>
+
+    <!-- ADMISSION INFORMATION -->
+    <div class="section-title">ADMISSION INFORMATION</div>
+    <table class="info-table">
+        <tr>
+            <td class="lbl">School Last Attended</td>
+            <td class="sep">:</td>
+            <td class="val" style="width:35%;"><?= fmt($schoolLast) ?></td>
+            <td class="lbl">Graduation Year</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($gradYearHs) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">High School</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($hs) ?></td>
+            <td class="lbl">Admission Date</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($admissionDate) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">Entrance Credentials</td>
+            <td class="sep">:</td>
+            <td class="val" colspan="4"><?= fmt($credentials) ?></td>
+        </tr>
+    </table>
+
+    <!-- EDUCATIONAL DATA -->
+    <div class="section-title">EDUCATIONAL DATA</div>
+    <table class="info-table">
+        <tr>
+            <td class="lbl">Degree</td>
+            <td class="sep">:</td>
+            <td class="val" style="width:35%;"><?= fmt($degree) ?></td>
+            <td class="lbl">Graduation Date</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($graduationDate) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">NSTP Serial No.</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($nstpSerial) ?></td>
+            <td class="lbl">COPC Date Issued</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($copcDate) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">COPC No.</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($copcNo) ?></td>
+            <td class="lbl">BR Date Issued</td>
+            <td class="sep">:</td>
+            <td class="val"><?= fmt($boardRefDate) ?></td>
+        </tr>
+        <tr>
+            <td class="lbl">Board Referendum No.</td>
+            <td class="sep">:</td>
+            <td class="val" colspan="4"><?= fmt($boardRef) ?></td>
+        </tr>
+    </table>
+
+    <!-- SUBJECTS TABLE -->
+    <table class="subjects-table">
+        <thead>
+            <tr>
+                <th class="col-code">COURSE CODE</th>
+                <th class="col-name">DESCRIPTIVE TITLE</th>
+                <th class="col-grade">FINAL</th>
+                <th class="col-completion">COMPLETION</th>
+                <th class="col-credits">CREDITS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($groupedRows)): ?>
+                <?php foreach ($groupedRows as $yearLevel => $semesters): 
+                    $yearLabel = $yearLabels[$yearLevel] ?? $yearLevel;
+                ?>
+                    <?php foreach ($semesters as $sem => $subjects): 
+                        $semLabel = ($sem === 'Summer') ? 'Summer' : $sem . ' Semester';
+                    ?>
+                        <tr>
+                            <td colspan="5" class="semester-header">
+                                <?= htmlspecialchars($semLabel) ?>, <?= htmlspecialchars($yearLabel) ?> Year
+                            </td>
+                        </tr>
+                        <?php foreach ($subjects as $s): ?>
+                            <tr>
+                                <td class="col-code"><?= htmlspecialchars($s['code']) ?></td>
+                                <td class="col-name"><?= htmlspecialchars($s['name']) ?></td>
+                                <td class="col-grade"><?= htmlspecialchars($s['grade_display']) ?></td>
+                                <td class="col-completion">-</td>
+                                <td class="col-credits"><?= $s['units'] > 0 ? number_format($s['units'], 0) : '' ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:10px; color:#666;">
+                        No academic records available.
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <!-- GRADING SYSTEM -->
+    <div class="grading-system">
+        <strong>GRADING SYSTEM</strong>
+        <div class="grading-grid">
+            <div>1.00 - 96-100 Excellent</div>
+            <div>2.25 - 71-75 Very Satisfactory</div>
+            <div>5.00 - Failure</div>
+            <div>1.25 - 91-95 Superior</div>
+            <div>2.50 - 66-70 Satisfactory</div>
+            <div>Inc. - Incomplete</div>
+            <div>1.50 - 86-90 Very Good</div>
+            <div>2.75 - 61-65 Fairly Satisfactory</div>
+            <div>Drp. - Dropped</div>
+            <div>1.75 - 81-85 Good</div>
+            <div>3.00 - 60 Passed</div>
+            <div>W - Withdrawn</div>
+            <div>2.00 - 76-80 Meritorious</div>
+            <div>4.00 - 59-Below Conditional</div>
+            <div></div>
+        </div>
     </div>
 
-    <div class="card">
-      <h3>DACS</h3>
-      <div class="sub">City Government of Makati · Developer / Backend</div>
-      <p>Document Administration & Control System. Replaced manual Excel-based tracking with a centralized digital process for document management — deployed internally / intranet for the OM-ICTO Admin Department.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('dacs')"><i class="fas fa-images"></i> Gallery</button>
-      </div>
+    <!-- REMARKS -->
+    <div class="remarks">
+        <strong>REMARKS:</strong> <?= !empty($graduationDate) ? 'Graduated with the degree of ' . htmlspecialchars($degree) . ' on ' . htmlspecialchars($graduationDate) . '. ' : '' ?>For Employment Purposes only.
     </div>
 
-    <div class="card">
-      <h3>Business Website</h3>
-      <div class="sub">Freelance Web Developer · International Client</div>
-      <p>Designed and developed a responsive business website for a US-based legal practice, delivering a functional site accessible across different screen sizes.</p>
+    <div class="remarks-note">
+        <strong>Note:</strong> This copy is an exact reproduction of the transcript on file with the Office of the University Registrar and is considered as an original copy when it bears the dry seal of the university and original signature in ink of the Registrar. Any erasure or alteration made on this copy renders the whole transcript invalid.
     </div>
 
-    <div class="card">
-      <h3>High Value Crop Production Data Management & Analytics System</h3>
-      <div class="sub">Capstone Project</div>
-      <p>PHP/MySQL agricultural data management and analytics system covering farmer, farmland, crop production, inventory, reporting, and analytics functions.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('sakamart')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://sakamart.great-site.net/index.html" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
+    <!-- CERTIFICATION + SIGNATURES -->
+    <div class="certification-section">
+        <div class="certification-left">
+            <div class="cert-line"><span class="lbl">Prepared by</span><span class="sep">:</span><span class="val">_______________________</span></div>
+            <div class="cert-line"><span class="lbl">Verified by</span><span class="sep">:</span><span class="val">_______________________</span></div>
+            <div class="cert-line"><span class="lbl">Control No.</span><span class="sep">:</span><span class="val"><?= htmlspecialchars($controlNo) ?></span></div>
+            <div class="cert-line"><span class="lbl">Released by</span><span class="sep">:</span><span class="val">_______________________</span></div>
+            <div class="cert-line"><span class="lbl">Date Released</span><span class="sep">:</span><span class="val"><?= date('F d, Y') ?></span></div>
+        </div>
+
+        <div class="certification-right">
+            <div class="cert-text">
+                <strong style="display:block; text-align:center; margin-bottom: 2px;">CERTIFICATION</strong>
+                This certifies that the foregoing records of <strong><?= htmlspecialchars($surnameCommaName) ?></strong> have been verified against the originals on file of this University.
+            </div>
+            <div class="sig-block">
+                <div class="sig-name">CATHERINE R. ROLLON</div>
+                <div class="sig-title">Campus Registrar</div>
+            </div>
+        </div>
     </div>
 
-    <div class="card">
-      <h3>Web-Based Fisherfolk Profiling System</h3>
-      <div class="sub">Capstone Project</div>
-      <p>PHP/MySQL system handling registration, RSBSA enrollment, boat registration, records, and reports — centralizing fisherfolk records into an organized digital platform.</p>
+    <!-- PAGE FOOTER -->
+    <div class="page-footer">
+        <div>REG-00-001<br>Creation: 2021-02-14</div>
+        <div>Page 1/1</div>
     </div>
 
-    <div class="card">
-      <h3>Online Record Management and Tracking System</h3>
-      <div class="sub">Capstone Project · Registrar</div>
-      <p>PHP/MySQL system handling academic records, enrollment, grade submission, document requests, payments, tracking, and release workflows.</p>
-    </div>
-
-    <div class="card">
-      <h3>CodeBuddyPH</h3>
-      <div class="sub">Personal AI-Assisted Web IDE · Developer</div>
-      <p>AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('codebuddy')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://codebuddyph.great-site.net/Codebuddy/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>ZONA AI</h3>
-      <div class="sub">LIKHAMON Ideathon 2025 · Best Pitch Deck · Team Leader</div>
-      <p>AI prototype for disaster risk analysis and hazard mapping, enabling early decision support.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('zona')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://zonaai.great-site.net/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>ALAGA's Quest</h3>
-      <div class="sub">Game Development 2025 · 1st Place · Documenter & Presenter</div>
-      <p>Educational game built with GDevelop that won 1st place in the Game Development Competition 2025.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('alaga')"><i class="fas fa-images"></i> Gallery</button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<div class="gallery-modal" id="galleryModal">
-  <div class="gallery-content">
-    <div class="gallery-close" onclick="closeGallery()">✖</div>
-    <h3 class="gallery-title" id="galleryTitle">Project</h3>
-    <p class="gallery-desc" id="galleryDesc">Description</p>
-    <div class="gallery-grid" id="galleryGrid"></div>
-    <a href="#" target="_blank" class="gallery-link-btn" id="galleryVisitBtn"><i class="fas fa-external-link-alt"></i> Visit Live Site</a>
-  </div>
 </div>
 
-<!-- INTERNATIONAL CLIENT -->
-<section id="international">
-  <div class="section-label">Client feedback</div>
-  <h2>International Client</h2>
-  <div class="testimonial-wrap">
-    <div class="frame">
-      <img src="chris.jpg" alt="Client: Chris Cristobal" onerror="this.src='https://via.placeholder.com/420x340/141213/9b9290?text=Chris+Cristobal'" />
-    </div>
-    <div class="testimonial-text">
-      <div class="quote-mark">"</div>
-      <p>I developed a professional, responsive website for his legal practice — helping showcase his services and connect with clients across screen sizes.</p>
-      <p style="margin-top:16px;"><span class="client-name">Chris Cristobal</span><br /><span class="client-role">Pre-Litigation Case Consultant · Law Offices of Jacob Emrani</span></p>
-      <p style="margin-top:8px;color:var(--muted);font-size:.9rem;"><i class="fas fa-globe"></i> Los Angeles, CA, USA</p>
-    </div>
-  </div>
-</section>
-
-<!-- ACHIEVEMENTS -->
-<section id="achievements">
-  <div class="section-label">Recognition</div>
-  <h2>Achievements & Recognitions</h2>
-  <div class="card-grid">
-    <div class="card"><h3>LIKHAMON Ideathon 2024</h3><div class="sub">Champion</div><p>Led the winning team behind the agricultural data platform connecting farmers and buyers to reduce waste.</p></div>
-    <div class="card"><h3>Game Development 2025</h3><div class="sub">1st Place</div><p>ALAGA's Quest — Documenter & Presenter of the winning educational game.</p></div>
-    <div class="card"><h3>LIKHAMON Ideathon 2025</h3><div class="sub">Best Pitch Deck</div><p>Led storytelling and pitch design for ZONA AI, an AI platform for disaster risk analysis.</p></div>
-    <div class="card"><h3>INSPIRE 2025</h3><div class="sub">3rd Place Overall</div><p>Recognized for outstanding presentation and performance at the INSPIRE 2025 competition.</p></div>
-    <div class="card"><h3>INSPIRE 2025</h3><div class="sub">3rd Best Presenter</div><p>Awarded for exceptional presentation skills at INSPIRE 2025.</p></div>
-    <div class="card"><h3>INSPIRE 2025</h3><div class="sub">3rd Best IEC</div><p>Recognized for outstanding Information, Education, and Communication material.</p></div>
-    <div class="card"><h3>Best Output Presenter</h3><div class="sub">The Digital Era Symposium</div><p>Awarded for outstanding presentation at the Digital Era Symposium.</p></div>
-    <div class="card"><h3>LIKHAMON PROMAX 2026</h3><div class="sub">Research Congress</div><p>Presented research at the LIKHAMON PROMAX Research Congress.</p></div>
-  </div>
-</section>
-
-<!-- LEADERSHIP -->
-<section id="leadership">
-  <div class="section-label">Beyond the code</div>
-  <h2>Leadership Experience</h2>
-  <div class="card-grid">
-    <div class="card"><h3>Class Mayor</h3><div class="sub">2022 – 2023</div><p>Represented students and coordinated academic activities.</p></div>
-    <div class="card"><h3>TECHNO Treasurer</h3><div class="sub">2023 – 2024</div><p>Managed organization funds and financial records.</p></div>
-    <div class="card"><h3>TECHSO 2nd Vice President</h3><div class="sub">2024 – 2025</div><p>Supported executive decisions and led student initiatives.</p></div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-label">Where I've worked</div>
-  <h2>Work Experience</h2>
-  <div class="card-grid">
-    <div class="card">
-      <h3>City Government of Makati</h3>
-      <div class="sub">OJT / Web Developer · Jan 2026 – Mar 2026</div>
-      <ul>
-        <li>Developed and maintained web-based systems for internal government operations.</li>
-        <li>Focused on backend development, database management, and system functionality.</li>
-        <li>Supported the digitalization of internal government processes through functional web-based systems.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Karzai Corporation</h3>
-      <div class="sub">Production Staff (Office-based) · Jan 2021 – Jan 2022</div>
-      <ul><li>Handled office-based documentation, production records, and coordination tasks.</li></ul>
-    </div>
-    <div class="card">
-      <h3>Vacuumtech Philippines Inc.</h3>
-      <div class="sub">Quality Checker · Jul 2020 – Dec 2020</div>
-      <ul><li>Inspected products for quality compliance and maintained accurate inspection records.</li></ul>
-    </div>
-    <div class="card">
-      <h3>Global Compak Inc.</h3>
-      <div class="sub">Quality Sorter · Aug 2017 – Jun 2020</div>
-      <ul><li>Performed product sorting and quality inspection according to production standards.</li></ul>
-    </div>
-    <div class="card">
-      <h3>Yazaki-Torres Manufacturing Inc.</h3>
-      <div class="sub">Production Operator · Sep 2014 – Jun 2017</div>
-      <ul><li>Operated production processes while following quality, safety, and workplace requirements.</li></ul>
-    </div>
-  </div>
-</section>
-
-<!-- FREELANCE -->
-<section id="freelance">
-  <div class="section-label">Hire me</div>
-  <h2>Freelance Services</h2>
-  <div class="freelance-wrap">
-    <div class="frame">
-      <img src="mayeh.jpg" alt="Freelance Services" onerror="this.src='https://via.placeholder.com/480x400/141213/9b9290?text=Freelance+Services'" />
-    </div>
-    <div class="freelance-text">
-      <p><span class="highlight">Affordable rates</span> · <span class="highlight">Quality work</span></p>
-      <p>I offer website development, system development, thesis formatting, and MS Office assistance — tailored to your needs.</p>
-      <p><i class="fas fa-envelope" style="color:var(--maroon-bright);"></i> royomariel14@gmail.com<br />
-      <i class="fas fa-phone" style="color:var(--maroon-bright);"></i> Viber / Telegram: +63 966 001 7181<br />
-      <i class="fab fa-facebook" style="color:var(--maroon-bright);"></i> Facebook: Mariel Royo</p>
-      <div class="rate-note">
-        <i class="fas fa-check-circle"></i> 50% down payment · 50% upon completion<br/>
-        <i class="fas fa-rocket"></i> Free quotation available
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-label">Get in touch</div>
-  <h2>Contact Me</h2>
-  <p><i class="fas fa-envelope" style="color:var(--maroon-bright);"></i> royomariel14@gmail.com</p>
-  <p><i class="fas fa-phone" style="color:var(--maroon-bright);"></i> 0966 001 7181</p>
-  <p><i class="fas fa-map-marker-alt" style="color:var(--maroon-bright);"></i> San Fernando, Sto. Tomas, Batangas</p>
-  <p style="margin-top:10px;"><i class="fas fa-globe" style="color:var(--maroon-bright);"></i> <a href="https://marielaaaa22.github.io/Marielroyoportfolio.github.io" target="_blank">marielaaaa22.github.io</a></p>
-</section>
-
-<footer>&copy; 2026 Mariel B. Royo. Built with care, maroon, and a little bit of black.</footer>
-
 <script>
-  const burger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  burger.addEventListener('click', () => navLinks.classList.toggle('show'));
-  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('show')));
-
-  const galleryData = {
-    sakamart: {
-      title: 'High Value Crop Production Data Management & Analytics System',
-      desc: 'PHP/MySQL agricultural data management and analytics system covering farmer, farmland, crop production, inventory, reporting, and analytics.',
-      link: 'https://sakamart.great-site.net/index.html',
-      images: ['sakamart1.png','sakamart2.png','sakamart3.png']
-    },
-    zona: {
-      title: 'ZONA AI',
-      desc: 'AI prototype for disaster risk analysis and hazard mapping, enabling early decision support. LIKHAMON Ideathon 2025 Best Pitch Deck.',
-      link: 'https://zonaai.great-site.net/index.php',
-      images: ['zona1.png','zona2.png','zona3.png']
-    },
-    alaga: {
-      title: "ALAGA's Quest",
-      desc: 'Educational game built with GDevelop that won 1st place in the Game Development Competition 2025.',
-      link: '#',
-      images: ['alaga1.png','alaga2.png','alaga3.png']
-    },
-    prospectus: {
-      title: 'Academic Prospectus System',
-      desc: "Curriculum tracking and automated grade management system with data visualization and Dean's List ranking. Capstone Project.",
-      link: 'https://academicprospectus.great-site.net/capstone/homepage.php',
-      images: ['aps1.png','aps2.png','aps3.png','aps4.png','aps5.png']
-    },
-    codebuddy: {
-      title: 'CodeBuddyPH',
-      desc: 'AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.',
-      link: 'https://codebuddyph.great-site.net/Codebuddy/index.php',
-      images: ['cb1.png','cb2.png','cb3.png']
-    },
-    dacs: {
-      title: 'DACS — Document Administration & Control System',
-      desc: 'Digital document tracking system that replaced manual Excel-based tracking for the OM-ICTO Admin Department. Deployed internally / intranet.',
-      link: '#',
-      images: ['dacs1.png','dacs2.png','dacs3.png']
-    }
-  };
-
-  function openGallery(key){
-    const data = galleryData[key];
-    if(!data) return;
-    document.getElementById('galleryTitle').textContent = data.title;
-    document.getElementById('galleryDesc').textContent = data.desc;
-    document.getElementById('galleryVisitBtn').href = data.link;
-    const grid = document.getElementById('galleryGrid');
-    grid.innerHTML = '';
-    if(data.images && data.images.length){
-      data.images.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = data.title + ' screenshot';
-        img.onerror = function(){ this.src = 'https://via.placeholder.com/300x180/1b1819/9b9290?text=No+Screenshot'; };
-        grid.appendChild(img);
-      });
-    } else {
-      const fallback = document.createElement('div');
-      fallback.className = 'no-img';
-      fallback.textContent = 'No screenshots available yet.';
-      grid.appendChild(fallback);
-    }
-    document.getElementById('galleryModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeGallery(){
-    document.getElementById('galleryModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  document.getElementById('galleryModal').addEventListener('click', function(e){ if(e.target === this) closeGallery(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeGallery(); });
+    window.onload = function() { window.print(); }
 </script>
-
 </body>
 </html>
+<?php $conn->close(); ?>
