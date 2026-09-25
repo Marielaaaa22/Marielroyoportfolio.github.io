@@ -252,7 +252,7 @@
   .project-preview{
     position:relative;
     width:calc(100% + 56px);
-    margin:-28px -28px 24px;
+    margin:-28px -28px 18px;
     aspect-ratio:16/9;
     overflow:hidden;
     background:#0d121a;
@@ -318,7 +318,8 @@
   }
 
   /* CARDS */
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;}
+  .card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;}
+  @media(max-width:800px){.card-grid{grid-template-columns:1fr;}}
   .card{
     background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--red-dark);
     border-radius:8px;padding:28px;display:flex;flex-direction:column;transition:.3s;
@@ -349,7 +350,8 @@
   }
 
   /* BUTTONS & ACTIONS */
-  .project-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+  .project-actions{display:flex;gap:10px;margin:0 0 22px;flex-wrap:wrap;}
+  .project-actions .btn{width:100%;justify-content:center;}
   .btn{
     padding:9px 18px;border-radius:6px;font-size:.8rem;font-weight:700;text-decoration:none;
     display:inline-flex;align-items:center;gap:8px;transition:.25s;border:none;cursor:pointer;
@@ -612,190 +614,123 @@
   <div class="section-label">Selected work</div>
   <h2>Projects</h2>
   <p style="max-width:760px;margin:-24px 0 34px;color:var(--muted);font-size:.82rem;">
-    Explore each project through its front-page preview, project details, and live demo when available.
+    A selection of systems, web applications, and prototypes I've worked on.
   </p>
   <div class="card-grid">
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/jcash.png" alt="JCash Banking App front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>System Preview</strong>
-          Upload <code>project-previews/jcash.png</code>
-        </div>
-        <span class="preview-label">System Preview</span>
+        <img src="project-previews/jcash.png" alt="JCash Banking App front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/jcash.png</code></div>
       </div>
-<div class="card">
+      <div class="project-actions"><a href="#" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Live Site</a></div>
       <h3>JCash Banking App</h3>
       <div class="sub">TESDA Portfolio Project</div>
       <p>Banking application built with Java and Spring Boot, using JDBC and MySQL. Handled backend logic, database connectivity, API testing with Postman, and source control with GitHub.</p>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/academic-prospectus.png" alt="Academic Prospectus System front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>System Front Page</strong>
-          Upload <code>project-previews/academic-prospectus.png</code>
-        </div>
-        <span class="preview-label">System Front Page</span>
+        <img src="project-previews/academic-prospectus.png" alt="Academic Prospectus System front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/academic-prospectus.png</code></div>
       </div>
-<div class="card">
+      <div class="project-actions"><a href="https://academicprospectus.great-site.net/capstone/homepage.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Live Site</a></div>
       <h3>Academic Prospectus System</h3>
       <div class="sub">Capstone Project · Project Manager</div>
       <p>Curriculum tracking and automated grade management system with data visualization, providing a centralized platform for curriculum and academic grade information.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('prospectus')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://academicprospectus.great-site.net/capstone/homepage.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/dacs.png" alt="DACS front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>System Front Page</strong>
-          Upload <code>project-previews/dacs.png</code>
-        </div>
-        <span class="preview-label">System Front Page</span>
+        <img src="project-previews/dacs.png" alt="DACS front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/dacs.png</code></div>
       </div>
-<div class="card">
       <h3>DACS</h3>
       <div class="sub">City Government of Makati · Developer / Backend</div>
-      <p>Document Administration & Control System. Replaced manual Excel-based tracking with a centralized digital process for document management — deployed internally / intranet for the OM-ICTO Admin Department.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('dacs')"><i class="fas fa-images"></i> Gallery</button>
-      </div>
+      <p>Document Administration &amp; Control System. Replaced manual Excel-based tracking with a centralized digital process for document management — deployed internally / intranet for the OM-ICTO Admin Department.</p>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/business-website.png" alt="Business Website front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>Website Front Page</strong>
-          Upload <code>project-previews/business-website.png</code>
-        </div>
-        <span class="preview-label">Website Front Page</span>
+        <img src="project-previews/business-website.png" alt="Business Website front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/business-website.png</code></div>
       </div>
-<div class="card">
       <h3>Business Website</h3>
       <div class="sub">Freelance Web Developer · International Client</div>
       <p>Designed and developed a responsive business website for a US-based legal practice, delivering a functional site accessible across different screen sizes.</p>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/high-value-crop.png" alt="High Value Crop Production Data Management & Analytics System front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>System Front Page</strong>
-          Upload <code>project-previews/high-value-crop.png</code>
-        </div>
-        <span class="preview-label">System Front Page</span>
+        <img src="project-previews/high-value-crop.png" alt="High Value Crop Production Data Management &amp; Analytics System front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/high-value-crop.png</code></div>
       </div>
-<div class="card">
-      <h3>High Value Crop Production Data Management & Analytics System</h3>
+      <h3>High Value Crop Production Data Management &amp; Analytics System</h3>
       <div class="sub">Capstone Project</div>
       <p>PHP/MySQL agricultural data management and analytics system covering farmer, farmland, crop production, inventory, reporting, and analytics functions.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('crop')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="#" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/fisherfolk.png" alt="Web-Based Fisherfolk Profiling System front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>System Front Page</strong>
-          Upload <code>project-previews/fisherfolk.png</code>
-        </div>
-        <span class="preview-label">System Front Page</span>
+        <img src="project-previews/fisherfolk.png" alt="Web-Based Fisherfolk Profiling System front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/fisherfolk.png</code></div>
       </div>
-<div class="card">
       <h3>Web-Based Fisherfolk Profiling System</h3>
       <div class="sub">Capstone Project</div>
       <p>PHP/MySQL system handling registration, RSBSA enrollment, boat registration, records, and reports — centralizing fisherfolk records into an organized digital platform.</p>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/registrar.png" alt="Online Record Management and Tracking System front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>System Front Page</strong>
-          Upload <code>project-previews/registrar.png</code>
-        </div>
-        <span class="preview-label">System Front Page</span>
+        <img src="project-previews/registrar.png" alt="Online Record Management and Tracking System front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/registrar.png</code></div>
       </div>
-<div class="card">
       <h3>Online Record Management and Tracking System</h3>
       <div class="sub">Capstone Project · Registrar</div>
       <p>PHP/MySQL system handling academic records, enrollment, grade submission, document requests, payments, tracking, and release workflows.</p>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/codebuddy.png" alt="CodeBuddyPH front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>Web IDE Front Page</strong>
-          Upload <code>project-previews/codebuddy.png</code>
-        </div>
-        <span class="preview-label">Web IDE Front Page</span>
+        <img src="project-previews/codebuddy.png" alt="CodeBuddyPH front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/codebuddy.png</code></div>
       </div>
-<div class="card">
+      <div class="project-actions"><a href="https://codebuddyph.great-site.net/Codebuddy/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Live Site</a></div>
       <h3>CodeBuddyPH</h3>
       <div class="sub">Personal AI-Assisted Web IDE · Developer</div>
       <p>AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('codebuddy')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://codebuddyph.great-site.net/Codebuddy/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/zona-ai.png" alt="ZONA AI front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>AI Platform Front Page</strong>
-          Upload <code>project-previews/zona-ai.png</code>
-        </div>
-        <span class="preview-label">AI Platform Front Page</span>
+        <img src="project-previews/sakamart.png" alt="SakaMart front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/sakamart.png</code></div>
       </div>
-<div class="card">
+      <div class="project-actions"><a href="https://sakamart.great-site.net/index.html" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Live Site</a></div>
+      <h3>SakaMart</h3>
+      <div class="sub">LIKHAMON Ideathon 2024 · Champion · Team Leader</div>
+      <p>Competition web application prototype developed as a team project for the LIKHAMON Ideathon 2024.</p>
+    </div>
+
+    <div class="card">
+      <div class="project-preview missing">
+        <img src="project-previews/zona-ai.png" alt="ZONA AI front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/zona-ai.png</code></div>
+      </div>
+      <div class="project-actions"><a href="https://zonaai.great-site.net/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Live Site</a></div>
       <h3>ZONA AI</h3>
       <div class="sub">LIKHAMON Ideathon 2025 · Best Pitch Deck · Team Leader</div>
       <p>AI prototype for disaster risk analysis and hazard mapping, enabling early decision support.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('zona')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://zonaai.great-site.net/index.php" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
-      </div>
     </div>
 
-    
+    <div class="card">
       <div class="project-preview missing">
-        <img src="project-previews/alaga-quest.png" alt="ALAGA's Quest front page"
-             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
-        <div class="preview-fallback">
-          <strong>Game Front Page</strong>
-          Upload <code>project-previews/alaga-quest.png</code>
-        </div>
-        <span class="preview-label">Game Front Page</span>
+        <img src="project-previews/alaga-quest.png" alt="ALAGA's Quest front page" onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback"><strong>Front Page Preview</strong>Upload <code>project-previews/alaga-quest.png</code></div>
       </div>
-<div class="card">
       <h3>ALAGA's Quest</h3>
-      <div class="sub">Game Development 2025 · 1st Place · Documenter & Presenter</div>
+      <div class="sub">Game Development 2025 · 1st Place · Documenter &amp; Presenter</div>
       <p>Educational game built with GDevelop that won 1st place in the Game Development Competition 2025.</p>
-      <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('alaga')"><i class="fas fa-images"></i> Gallery</button>
-      </div>
     </div>
 
   </div>
