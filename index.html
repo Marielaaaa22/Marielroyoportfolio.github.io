@@ -250,13 +250,12 @@
 
   /* PROJECT IMAGE */
   .project-image{
-    width:100%;
-    margin:0 0 24px;
-    padding:10px;
+    width:calc(100% - 20px);
+    margin:0 auto 24px;
     aspect-ratio:16/9;
     overflow:hidden;
-    background:#0d121a;
-    border:1px solid var(--line);
+    background:transparent;
+    border:none;
     border-radius:10px;
   }
   .project-image img{
@@ -265,7 +264,8 @@
     display:block;
     object-fit:cover;
     object-position:top center;
-    border-radius:6px;
+    border:none;
+    border-radius:8px;
     transition:transform .35s ease, filter .35s ease;
   }
   .card:hover .project-image img{
