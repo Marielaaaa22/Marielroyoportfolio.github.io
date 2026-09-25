@@ -247,6 +247,76 @@
   .skill-pill:hover{border-color:var(--red-pink);transform:translateY(-2px);}
   .skill-pill i{font-size:1.1rem;color:var(--red-pink);}
 
+
+  /* PROJECT FRONT-PAGE PREVIEWS */
+  .project-preview{
+    position:relative;
+    width:calc(100% + 56px);
+    margin:-28px -28px 24px;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:#0d121a;
+    border-bottom:1px solid var(--line);
+  }
+  .project-preview img{
+    width:100%;height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:top center;
+    transition:transform .45s ease, filter .35s ease;
+  }
+  .card:hover .project-preview img{
+    transform:scale(1.035);
+    filter:brightness(1.08);
+  }
+  .project-preview::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(9,13,18,.72),transparent 55%);
+    pointer-events:none;
+  }
+  .preview-label{
+    position:absolute;
+    left:14px;bottom:12px;z-index:2;
+    padding:6px 10px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:999px;
+    background:rgba(9,13,18,.72);
+    backdrop-filter:blur(8px);
+    color:#fff;
+    font-size:.58rem;
+    font-weight:800;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+  .project-preview.missing{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 50% 35%,rgba(230,46,77,.16),transparent 48%),
+      #0d121a;
+  }
+  .project-preview.missing::before{
+    content:'';
+    width:42px;height:42px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;
+    position:absolute;
+  }
+  .preview-fallback{
+    position:relative;z-index:2;
+    text-align:center;
+    color:#778292;
+    font-size:.66rem;
+    line-height:1.5;
+    padding:20px;
+  }
+  .preview-fallback strong{
+    display:block;color:#c8d0da;
+    font-size:.72rem;margin-bottom:4px;
+  }
+
   /* CARDS */
   .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;}
   .card{
@@ -541,15 +611,38 @@
 <section id="projects">
   <div class="section-label">Selected work</div>
   <h2>Projects</h2>
+  <p style="max-width:760px;margin:-24px 0 34px;color:var(--muted);font-size:.82rem;">
+    Explore each project through its front-page preview, project details, and live demo when available.
+  </p>
   <div class="card-grid">
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/jcash.png" alt="JCash Banking App front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>System Preview</strong>
+          Upload <code>project-previews/jcash.png</code>
+        </div>
+        <span class="preview-label">System Preview</span>
+      </div>
+<div class="card">
       <h3>JCash Banking App</h3>
       <div class="sub">TESDA Portfolio Project</div>
       <p>Banking application built with Java and Spring Boot, using JDBC and MySQL. Handled backend logic, database connectivity, API testing with Postman, and source control with GitHub.</p>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/academic-prospectus.png" alt="Academic Prospectus System front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>System Front Page</strong>
+          Upload <code>project-previews/academic-prospectus.png</code>
+        </div>
+        <span class="preview-label">System Front Page</span>
+      </div>
+<div class="card">
       <h3>Academic Prospectus System</h3>
       <div class="sub">Capstone Project · Project Manager</div>
       <p>Curriculum tracking and automated grade management system with data visualization, providing a centralized platform for curriculum and academic grade information.</p>
@@ -559,7 +652,17 @@
       </div>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/dacs.png" alt="DACS front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>System Front Page</strong>
+          Upload <code>project-previews/dacs.png</code>
+        </div>
+        <span class="preview-label">System Front Page</span>
+      </div>
+<div class="card">
       <h3>DACS</h3>
       <div class="sub">City Government of Makati · Developer / Backend</div>
       <p>Document Administration & Control System. Replaced manual Excel-based tracking with a centralized digital process for document management — deployed internally / intranet for the OM-ICTO Admin Department.</p>
@@ -568,35 +671,85 @@
       </div>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/business-website.png" alt="Business Website front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>Website Front Page</strong>
+          Upload <code>project-previews/business-website.png</code>
+        </div>
+        <span class="preview-label">Website Front Page</span>
+      </div>
+<div class="card">
       <h3>Business Website</h3>
       <div class="sub">Freelance Web Developer · International Client</div>
       <p>Designed and developed a responsive business website for a US-based legal practice, delivering a functional site accessible across different screen sizes.</p>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/high-value-crop.png" alt="High Value Crop Production Data Management & Analytics System front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>System Front Page</strong>
+          Upload <code>project-previews/high-value-crop.png</code>
+        </div>
+        <span class="preview-label">System Front Page</span>
+      </div>
+<div class="card">
       <h3>High Value Crop Production Data Management & Analytics System</h3>
       <div class="sub">Capstone Project</div>
       <p>PHP/MySQL agricultural data management and analytics system covering farmer, farmland, crop production, inventory, reporting, and analytics functions.</p>
       <div class="project-actions">
-        <button class="btn btn-gallery" onclick="openGallery('sakamart')"><i class="fas fa-images"></i> Gallery</button>
-        <a href="https://sakamart.great-site.net/index.html" target="_blank" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
+        <button class="btn btn-gallery" onclick="openGallery('crop')"><i class="fas fa-images"></i> Gallery</button>
+        <a href="#" class="btn btn-link"><i class="fas fa-external-link-alt"></i> Visit</a>
       </div>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/fisherfolk.png" alt="Web-Based Fisherfolk Profiling System front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>System Front Page</strong>
+          Upload <code>project-previews/fisherfolk.png</code>
+        </div>
+        <span class="preview-label">System Front Page</span>
+      </div>
+<div class="card">
       <h3>Web-Based Fisherfolk Profiling System</h3>
       <div class="sub">Capstone Project</div>
       <p>PHP/MySQL system handling registration, RSBSA enrollment, boat registration, records, and reports — centralizing fisherfolk records into an organized digital platform.</p>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/registrar.png" alt="Online Record Management and Tracking System front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>System Front Page</strong>
+          Upload <code>project-previews/registrar.png</code>
+        </div>
+        <span class="preview-label">System Front Page</span>
+      </div>
+<div class="card">
       <h3>Online Record Management and Tracking System</h3>
       <div class="sub">Capstone Project · Registrar</div>
       <p>PHP/MySQL system handling academic records, enrollment, grade submission, document requests, payments, tracking, and release workflows.</p>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/codebuddy.png" alt="CodeBuddyPH front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>Web IDE Front Page</strong>
+          Upload <code>project-previews/codebuddy.png</code>
+        </div>
+        <span class="preview-label">Web IDE Front Page</span>
+      </div>
+<div class="card">
       <h3>CodeBuddyPH</h3>
       <div class="sub">Personal AI-Assisted Web IDE · Developer</div>
       <p>AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.</p>
@@ -606,7 +759,17 @@
       </div>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/zona-ai.png" alt="ZONA AI front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>AI Platform Front Page</strong>
+          Upload <code>project-previews/zona-ai.png</code>
+        </div>
+        <span class="preview-label">AI Platform Front Page</span>
+      </div>
+<div class="card">
       <h3>ZONA AI</h3>
       <div class="sub">LIKHAMON Ideathon 2025 · Best Pitch Deck · Team Leader</div>
       <p>AI prototype for disaster risk analysis and hazard mapping, enabling early decision support.</p>
@@ -616,7 +779,17 @@
       </div>
     </div>
 
-    <div class="card">
+    
+      <div class="project-preview missing">
+        <img src="project-previews/alaga-quest.png" alt="ALAGA's Quest front page"
+             onerror="this.style.display='none';this.parentElement.classList.add('missing');" />
+        <div class="preview-fallback">
+          <strong>Game Front Page</strong>
+          Upload <code>project-previews/alaga-quest.png</code>
+        </div>
+        <span class="preview-label">Game Front Page</span>
+      </div>
+<div class="card">
       <h3>ALAGA's Quest</h3>
       <div class="sub">Game Development 2025 · 1st Place · Documenter & Presenter</div>
       <p>Educational game built with GDevelop that won 1st place in the Game Development Competition 2025.</p>
@@ -747,37 +920,43 @@
       title: "Academic Prospectus System",
       desc: "Curriculum tracking and automated grade management system.",
       url: "https://academicprospectus.great-site.net/capstone/homepage.php",
-      images: []
+      images: ["project-previews/academic-prospectus.png"]
     },
     dacs: {
       title: "DACS",
       desc: "Document Administration & Control System developed for Makati City Government.",
       url: "#",
-      images: []
+      images: ["project-previews/dacs.png"]
+    },
+    crop: {
+      title: "High Value Crop Production Data Management & Analytics System",
+      desc: "Agricultural data management and analytics system.",
+      url: "#",
+      images: ["project-previews/high-value-crop.png"]
     },
     sakamart: {
-      title: "High Value Crop Production Data System",
-      desc: "Agricultural data management and analytics system.",
+      title: "SakaMart",
+      desc: "Competition web app prototype connecting farmers and buyers. LIKHAMON Ideathon 2024 Champion.",
       url: "https://sakamart.great-site.net/index.html",
-      images: []
+      images: ["project-previews/sakamart.png"]
     },
     codebuddy: {
       title: "CodeBuddyPH",
       desc: "AI-assisted live code editor with instant preview.",
       url: "https://codebuddyph.great-site.net/Codebuddy/index.php",
-      images: []
+      images: ["project-previews/codebuddy.png"]
     },
     zona: {
       title: "ZONA AI",
       desc: "AI prototype for disaster risk analysis and hazard mapping.",
       url: "https://zonaai.great-site.net/index.php",
-      images: []
+      images: ["project-previews/zona-ai.png"]
     },
     alaga: {
       title: "ALAGA's Quest",
       desc: "Educational game developed for competition.",
       url: "#",
-      images: []
+      images: ["project-previews/alaga-quest.png"]
     }
   };
 
