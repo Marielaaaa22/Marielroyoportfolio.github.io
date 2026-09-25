@@ -404,6 +404,47 @@
     margin-top:20px;border-top:1px solid var(--line);padding-top:16px;font-size:.85rem;color:var(--gold);font-weight:600;
   }
 
+  /* RESUME */
+  #resume{
+    background:var(--black);
+    text-align:center;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .resume-card{
+    max-width:850px;
+    margin:0 auto;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-left:3px solid var(--red-dark);
+    border-radius:8px;
+    padding:42px 34px;
+  }
+  .resume-card p{
+    color:var(--muted);
+    max-width:620px;
+    margin:0 auto 26px;
+    font-size:.9rem;
+    line-height:1.7;
+  }
+  .resume-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .resume-actions .btn{
+    min-width:170px;
+    justify-content:center;
+  }
+  .btn-resume{
+    background:var(--red-dark);
+    color:#fff;
+  }
+  .btn-resume:hover{
+    background:var(--red-pink);
+  }
+
   /* CONTACT & FOOTER */
   #contact{
     background:var(--panel);border-top:1px solid var(--line);text-align:center;padding-bottom:80px;
@@ -463,6 +504,7 @@
       <li><a href="#skills">About</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#resume">Resume</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -815,6 +857,26 @@
       <div class="rate-note">
         <i class="fas fa-check-circle" style="color:var(--red-pink);margin-right:6px;"></i> Available for freelance projects, technical consultation, and contract work.
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-label">Professional Profile</div>
+  <h2>Resume</h2>
+  <div class="resume-card">
+    <p>
+      View or download my resume for a complete overview of my education,
+      technical skills, work experience, projects, achievements, and training.
+    </p>
+    <div class="resume-actions">
+      <a href="Mariel_B_Royo_RESUME.pdf" target="_blank" class="btn btn-resume">
+        <i class="fas fa-file-pdf"></i> View Resume
+      </a>
+      <a href="Mariel_B_Royo_RESUME.pdf" download class="btn btn-link">
+        <i class="fas fa-download"></i> Download Resume
+      </a>
     </div>
   </div>
 </section>
