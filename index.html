@@ -223,11 +223,11 @@
   }
 
   /* SECTIONS */
-  #skills,#projects,#leadership,#international{
+  #skills,#projects,#competition-projects,#leadership,#international{
     background:var(--panel);
     border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   }
-  #education,#achievements,#experience,#freelance{background:var(--black);}
+  #education,#achievements,#certifications,#experience,#freelance{background:var(--black);}
 
   h2{font-size:2.2rem;color:#fff;margin-bottom:40px;font-weight:800;letter-spacing:-.02em;}
   .section-label{font-size:.72rem;color:var(--red-pink);font-weight:800;margin-bottom:10px;letter-spacing:.18em;text-transform:uppercase;}
@@ -439,7 +439,9 @@
       <li><a href="#about" class="active">Home</a></li>
       <li><a href="#skills">About</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#competition-projects">Competition</a></li>
       <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#certifications">Certifications</a></li>
       <li><a href="#resume">Resume</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -556,6 +558,16 @@
   </div>
 
   <div class="skill-group">
+    <h3>AI Tools</h3>
+    <div class="skill-icons">
+      <div class="skill-pill"><i class="fas fa-robot"></i>Claude</div>
+      <div class="skill-pill"><i class="fas fa-robot"></i>DeepSeek</div>
+      <div class="skill-pill"><i class="fas fa-robot"></i>ChatGPT</div>
+      <div class="skill-pill"><i class="fas fa-robot"></i>Gemini</div>
+    </div>
+  </div>
+
+  <div class="skill-group">
     <h3>Additional</h3>
     <div class="skill-icons">
       <div class="skill-pill"><i class="devicon-python-plain colored"></i>Python</div>
@@ -592,7 +604,7 @@
   <div class="section-label">Selected work</div>
   <h2>Projects</h2>
   <p style="max-width:760px;margin:-24px 0 34px;color:var(--muted);font-size:.82rem;">
-    A selection of systems, web applications, and prototypes I've worked on.
+    A selection of systems and web applications I've worked on.
   </p>
   <div class="card-grid">
 
@@ -675,6 +687,17 @@
       <p>AI-assisted live code editor with preview, built for beginner coders to learn and practice HTML, CSS, and JavaScript.</p>
     </div>
 
+  </div>
+</section>
+
+<!-- COMPETITION PROJECTS -->
+<section id="competition-projects">
+  <div class="section-label">Competitive work</div>
+  <h2>Competition Projects</h2>
+  <p style="max-width:760px;margin:-24px 0 34px;color:var(--muted);font-size:.82rem;">
+    Award-winning prototypes and team projects developed for competitions.
+  </p>
+  <div class="card-grid">
     <div class="card">
       <div class="project-image">
         <img src="sakamart.png" alt="SakaMart front page" />
@@ -684,7 +707,6 @@
       <div class="sub">LIKHAMON Ideathon 2024 · Champion · Team Leader</div>
       <p>Competition web application prototype developed as a team project for the LIKHAMON Ideathon 2024.</p>
     </div>
-
     <div class="card">
       <div class="project-image">
         <img src="zonaai.png" alt="ZONA AI front page" />
@@ -694,7 +716,6 @@
       <div class="sub">LIKHAMON Ideathon 2025 · Best Pitch Deck · Team Leader</div>
       <p>Competition web application prototype developed as a team project for the LIKHAMON Ideathon 2025.</p>
     </div>
-
     <div class="card">
       <div class="project-image">
         <img src="alaga1.png" alt="ALAGA's Quest front page" />
@@ -703,8 +724,8 @@
       <div class="sub">Game Development 2025 · 1st Place · Documenter &amp; Presenter</div>
       <p>Educational game built with GDevelop that won 1st place in the Game Development Competition 2025.</p>
     </div>
-
   </div>
+
 </section>
 
 <!-- INTERNATIONAL CLIENT -->
@@ -740,6 +761,25 @@
   </div>
 </section>
 
+<!-- CERTIFICATIONS & TRAINING -->
+<section id="certifications">
+  <div class="section-label">Professional development</div>
+  <h2>Certifications &amp; Training</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h3>Java Programming NC III</h3>
+      <div class="sub">TESDA · July 28 – August 27, 2026</div>
+      <p>Completed Java Programming NC III training under the Technical Education and Skills Development Authority (TESDA).</p>
+      <p style="margin-top:14px;font-size:.8rem;color:var(--cream);">Center for International Industries Competence Corp. (CIICC)</p>
+    </div>
+    <div class="card">
+      <h3>Supervised Internship Learning (SIL)</h3>
+      <div class="sub">AWS (Amazon Web Services) · August 28 – September 15, 2026</div>
+      <p>Completed supervised internship learning focused on practical workplace experience and cloud-services exposure.</p>
+    </div>
+  </div>
+</section>
+
 <!-- LEADERSHIP -->
 <section id="leadership">
   <div class="section-label">Beyond the code</div>
@@ -763,6 +803,34 @@
         <li>Developed and maintained web-based systems for internal government operations.</li>
         <li>Focused on backend development, database architecture, and optimization.</li>
         <li>Built DACS (Document Administration & Control System) for intranet deployment.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Production Staff (Office-based)</h3>
+      <div class="sub">Karzai Corporation · Jan 2021 – Jan 2022</div>
+      <ul>
+        <li>Handled office-based documentation, production records, and coordination tasks.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Quality Checker</h3>
+      <div class="sub">Vacuumtech Philippines Inc. · Jul 2020 – Dec 2020</div>
+      <ul>
+        <li>Inspected products for quality compliance and maintained accurate inspection records.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Quality Sorter</h3>
+      <div class="sub">Global Compak Inc. · Aug 2017 – Jun 2020</div>
+      <ul>
+        <li>Performed product sorting and quality inspection according to production standards.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Production Operator</h3>
+      <div class="sub">Yazaki-Torres Manufacturing Inc. · Sep 2014 – Jun 2017</div>
+      <ul>
+        <li>Operated production processes while following quality, safety, and workplace requirements.</li>
       </ul>
     </div>
   </div>
